@@ -2,6 +2,12 @@
 
 Prosta strona wizytówka w jednym pliku HTML.
 
+## Strona internetowa
+
+**Zobacz stronę:** [https://konradpustelnik.github.io/MagnesowySwiat/](https://konradpustelnik.github.io/MagnesowySwiat/)
+
+Strona jest opublikowana bezpłatnie w GitHub Pages. Repozytorium z jej kodem jest publiczne, więc każdy może je przeglądać, ale zmiany wprowadzać mogą tylko właściciel i osoby z uprawnieniami do zapisu.
+
 Plik `logo-magnesowy-swiat.jpg` zawiera logo używane w nagłówku i stopce. Zostaw go w folderze projektu obok `index.html`.
 
 ## Uruchomienie lokalnie
