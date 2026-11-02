@@ -1,0 +1,1365 @@
+
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Magnesowy Świat – fotomagnesy tworzone na żywo podczas wesel, uroczystości rodzinnych i eventów firmowych. Wyjątkowa pamiątka dla Twoich gości.">
+  <title>Magnesowy Świat | Fotomagnesy na wydarzenia</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --cream: #f8f6f0;
+      --paper: #fffefa;
+      --olive: #626b4f;
+      --olive-dark: #414936;
+      --sage: #e8eadf;
+      --gold: #c4a36b;
+      --ink: #292b25;
+      --muted: #74766d;
+      --line: #e8e4d9;
+      --shadow: 0 15px 45px rgba(50, 48, 35, .08);
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      scroll-behavior: smooth;
+      scroll-padding-top: 90px;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.65;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    img {
+      display: block;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    button, input, select, textarea {
+      font: inherit;
+    }
+
+    .container {
+      width: min(1160px, 90%);
+      margin: auto;
+    }
+
+    .eyebrow {
+      color: var(--olive);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    h1, h2, h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 600;
+      line-height: 1.18;
+    }
+
+    h2 {
+      font-size: clamp(32px, 4vw, 46px);
+      margin: 10px 0 18px;
+    }
+
+    p { color: var(--muted); }
+
+    .section {
+      padding: 95px 0;
+    }
+
+    .section-heading {
+      max-width: 680px;
+      margin: 0 auto 48px;
+      text-align: center;
+    }
+
+    .section-heading p {
+      max-width: 570px;
+      margin: 0 auto;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 25px;
+      border-radius: 4px;
+      background: var(--olive);
+      color: white;
+      border: 1px solid var(--olive);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      cursor: pointer;
+      transition: .25s;
+    }
+
+    .btn:hover {
+      background: var(--olive-dark);
+      border-color: var(--olive-dark);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--olive-dark);
+    }
+
+    .btn-outline:hover { color: white; }
+
+    /* Nawigacja */
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 246, 240, .96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      min-height: 76px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 25px;
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 23px;
+      font-weight: 700;
+      color: var(--olive-dark);
+      white-space: nowrap;
+    }
+
+    .logo span { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .nav-links a:hover { color: var(--olive); }
+
+    .nav-links .nav-cta {
+      padding: 10px 16px;
+      background: var(--olive);
+      color: white;
+      border-radius: 3px;
+    }
+
+    .menu-toggle {
+      display: none;
+      border: 0;
+      background: transparent;
+      font-size: 25px;
+      color: var(--olive-dark);
+      cursor: pointer;
+    }
+
+    /* Hero */
+
+    .hero {
+      min-height: 660px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 55px;
+      padding: 75px 0;
+    }
+
+    .hero h1 {
+      font-size: clamp(43px, 5.3vw, 67px);
+      margin: 17px 0 20px;
+      letter-spacing: -1.5px;
+    }
+
+    .hero h1 span { color: var(--olive); }
+
+    .hero-copy {
+      max-width: 520px;
+      font-size: 16px;
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .hero-note {
+      margin-top: 25px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .hero-photo {
+      position: relative;
+      min-height: 480px;
+    }
+
+    .hero-photo img {
+      height: 480px;
+      border-radius: 48% 48% 5px 5px;
+      box-shadow: var(--shadow);
+    }
+
+    .floating-note {
+      position: absolute;
+      left: -35px;
+      bottom: 35px;
+      max-width: 205px;
+      background: var(--paper);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      border-radius: 4px;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .floating-note small {
+      display: block;
+      font-family: 'DM Sans', sans-serif;
+      color: var(--muted);
+      font-size: 10px;
+      margin-top: 8px;
+    }
+
+    /* Pasek kategorii */
+
+    .occasion-strip {
+      background: var(--olive-dark);
+      color: white;
+      padding: 28px 0;
+    }
+
+    .occasion-strip-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .occasion-strip strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px;
+      font-weight: 500;
+    }
+
+    .occasion-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .occasion-links a {
+      border: 1px solid rgba(255,255,255,.35);
+      padding: 8px 13px;
+      border-radius: 30px;
+      font-size: 11px;
+      transition: .2s;
+    }
+
+    .occasion-links a:hover {
+      background: white;
+      color: var(--olive-dark);
+    }
+
+    /* Okazje */
+
+    .occasion-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+    }
+
+    .occasion-card {
+      background: var(--paper);
+      border: 1px solid var(--line);
+      transition: .25s;
+      overflow: hidden;
+    }
+
+    .occasion-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .occasion-card img {
+      height: 190px;
+    }
+
+    .occasion-card-content { padding: 22px; }
+
+    .occasion-card h3 {
+      font-size: 21px;
+      margin: 0 0 8px;
+    }
+
+    .occasion-card p {
+      font-size: 12px;
+      margin: 0;
+    }
+
+    /* Wyróżniki */
+
+    .features {
+      background: var(--sage);
+    }
+
+    .feature-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .feature {
+      padding: 10px 5px;
+    }
+
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.75);
+      color: var(--olive-dark);
+      border-radius: 50%;
+      font-size: 22px;
+      margin-bottom: 20px;
+    }
+
+    .feature h3 {
+      font-size: 20px;
+      margin: 0 0 9px;
+    }
+
+    .feature p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Jak działamy */
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 35px;
+    }
+
+    .step {
+      text-align: center;
+      padding: 10px 20px;
+    }
+
+    .step-number {
+      width: 55px;
+      height: 55px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--gold);
+      color: var(--olive-dark);
+      border-radius: 50%;
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin: 0 auto 20px;
+    }
+
+    .step h3 {
+      font-size: 22px;
+      margin: 0 0 10px;
+    }
+
+    .step p {
+      font-size: 13px;
+      margin: 0;
+    }
+
+    /* Statystyka */
+
+    .stat-section {
+      background: var(--olive-dark);
+      color: white;
+      padding: 65px 0;
+      text-align: center;
+    }
+
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(65px, 9vw, 100px);
+      line-height: 1;
+      color: #e5d2a8;
+    }
+
+    .stat-section h2 {
+      font-size: 29px;
+      margin: 15px 0 10px;
+    }
+
+    .stat-section p {
+      max-width: 650px;
+      margin: auto;
+      color: rgba(255,255,255,.72);
+      font-size: 12px;
+    }
+
+    /* Galeria */
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .gallery-grid img {
+      height: 290px;
+      border-radius: 3px;
+      transition: .3s;
+    }
+
+    .gallery-grid img:hover { transform: scale(1.015); }
+
+    .gallery-note {
+      text-align: center;
+      font-size: 11px;
+      margin-top: 20px;
+    }
+
+    /* Pakiety */
+
+    .pricing { background: var(--sage); }
+
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 15px;
+      align-items: stretch;
+    }
+
+    .price-card {
+      background: var(--paper);
+      padding: 29px 23px;
+      border: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .price-card.featured {
+      border: 2px solid var(--olive);
+      transform: translateY(-8px);
+    }
+
+    .popular {
+      position: absolute;
+      top: -13px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--olive);
+      color: white;
+      padding: 5px 13px;
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      white-space: nowrap;
+    }
+
+    .price-card h3 {
+      font-size: 25px;
+      margin: 0 0 7px;
+    }
+
+    .price-range {
+      font-family: 'Playfair Display', serif;
+      color: var(--olive);
+      font-size: 24px;
+      margin-bottom: 15px;
+    }
+
+    .price-card p {
+      font-size: 12px;
+      min-height: 55px;
+    }
+
+    .price-card ul {
+      padding-left: 17px;
+      margin: 10px 0 25px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .price-card li { margin-bottom: 9px; }
+
+    .price-card .btn {
+      width: 100%;
+      margin-top: auto;
+      padding: 12px 8px;
+      font-size: 11px;
+    }
+
+    .pricing-note {
+      text-align: center;
+      font-size: 12px;
+      margin: 35px auto 0;
+      max-width: 700px;
+    }
+
+    /* Personalizacja */
+
+    .personalization {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .personalization img {
+      height: 420px;
+      border-radius: 4px;
+    }
+
+    .personalization h2 { margin-top: 12px; }
+
+    .personalization ul {
+      color: var(--muted);
+      font-size: 13px;
+      padding-left: 20px;
+    }
+
+    .personalization li { margin-bottom: 10px; }
+
+    /* FAQ */
+
+    .faq-list {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    details {
+      border-bottom: 1px solid var(--line);
+      padding: 19px 0;
+    }
+
+    summary {
+      cursor: pointer;
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      color: var(--ink);
+    }
+
+    details p {
+      font-size: 13px;
+      margin-bottom: 0;
+    }
+
+    /* Formularz */
+
+    .contact {
+      background: var(--olive-dark);
+      color: white;
+    }
+
+    .contact h2 { color: white; }
+
+    .contact .section-heading p { color: rgba(255,255,255,.72); }
+
+    .contact-box {
+      max-width: 780px;
+      margin: auto;
+      background: var(--paper);
+      color: var(--ink);
+      padding: 40px;
+      border-radius: 4px;
+      box-shadow: var(--shadow);
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 19px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field.full { grid-column: 1 / -1; }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--olive-dark);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border: 1px solid var(--line);
+      border-radius: 3px;
+      background: #fff;
+      color: var(--ink);
+      outline: none;
+      font-size: 13px;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--olive);
+    }
+
+    .field textarea {
+      min-height: 115px;
+      resize: vertical;
+    }
+
+    .field input[type="file"] {
+      padding: 10px;
+      font-size: 11px;
+    }
+
+    .field small {
+      color: var(--muted);
+      font-size: 10px;
+    }
+
+    .form-consent {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      font-size: 10px;
+      color: var(--muted);
+      margin: 20px 0;
+    }
+
+    .form-consent input { margin-top: 3px; }
+
+    .form-submit {
+      width: 100%;
+      border: 0;
+      font-size: 13px;
+    }
+
+    .form-info {
+      text-align: center;
+      font-size: 10px;
+      margin: 15px 0 0;
+    }
+
+    /* Stopka */
+
+    footer {
+      background: #303629;
+      color: white;
+      padding: 35px 0;
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    footer .logo { color: white; }
+
+    footer p {
+      color: rgba(255,255,255,.6);
+      font-size: 11px;
+      margin: 5px 0 0;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      font-size: 11px;
+    }
+
+    .footer-links a:hover { color: #e5d2a8; }
+
+    @media (max-width: 900px) {
+      .occasion-grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+      .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .hero { gap: 30px; }
+      .hero-photo img { height: 400px; }
+      .hero-photo { min-height: 400px; }
+      .price-card.featured { transform: none; }
+    }
+
+    @media (max-width: 650px) {
+      .section { padding: 70px 0; }
+
+      .menu-toggle { display: block; }
+
+      .nav { min-height: 68px; }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 68px;
+        left: 0;
+        right: 0;
+        padding: 20px 5%;
+        background: var(--cream);
+        border-bottom: 1px solid var(--line);
+        flex-direction: column;
+        align-items: stretch;
+        gap: 17px;
+      }
+
+      .nav-links.open { display: flex; }
+
+      .nav-links .nav-cta { text-align: center; }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 60px 0;
+      }
+
+      .hero-photo { min-height: 330px; }
+
+      .hero-photo img {
+        height: 330px;
+        border-radius: 45% 45% 4px 4px;
+      }
+
+      .floating-note {
+        left: 5px;
+        bottom: 15px;
+        padding: 14px;
+        max-width: 170px;
+        font-size: 15px;
+      }
+
+      .occasion-strip-inner {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .occasion-links { justify-content: center; }
+
+      .occasion-grid,
+      .feature-grid,
+      .steps,
+      .gallery-grid,
+      .pricing-grid,
+      .personalization {
+        grid-template-columns: 1fr;
+      }
+
+      .occasion-card img { height: 220px; }
+
+      .gallery-grid img { height: 260px; }
+
+      .personalization { gap: 30px; }
+
+      .personalization img { height: 300px; }
+
+      .contact-box { padding: 25px 18px; }
+
+      .form-grid { grid-template-columns: 1fr; }
+
+      .field.full { grid-column: auto; }
+
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .footer-links { justify-content: center; flex-wrap: wrap; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="container nav">
+      <a class="logo" href="#start">Magnesowy <span>Świat</span></a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#okazje">Okazje</a>
+        <a href="#wyrozniki">Co nas wyróżnia</a>
+        <a href="#jak-dzialamy">Jak działamy</a>
+        <a href="#pakiety">Pakiety</a>
+        <a href="#kontakt" class="nav-cta">Zapytaj o ofertę</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+
+    <section class="container hero" id="start">
+      <div>
+        <div class="eyebrow">Magnesowy Świat · Fotomagnesy na żywo</div>
+
+        <h1>Niech dobre chwile zostaną <span>z Tobą</span> na dłużej.</h1>
+
+        <p class="hero-copy">
+          Tworzymy wyjątkowe fotomagnesy na żywo podczas wesel,
+          uroczystości rodzinnych i eventów. Twoi goście otrzymują
+          niepowtarzalną pamiątkę, która każdego dnia będzie przypominać
+          im o wspólnie spędzonych chwilach.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#kontakt" class="btn">Zapytaj o ofertę</a>
+          <a href="#jak-dzialamy" class="btn btn-outline">Zobacz, jak działamy</a>
+        </div>
+
+        <div class="hero-note">
+          ✦ Personalizowane pamiątki · Zdjęcia na żywo · Wyjątkowe wydarzenia
+        </div>
+      </div>
+
+      <div class="hero-photo">
+        <img
+          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85"
+          alt="Dekoracja podczas uroczystości"
+        >
+        <div class="floating-note">
+          Mała pamiątka. Wielkie wspomnienia.
+          <small>Magnesowy Świat</small>
+        </div>
+      </div>
+    </section>
+
+    <!-- OKAZJE -->
+
+    <section class="occasion-strip">
+      <div class="container occasion-strip-inner">
+        <strong>Tworzymy wspomnienia na:</strong>
+        <div class="occasion-links">
+          <a href="#okazje">Wesela</a>
+          <a href="#okazje">Uroczystości rodzinne</a>
+          <a href="#okazje">Eventy firmowe</a>
+          <a href="#okazje">Imprezy i festyny</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section container" id="okazje">
+      <div class="section-heading">
+        <div class="eyebrow">Każda okazja jest dobra</div>
+        <h2>Gdzie możemy się spotkać?</h2>
+        <p>
+          Niezależnie od tego, czy organizujesz kameralne przyjęcie,
+          duże wesele czy wydarzenie firmowe – przygotujemy fotomagnesy
+          dopasowane do charakteru Twojej imprezy.
+        </p>
+      </div>
+
+      <div class="occasion-grid">
+
+        <article class="occasion-card">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Wesele">
+          <div class="occasion-card-content">
+            <h3>Wesela</h3>
+            <p>Wyjątkowa pamiątka dla gości i piękne wspomnienie Waszego dnia.</p>
+          </div>
+        </article>
+
+        <article class="occasion-card">
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Uroczystość rodzinna">
+          <div class="occasion-card-content">
+            <h3>Uroczystości rodzinne</h3>
+            <p>Urodziny, jubileusze, chrzciny, komunie i spotkania rodzinne.</p>
+          </div>
+        </article>
+
+        <article class="occasion-card">
+          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=80" alt="Wydarzenie firmowe">
+          <div class="occasion-card-content">
+            <h3>Eventy firmowe</h3>
+            <p>Integracje, gale, konferencje i firmowe spotkania z charakterem.</p>
+          </div>
+        </article>
+
+        <article class="occasion-card">
+          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80" alt="Impreza plenerowa">
+          <div class="occasion-card-content">
+            <h3>Eventy i imprezy</h3>
+            <p>Festyny, targi, imprezy plenerowe i wydarzenia specjalne.</p>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- WYRÓŻNIKI -->
+
+    <section class="section features" id="wyrozniki">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">Co nas wyróżnia?</div>
+          <h2>To coś więcej niż zwykłe zdjęcie</h2>
+          <p>
+            Dbamy o to, aby każdy gość mógł zabrać ze sobą coś osobistego –
+            drobny upominek, który wywoła uśmiech jeszcze długo po wydarzeniu.
+          </p>
+        </div>
+
+        <div class="feature-grid">
+
+          <div class="feature">
+            <div class="feature-icon">♡</div>
+            <h3>Twoje własne zdjęcia</h3>
+            <p>Goście mogą przesłać zdjęcia ze swoich telefonów, a my zamieniamy je w pamiątkowe magnesy.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">▣</div>
+            <h3>Styl Polaroid</h3>
+            <p>Charakterystyczna jasna ramka i klimat fotografii natychmiastowej nadają magnesom wyjątkowy wygląd.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">✉</div>
+            <h3>Wygodna dostawa</h3>
+            <p>Gość otrzymuje numerek, a gotowy magnes może zostać dostarczony bezpośrednio do jego stolika.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon">✧</div>
+            <h3>Personalizacja</h3>
+            <p>Możemy dodać datę, imiona, logo firmy lub motyw graficzny dopasowany do wydarzenia.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- JAK DZIAŁAMY -->
+
+    <section class="section container" id="jak-dzialamy">
+      <div class="section-heading">
+        <div class="eyebrow">Prosto i przyjemnie</div>
+        <h2>Jak powstają Wasze magnesy?</h2>
+        <p>Cały proces odbywa się podczas wydarzenia. Goście mogą cieszyć się chwilą, a my zajmujemy się pamiątkami.</p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Robimy zdjęcie</h3>
+          <p>Goście robią zdjęcie telefonem lub korzystają ze zdjęć, które już mają w swojej galerii.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Tworzymy magnes</h3>
+          <p>Przygotowujemy fotografię w wybranym stylu i wykonujemy z niej trwały fotomagnes.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Wspomnienie gotowe!</h3>
+          <p>Gotowy magnes trafia do gościa – bezpośrednio lub za pośrednictwem organizatora.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- STATYSTYKA -->
+
+    <section class="stat-section">
+      <div class="container">
+        <div class="stat-number">70%</div>
+        <h2>Polaków ma magnesy na lodówce.</h2>
+        <p>
+          To wynik badania „Polska codzienność”, przytaczanego w publikacji
+          Onet Kobieta w 2025 roku. Statystyka dotyczy posiadania magnesów,
+          a nie deklaracji ich kolekcjonowania.
+        </p>
+      </div>
+    </section>
+
+    <!-- GALERIA -->
+
+    <section class="section container" id="galeria">
+      <div class="section-heading">
+        <div class="eyebrow">Małe rzeczy, wielkie emocje</div>
+        <h2>Tak mogą wyglądać Wasze wspomnienia</h2>
+        <p>Każdy magnes to osobna historia i wyjątkowa pamiątka.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=800&q=80" alt="Wspólne chwile">
+        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=800&q=80" alt="Uroczystość">
+        <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=800&q=80" alt="Przyjęcie">
+      </div>
+
+      <p class="gallery-note">
+        Zdjęcia w galerii są ilustracyjne i pochodzą z serwisu Unsplash.
+        Warto zastąpić je własnymi zdjęciami wykonanych realizacji.
+      </p>
+    </section>
+
+    <!-- PAKIETY -->
+
+    <section class="section pricing" id="pakiety">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow">Wybierz coś dla siebie</div>
+          <h2>Nasze pakiety</h2>
+          <p>
+            Dopasujemy liczbę magnesów do wielkości wydarzenia.
+            Ostateczną ofertę przygotujemy indywidualnie.
+          </p>
+        </div>
+
+        <div class="pricing-grid">
+
+          <article class="price-card">
+            <h3>Mini</h3>
+            <div class="price-range">50–100</div>
+            <p>Idealny na kameralne spotkania i mniejsze uroczystości.</p>
+            <ul>
+              <li>Od 50 do 100 fotomagnesów</li>
+              <li>Zdjęcia gości</li>
+              <li>Przygotowanie na miejscu</li>
+              <li>Personalizacja projektu</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Mini">Zapytaj o pakiet</a>
+          </article>
+
+          <article class="price-card featured">
+            <div class="popular">Często wybierany</div>
+            <h3>Standard</h3>
+            <div class="price-range">150–250</div>
+            <p>Świetny wybór na większe przyjęcia i wydarzenia.</p>
+            <ul>
+              <li>Od 150 do 250 fotomagnesów</li>
+              <li>Zdjęcia gości</li>
+              <li>Przygotowanie na miejscu</li>
+              <li>Personalizacja projektu</li>
+            </ul>
+            <a href="#kontakt" class="btn choose-package" data-package="Standard">Zapytaj o pakiet</a>
+          </article>
+
+          <article class="price-card">
+            <h3>Premium</h3>
+            <div class="price-range">300–400</div>
+            <p>Na duże wydarzenia, podczas których liczy się każdy gość.</p>
+            <ul>
+              <li>Od 300 do 400 fotomagnesów</li>
+              <li>Zdjęcia gości</li>
+              <li>Przygotowanie na miejscu</li>
+              <li>Indywidualna personalizacja</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Premium">Zapytaj o pakiet</a>
+          </article>
+
+          <article class="price-card">
+            <h3>Wielki Finał</h3>
+            <div class="price-range">400–600</div>
+            <p>Największy pakiet z dodatkowym, wyjątkowym akcentem.</p>
+            <ul>
+              <li>Od 400 do 600 fotomagnesów</li>
+              <li>Zdjęcia gości</li>
+              <li>Przygotowanie na miejscu</li>
+              <li>Dodatkowy motyw pamiątkowy</li>
+              <li>Indywidualna personalizacja</li>
+            </ul>
+            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Wielki Finał">Zapytaj o pakiet</a>
+          </article>
+
+        </div>
+
+        <p class="pricing-note">
+          Liczby oznaczają orientacyjną liczbę magnesów w pakiecie.
+          Na weselach pakiet Wielki Finał może obejmować dodatkowe magnesy
+          ze zdjęciem Pary Młodej do odebrania przez gości przy pożegnaniu.
+          Przy innych wydarzeniach przygotujemy odpowiedni akcent pamiątkowy,
+          np. zdjęcie organizatora, logo lub motyw wydarzenia.
+          Szczegóły i wycenę ustalamy indywidualnie.
+        </p>
+      </div>
+    </section>
+
+    <!-- PERSONALIZACJA FIRMOWA -->
+
+    <section class="section container">
+      <div class="personalization">
+        <img
+          src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=85"
+          alt="Wydarzenie i spotkanie firmowe"
+        >
+
+        <div>
+          <div class="eyebrow">Również dla biznesu</div>
+          <h2>Twoja marka na dłużej w pamięci</h2>
+          <p>
+            Fotomagnesy mogą być nie tylko pamiątką z wydarzenia,
+            ale również oryginalnym upominkiem promocyjnym.
+          </p>
+          <ul>
+            <li>Logo firmy na magnesie</li>
+            <li>Data i nazwa wydarzenia</li>
+            <li>Projekt dopasowany do identyfikacji wizualnej</li>
+            <li>Pamiątki dla uczestników konferencji i targów</li>
+          </ul>
+          <a href="#kontakt" class="btn">Zapytaj o ofertę firmową</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+
+    <section class="section container" id="faq">
+      <div class="section-heading">
+        <div class="eyebrow">Masz pytania?</div>
+        <h2>Najczęściej zadawane pytania</h2>
+      </div>
+
+      <div class="faq-list">
+
+        <details>
+          <summary>Czy obsługujecie tylko wesela?</summary>
+          <p>Nie! Realizujemy również uroczystości rodzinne, urodziny, jubileusze, chrzciny, komunie, eventy firmowe, konferencje, gale, festyny i inne wydarzenia.</p>
+        </details>
+
+        <details>
+          <summary>Czy goście mogą przesłać własne zdjęcia?</summary>
+          <p>Tak. Goście mogą wykorzystać zdjęcia ze swoich telefonów, dzięki czemu każdy magnes może być osobistą pamiątką.</p>
+        </details>
+
+        <details>
+          <summary>Czy możemy dodać logo lub własny projekt?</summary>
+          <p>Tak. Możemy przygotować projekt z logo firmy, datą wydarzenia, imionami lub innymi elementami graficznymi.</p>
+        </details>
+
+        <details>
+          <summary>Czy gotowe magnesy trafiają bezpośrednio do gości?</summary>
+          <p>Możemy zorganizować przekazywanie magnesów bezpośrednio gościom lub dostarczanie ich do stolików za pośrednictwem organizatora.</p>
+        </details>
+
+        <details>
+          <summary>Jak poznać cenę usługi?</summary>
+          <p>Wyślij nam zapytanie przez formularz. Podaj rodzaj wydarzenia, termin, miejsce i szacowaną liczbę uczestników. Przygotujemy ofertę dopasowaną do Twoich potrzeb.</p>
+        </details>
+
+        <details>
+          <summary>Z jakim wyprzedzeniem trzeba zarezerwować termin?</summary>
+          <p>Najlepiej skontaktować się z nami możliwie wcześnie. Dostępność terminu potwierdzimy indywidualnie.</p>
+        </details>
+
+      </div>
+    </section>
+
+    <!-- KONTAKT -->
+
+    <section class="section contact" id="kontakt">
+      <div class="container">
+        <div class="section-heading">
+          <div class="eyebrow" style="color:#e5d2a8;">Porozmawiajmy o Twoim wydarzeniu</div>
+          <h2>Stwórzmy razem coś wyjątkowego</h2>
+          <p>
+            Opowiedz nam o swoim wydarzeniu. Skontaktujemy się z Tobą
+            i przygotujemy propozycję dopasowaną do Twoich oczekiwań.
+          </p>
+        </div>
+
+        <div class="contact-box">
+
+          <form
+            action="https://formsubmit.co/konrad.pustelnik15@gmail.com"
+            method="POST"
+            enctype="multipart/form-data"
+          >
+
+            <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
+            <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="true">
+
+            <!-- Pole antyspamowe -->
+            <input type="text" name="_honey" style="display:none">
+
+            <div class="form-grid">
+
+              <div class="field">
+                <label for="name">Imię i nazwisko *</label>
+                <input type="text" id="name" name="Imię i nazwisko" placeholder="Jak się nazywasz?" required>
+              </div>
+
+              <div class="field">
+                <label for="email">Adres e-mail *</label>
+                <input type="email" id="email" name="email" placeholder="twoj@email.pl" required>
+              </div>
+
+              <div class="field">
+                <label for="event-type">Rodzaj wydarzenia *</label>
+                <select id="event-type" name="Rodzaj wydarzenia" required>
+                  <option value="">Wybierz rodzaj wydarzenia</option>
+                  <option>Wesele</option>
+                  <option>Urodziny</option>
+                  <option>Jubileusz</option>
+                  <option>Chrzciny / komunia</option>
+                  <option>Event firmowy</option>
+                  <option>Konferencja / gala</option>
+                  <option>Festyn / impreza plenerowa</option>
+                  <option>Inne</option>
+                </select>
+              </div>
+
+              <div class="field">
+                <label for="date">Data wydarzenia *</label>
+                <input type="date" id="date" name="Data wydarzenia" required>
+              </div>
+
+              <div class="field">
+                <label for="location">Miejsce wydarzenia *</label>
+                <input type="text" id="location" name="Miejsce wydarzenia" placeholder="Miasto, lokal lub adres" required>
+              </div>
+
+              <div class="field">
+                <label for="guests">Szacowana liczba uczestników *</label>
+                <input type="number" id="guests" name="Szacowana liczba uczestników" min="1" placeholder="Np. 150" required>
+              </div>
+
+              <div class="field full">
+                <label for="package">Interesujący pakiet</label>
+                <select id="package" name="Wybrany pakiet">
+                  <option value="">Nie wiem – poproszę o doradztwo</option>
+                  <option>Mini (50–100 magnesów)</option>
+                  <option>Standard (150–250 magnesów)</option>
+                  <option>Premium (300–400 magnesów)</option>
+                  <option>Wielki Finał (400–600 magnesów)</option>
+                  <option>Oferta indywidualna / firmowa</option>
+                </select>
+              </div>
+
+              <div class="field full">
+                <label for="photo">Twoje zdjęcie do wykorzystania (opcjonalnie)</label>
+                <input type="file" id="photo" name="Zdjęcie do wykorzystania" accept="image/jpeg,image/png,image/webp">
+                <small>Możesz przesłać przykładowe zdjęcie. Obsługiwane formaty: JPG, PNG, WEBP.</small>
+              </div>
+
+              <div class="field full">
+                <label for="logo-file">Logo firmy (opcjonalnie)</label>
+                <input type="file" id="logo-file" name="Logo firmy" accept="image/jpeg,image/png,image/webp,.svg,.pdf">
+                <small>To pole przyda się szczególnie przy eventach firmowych. Łączny rozmiar wszystkich załączników nie może przekroczyć 10 MB.</small>
+              </div>
+
+              <div class="field full">
+                <label for="message">Dodatkowe informacje</label>
+                <textarea id="message" name="Wiadomość" placeholder="Napisz nam coś więcej o wydarzeniu, swoich pomysłach lub oczekiwaniach..."></textarea>
+              </div>
+
+            </div>
+
+            <label class="form-consent">
+              <input type="checkbox" name="Zgoda na kontakt" value="Tak" required>
+              <span>
+                Wyrażam zgodę na kontakt w celu udzielenia odpowiedzi na moje zapytanie.
+                Wysłanie formularza oznacza przekazanie podanych danych w celu obsługi zapytania.
+              </span>
+            </label>
+
+            <button type="submit" class="btn form-submit">Wyślij zapytanie</button>
+
+            <p class="form-info">
+              Pola oznaczone * są obowiązkowe. Odpowiemy najszybciej, jak to możliwe.
+            </p>
+
+          </form>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <div>
+        <a class="logo" href="#start">Magnesowe <span>Chwile</span></a>
+        <p>Niech dobre chwile zostaną z Tobą na dłużej.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#okazje">Okazje</a>
+        <a href="#pakiety">Pakiety</a>
+        <a href="#faq">FAQ</a>
+        <a href="#kontakt">Kontakt</a>
+      </div>
+
+      <p>© <span id="year"></span> Magnesowy Świat</p>
+    </div>
+  </footer>
+
+  <script>
+    // Menu mobilne
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', function () {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', isOpen);
+      menuToggle.textContent = isOpen ? '✕' : '☰';
+    });
+
+    // Zamykanie menu po kliknięciu w link
+    document.querySelectorAll('.nav-links a').forEach(function(link) {
+      link.addEventListener('click', function() {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.textContent = '☰';
+      });
+    });
+
+    // Wybór pakietu automatycznie ustawia go w formularzu
+    document.querySelectorAll('.choose-package').forEach(function(button) {
+      button.addEventListener('click', function() {
+        const packageName = button.dataset.package;
+        const packageSelect = document.getElementById('package');
+
+        const options = Array.from(packageSelect.options);
+        const matchingOption = options.find(function(option) {
+          return option.textContent.startsWith(packageName);
+        });
+
+        if (matchingOption) {
+          packageSelect.value = matchingOption.value;
+        }
+      });
+    });
+
+    // Aktualny rok w stopce
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+</body>
+</html>
