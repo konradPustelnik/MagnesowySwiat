@@ -13,16 +13,16 @@
 
   <style>
     :root {
-      --cream: #f8f6f0;
-      --paper: #fffefa;
-      --olive: #626b4f;
-      --olive-dark: #414936;
-      --sage: #e8eadf;
-      --gold: #c4a36b;
-      --ink: #292b25;
-      --muted: #74766d;
-      --line: #e8e4d9;
-      --shadow: 0 15px 45px rgba(50, 48, 35, .08);
+      --cream: #fbf8f2;
+      --paper: #fffdfa;
+      --olive: #916a30;
+      --olive-dark: #30271f;
+      --sage: #f0e9dd;
+      --gold: #bd995d;
+      --ink: #302820;
+      --muted: #71675d;
+      --line: #e7dece;
+      --shadow: 0 15px 45px rgba(54, 41, 23, .1);
     }
 
     * { box-sizing: border-box; }
@@ -128,7 +128,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(248, 246, 240, .96);
+      background: rgba(251, 248, 242, .96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
     }
@@ -142,14 +142,17 @@
     }
 
     .logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 23px;
-      font-weight: 700;
-      color: var(--olive-dark);
-      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
     }
 
-    .logo span { color: var(--gold); }
+    .logo img {
+      width: 155px;
+      height: auto;
+      object-fit: contain;
+      mix-blend-mode: multiply;
+    }
 
     .nav-links {
       display: flex;
@@ -221,7 +224,7 @@
 
     .hero-photo img {
       height: 480px;
-      border-radius: 48% 48% 5px 5px;
+      border-radius: 18px;
       box-shadow: var(--shadow);
     }
 
@@ -245,47 +248,6 @@
       color: var(--muted);
       font-size: 10px;
       margin-top: 8px;
-    }
-
-    /* Pasek kategorii */
-
-    .occasion-strip {
-      background: var(--olive-dark);
-      color: white;
-      padding: 28px 0;
-    }
-
-    .occasion-strip-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
-
-    .occasion-strip strong {
-      font-family: 'Playfair Display', serif;
-      font-size: 21px;
-      font-weight: 500;
-    }
-
-    .occasion-links {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-
-    .occasion-links a {
-      border: 1px solid rgba(255,255,255,.35);
-      padding: 8px 13px;
-      border-radius: 30px;
-      font-size: 11px;
-      transition: .2s;
-    }
-
-    .occasion-links a:hover {
-      background: white;
-      color: var(--olive-dark);
     }
 
     /* Okazje */
@@ -396,34 +358,6 @@
     .step p {
       font-size: 13px;
       margin: 0;
-    }
-
-    /* Statystyka */
-
-    .stat-section {
-      background: var(--olive-dark);
-      color: white;
-      padding: 65px 0;
-      text-align: center;
-    }
-
-    .stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(65px, 9vw, 100px);
-      line-height: 1;
-      color: #e5d2a8;
-    }
-
-    .stat-section h2 {
-      font-size: 29px;
-      margin: 15px 0 10px;
-    }
-
-    .stat-section p {
-      max-width: 650px;
-      margin: auto;
-      color: rgba(255,255,255,.72);
-      font-size: 12px;
     }
 
     /* Galeria */
@@ -640,11 +574,6 @@
       resize: vertical;
     }
 
-    .field input[type="file"] {
-      padding: 10px;
-      font-size: 11px;
-    }
-
     .field small {
       color: var(--muted);
       font-size: 10px;
@@ -676,7 +605,7 @@
     /* Stopka */
 
     footer {
-      background: #303629;
+      background: var(--olive-dark);
       color: white;
       padding: 35px 0;
     }
@@ -689,7 +618,11 @@
       flex-wrap: wrap;
     }
 
-    footer .logo { color: white; }
+    .footer-logo {
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: var(--paper);
+    }
 
     footer p {
       color: rgba(255,255,255,.6);
@@ -703,7 +636,7 @@
       font-size: 11px;
     }
 
-    .footer-links a:hover { color: #e5d2a8; }
+    .footer-links a:hover { color: #e2c481; }
 
     @media (max-width: 900px) {
       .occasion-grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
@@ -720,6 +653,8 @@
       .menu-toggle { display: block; }
 
       .nav { min-height: 68px; }
+
+      .logo img { width: 122px; }
 
       .nav-links {
         display: none;
@@ -759,13 +694,6 @@
         font-size: 15px;
       }
 
-      .occasion-strip-inner {
-        justify-content: center;
-        text-align: center;
-      }
-
-      .occasion-links { justify-content: center; }
-
       .occasion-grid,
       .feature-grid,
       .steps,
@@ -803,15 +731,19 @@
 
   <header>
     <div class="container nav">
-      <a class="logo" href="#start">Magnesowy <span>Świat</span></a>
+      <a class="logo" href="#start" aria-label="Magnesowy Świat — strona główna">
+        <img src="logo-magnesowy-swiat.jpg" alt="">
+      </a>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
 
       <nav class="nav-links" id="navLinks">
-        <a href="#okazje">Okazje</a>
-        <a href="#wyrozniki">Co nas wyróżnia</a>
         <a href="#jak-dzialamy">Jak działamy</a>
+        <a href="#okazje">Okazje</a>
+        <a href="#galeria">Inspiracje</a>
+        <a href="#wyrozniki">Co nas wyróżnia</a>
         <a href="#pakiety">Pakiety</a>
+        <a href="#oferta-firmowa">Dla firm</a>
         <a href="#kontakt" class="nav-cta">Zapytaj o ofertę</a>
       </nav>
     </div>
@@ -846,29 +778,50 @@
 
       <div class="hero-photo">
         <img
-          src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1000&q=85"
-          alt="Dekoracja podczas uroczystości"
+          src="https://images.unsplash.com/photo-1686644472167-4dabcd14bc53?auto=format&fit=crop&w=1000&q=85"
+          alt="Dłoń umieszcza magnes ze zdjęciem na lodówce"
+          fetchpriority="high"
         >
         <div class="floating-note">
-          Mała pamiątka. Wielkie wspomnienia.
+          Zdjęcie, które zostaje na dłużej.
           <small>Magnesowy Świat</small>
         </div>
       </div>
     </section>
 
-    <!-- OKAZJE -->
+    <!-- JAK DZIAŁAMY -->
 
-    <section class="occasion-strip">
-      <div class="container occasion-strip-inner">
-        <strong>Tworzymy wspomnienia na:</strong>
-        <div class="occasion-links">
-          <a href="#okazje">Wesela</a>
-          <a href="#okazje">Uroczystości rodzinne</a>
-          <a href="#okazje">Eventy firmowe</a>
-          <a href="#okazje">Imprezy i festyny</a>
+    <section class="section container" id="jak-dzialamy">
+      <div class="section-heading">
+        <div class="eyebrow">Prosto i przyjemnie</div>
+        <h2>Jak powstają Wasze magnesy?</h2>
+        <p>Cały proces odbywa się podczas wydarzenia. Goście mogą cieszyć się chwilą, a my zajmujemy się pamiątkami.</p>
+      </div>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Robimy zdjęcie</h3>
+          <p>Najczęściej to my robimy zdjęcia profesjonalnym sprzętem. Na życzenie przygotujemy też magnes ze zdjęcia z telefonu gościa.</p>
         </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Tworzymy magnes</h3>
+          <p>Przygotowujemy fotografię w wybranym stylu i wykonujemy z niej trwały fotomagnes.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Wspomnienie gotowe!</h3>
+          <p>Gotowy magnes trafia do gościa – bezpośrednio lub za pośrednictwem organizatora.</p>
+        </div>
+
       </div>
     </section>
+
+    <!-- OKAZJE -->
 
     <section class="section container" id="okazje">
       <div class="section-heading">
@@ -884,7 +837,7 @@
       <div class="occasion-grid">
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Wesele">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Dekoracja sali przygotowana na przyjęcie weselne" loading="lazy" decoding="async">
           <div class="occasion-card-content">
             <h3>Wesela</h3>
             <p>Wyjątkowa pamiątka dla gości i piękne wspomnienie Waszego dnia.</p>
@@ -892,7 +845,7 @@
         </article>
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Uroczystość rodzinna">
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Kolorowe dekoracje na uroczystości rodzinnej" loading="lazy" decoding="async">
           <div class="occasion-card-content">
             <h3>Uroczystości rodzinne</h3>
             <p>Urodziny, jubileusze, chrzciny, komunie i spotkania rodzinne.</p>
@@ -900,7 +853,7 @@
         </article>
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=80" alt="Wydarzenie firmowe">
+          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=80" alt="Przygotowana sala na wydarzenie firmowe" loading="lazy" decoding="async">
           <div class="occasion-card-content">
             <h3>Eventy firmowe</h3>
             <p>Integracje, gale, konferencje i firmowe spotkania z charakterem.</p>
@@ -908,7 +861,7 @@
         </article>
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80" alt="Impreza plenerowa">
+          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80" alt="Uczestnicy wydarzenia plenerowego" loading="lazy" decoding="async">
           <div class="occasion-card-content">
             <h3>Eventy i imprezy</h3>
             <p>Festyny, targi, imprezy plenerowe i wydarzenia specjalne.</p>
@@ -916,6 +869,43 @@
         </article>
 
       </div>
+    </section>
+
+    <!-- INSPIRACJE -->
+
+    <section class="section container" id="galeria">
+      <div class="section-heading">
+        <div class="eyebrow">Małe rzeczy, wielkie emocje</div>
+        <h2>Zdjęcia, które zostają na lodówce</h2>
+        <p>Fotografia zamieniona w osobistą pamiątkę — przygotowaną z myślą o wydarzeniu i jego uczestnikach.</p>
+      </div>
+
+      <div class="gallery-grid">
+        <img
+          src="https://images.unsplash.com/photo-1684741940768-c40eca4ac4ab?auto=format&fit=crop&w=800&q=80"
+          alt="Lodówka z okrągłymi magnesami ze zdjęciami rodziny"
+          loading="lazy"
+          decoding="async"
+        >
+        <img
+          src="https://images.unsplash.com/photo-1686644823534-eba27f016efb?auto=format&fit=crop&w=800&q=80"
+          alt="Zdjęcia i pamiątki przypięte do lodówki"
+          loading="lazy"
+          decoding="async"
+        >
+        <img
+          src="https://images.unsplash.com/photo-1686644823172-e9b24140af3a?auto=format&fit=crop&w=800&q=80"
+          alt="Kolorowe fotografie wyeksponowane na lodówce"
+          loading="lazy"
+          decoding="async"
+        >
+      </div>
+
+      <p class="gallery-note">
+        To zdjęcia ilustracyjne z
+        <a href="https://unsplash.com/@squared_one1" target="_blank" rel="noopener noreferrer">Unsplash (Kristyna Squared.one)</a>,
+        a nie nasze realizacje. Zastąpimy je zdjęciami własnych magnesów i stanowiska podczas wydarzenia.
+      </p>
     </section>
 
     <!-- WYRÓŻNIKI -->
@@ -936,7 +926,7 @@
           <div class="feature">
             <div class="feature-icon">♡</div>
             <h3>Twoje własne zdjęcia</h3>
-            <p>Goście mogą przesłać zdjęcia ze swoich telefonów, a my zamieniamy je w pamiątkowe magnesy.</p>
+            <p>Zdjęcia wykonujemy profesjonalnym sprzętem. Na życzenie przygotujemy również magnes ze zdjęcia z telefonu gościa.</p>
           </div>
 
           <div class="feature">
@@ -961,73 +951,6 @@
       </div>
     </section>
 
-    <!-- JAK DZIAŁAMY -->
-
-    <section class="section container" id="jak-dzialamy">
-      <div class="section-heading">
-        <div class="eyebrow">Prosto i przyjemnie</div>
-        <h2>Jak powstają Wasze magnesy?</h2>
-        <p>Cały proces odbywa się podczas wydarzenia. Goście mogą cieszyć się chwilą, a my zajmujemy się pamiątkami.</p>
-      </div>
-
-      <div class="steps">
-
-        <div class="step">
-          <div class="step-number">1</div>
-          <h3>Robimy zdjęcie</h3>
-          <p>Goście robią zdjęcie telefonem lub korzystają ze zdjęć, które już mają w swojej galerii.</p>
-        </div>
-
-        <div class="step">
-          <div class="step-number">2</div>
-          <h3>Tworzymy magnes</h3>
-          <p>Przygotowujemy fotografię w wybranym stylu i wykonujemy z niej trwały fotomagnes.</p>
-        </div>
-
-        <div class="step">
-          <div class="step-number">3</div>
-          <h3>Wspomnienie gotowe!</h3>
-          <p>Gotowy magnes trafia do gościa – bezpośrednio lub za pośrednictwem organizatora.</p>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- STATYSTYKA -->
-
-    <section class="stat-section">
-      <div class="container">
-        <div class="stat-number">70%</div>
-        <h2>Polaków ma magnesy na lodówce.</h2>
-        <p>
-          To wynik badania „Polska codzienność”, przytaczanego w publikacji
-          Onet Kobieta w 2025 roku. Statystyka dotyczy posiadania magnesów,
-          a nie deklaracji ich kolekcjonowania.
-        </p>
-      </div>
-    </section>
-
-    <!-- GALERIA -->
-
-    <section class="section container" id="galeria">
-      <div class="section-heading">
-        <div class="eyebrow">Małe rzeczy, wielkie emocje</div>
-        <h2>Tak mogą wyglądać Wasze wspomnienia</h2>
-        <p>Każdy magnes to osobna historia i wyjątkowa pamiątka.</p>
-      </div>
-
-      <div class="gallery-grid">
-        <img src="https://images.unsplash.com/photo-1511988617509-a57c8a288659?auto=format&fit=crop&w=800&q=80" alt="Wspólne chwile">
-        <img src="https://images.unsplash.com/photo-1523438885200-e635ba2c371e?auto=format&fit=crop&w=800&q=80" alt="Uroczystość">
-        <img src="https://images.unsplash.com/photo-1527529482837-4698179dc6ce?auto=format&fit=crop&w=800&q=80" alt="Przyjęcie">
-      </div>
-
-      <p class="gallery-note">
-        Zdjęcia w galerii są ilustracyjne i pochodzą z serwisu Unsplash.
-        Warto zastąpić je własnymi zdjęciami wykonanych realizacji.
-      </p>
-    </section>
-
     <!-- PAKIETY -->
 
     <section class="section pricing" id="pakiety">
@@ -1046,13 +969,7 @@
           <article class="price-card">
             <h3>Mini</h3>
             <div class="price-range">50–100</div>
-            <p>Idealny na kameralne spotkania i mniejsze uroczystości.</p>
-            <ul>
-              <li>Od 50 do 100 fotomagnesów</li>
-              <li>Zdjęcia gości</li>
-              <li>Przygotowanie na miejscu</li>
-              <li>Personalizacja projektu</li>
-            </ul>
+            <p>Na kameralne przyjęcia, urodziny i mniejsze uroczystości.</p>
             <a href="#kontakt" class="btn btn-outline choose-package" data-package="Mini">Zapytaj o pakiet</a>
           </article>
 
@@ -1060,63 +977,47 @@
             <div class="popular">Często wybierany</div>
             <h3>Standard</h3>
             <div class="price-range">150–250</div>
-            <p>Świetny wybór na większe przyjęcia i wydarzenia.</p>
-            <ul>
-              <li>Od 150 do 250 fotomagnesów</li>
-              <li>Zdjęcia gości</li>
-              <li>Przygotowanie na miejscu</li>
-              <li>Personalizacja projektu</li>
-            </ul>
+            <p>Uniwersalny wybór na wesele i przyjęcie średniej wielkości.</p>
             <a href="#kontakt" class="btn choose-package" data-package="Standard">Zapytaj o pakiet</a>
           </article>
 
           <article class="price-card">
             <h3>Premium</h3>
             <div class="price-range">300–400</div>
-            <p>Na duże wydarzenia, podczas których liczy się każdy gość.</p>
-            <ul>
-              <li>Od 300 do 400 fotomagnesów</li>
-              <li>Zdjęcia gości</li>
-              <li>Przygotowanie na miejscu</li>
-              <li>Indywidualna personalizacja</li>
-            </ul>
+            <p>Większa pula magnesów na duże wesela i wydarzenia.</p>
             <a href="#kontakt" class="btn btn-outline choose-package" data-package="Premium">Zapytaj o pakiet</a>
           </article>
 
           <article class="price-card">
-            <h3>Wielki Finał</h3>
+            <h3>Wyjątkowy</h3>
             <div class="price-range">400–600</div>
-            <p>Największy pakiet z dodatkowym, wyjątkowym akcentem.</p>
-            <ul>
-              <li>Od 400 do 600 fotomagnesów</li>
-              <li>Zdjęcia gości</li>
-              <li>Przygotowanie na miejscu</li>
-              <li>Dodatkowy motyw pamiątkowy</li>
-              <li>Indywidualna personalizacja</li>
-            </ul>
-            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Wielki Finał">Zapytaj o pakiet</a>
+            <p>Największa pula magnesów i dodatkowy motyw pamiątkowy dopasowany do wydarzenia.</p>
+            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Wyjątkowy">Zapytaj o pakiet</a>
           </article>
 
         </div>
 
         <p class="pricing-note">
-          Liczby oznaczają orientacyjną liczbę magnesów w pakiecie.
-          Na weselach pakiet Wielki Finał może obejmować dodatkowe magnesy
-          ze zdjęciem Pary Młodej do odebrania przez gości przy pożegnaniu.
-          Przy innych wydarzeniach przygotujemy odpowiedni akcent pamiątkowy,
-          np. zdjęcie organizatora, logo lub motyw wydarzenia.
-          Szczegóły i wycenę ustalamy indywidualnie.
+          W każdym pakiecie wykonujemy gościom profesjonalne zdjęcia na miejscu,
+          przygotowujemy fotomagnesy podczas wydarzenia i dopasowujemy projekt do okazji.
+          Na życzenie możemy też zrobić magnes ze zdjęcia wykonanego telefonem gościa.
+          Liczby magnesów i cenę potwierdzamy w indywidualnej ofercie.
+          <br><br>
+          Pakiet Wyjątkowy może dodatkowo obejmować pamiątkowy motyw wydarzenia —
+          na weselu np. zdjęcie Pary Młodej, a przy evencie firmowym logo lub zdjęcie organizatora.
         </p>
       </div>
     </section>
 
     <!-- PERSONALIZACJA FIRMOWA -->
 
-    <section class="section container">
+    <section class="section container" id="oferta-firmowa">
       <div class="personalization">
         <img
           src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1000&q=85"
-          alt="Wydarzenie i spotkanie firmowe"
+          alt="Uczestnicy spotkania firmowego"
+          loading="lazy"
+          decoding="async"
         >
 
         <div>
@@ -1154,7 +1055,7 @@
 
         <details>
           <summary>Czy goście mogą przesłać własne zdjęcia?</summary>
-          <p>Tak. Goście mogą wykorzystać zdjęcia ze swoich telefonów, dzięki czemu każdy magnes może być osobistą pamiątką.</p>
+          <p>Oczywiście, choć standardowo zdjęcia wykonujemy na miejscu profesjonalnym sprzętem. Jeśli gość woli, możemy przygotować magnes z wybranego przez niego zdjęcia z telefonu.</p>
         </details>
 
         <details>
@@ -1185,7 +1086,7 @@
     <section class="section contact" id="kontakt">
       <div class="container">
         <div class="section-heading">
-          <div class="eyebrow" style="color:#e5d2a8;">Porozmawiajmy o Twoim wydarzeniu</div>
+          <div class="eyebrow" style="color:#e2c481;">Porozmawiajmy o Twoim wydarzeniu</div>
           <h2>Stwórzmy razem coś wyjątkowego</h2>
           <p>
             Opowiedz nam o swoim wydarzeniu. Skontaktujemy się z Tobą
@@ -1198,7 +1099,6 @@
           <form
             action="https://formsubmit.co/konrad.pustelnik15@gmail.com"
             method="POST"
-            enctype="multipart/form-data"
           >
 
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
@@ -1257,21 +1157,9 @@
                   <option>Mini (50–100 magnesów)</option>
                   <option>Standard (150–250 magnesów)</option>
                   <option>Premium (300–400 magnesów)</option>
-                  <option>Wielki Finał (400–600 magnesów)</option>
+                  <option>Wyjątkowy (400–600 magnesów)</option>
                   <option>Oferta indywidualna / firmowa</option>
                 </select>
-              </div>
-
-              <div class="field full">
-                <label for="photo">Twoje zdjęcie do wykorzystania (opcjonalnie)</label>
-                <input type="file" id="photo" name="Zdjęcie do wykorzystania" accept="image/jpeg,image/png,image/webp">
-                <small>Możesz przesłać przykładowe zdjęcie. Obsługiwane formaty: JPG, PNG, WEBP.</small>
-              </div>
-
-              <div class="field full">
-                <label for="logo-file">Logo firmy (opcjonalnie)</label>
-                <input type="file" id="logo-file" name="Logo firmy" accept="image/jpeg,image/png,image/webp,.svg,.pdf">
-                <small>To pole przyda się szczególnie przy eventach firmowych. Łączny rozmiar wszystkich załączników nie może przekroczyć 10 MB.</small>
               </div>
 
               <div class="field full">
@@ -1305,7 +1193,9 @@
   <footer>
     <div class="container footer-inner">
       <div>
-        <a class="logo" href="#start">Magnesowe <span>Chwile</span></a>
+        <a class="logo footer-logo" href="#start" aria-label="Magnesowy Świat — strona główna">
+          <img src="logo-magnesowy-swiat.jpg" alt="">
+        </a>
         <p>Niech dobre chwile zostaną z Tobą na dłużej.</p>
       </div>
 
