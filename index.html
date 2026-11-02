@@ -1104,6 +1104,7 @@
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="true">
+            <input type="hidden" name="_next" id="formNext">
 
             <!-- Pole antyspamowe -->
             <input type="text" name="_honey" style="display:none">
@@ -1211,6 +1212,9 @@
   </footer>
 
   <script>
+    const formNext = document.getElementById('formNext');
+    formNext.value = window.location.href.split('#')[0] + '#start';
+
     // Menu mobilne
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
