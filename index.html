@@ -93,6 +93,35 @@
       margin: 0 auto;
     }
 
+    .process-heading {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 176px;
+      align-items: center;
+      gap: 30px;
+      max-width: 850px;
+      padding: 26px 34px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: linear-gradient(110deg, #f1e7d6, #fbf8f2 78%);
+      text-align: left;
+    }
+
+    .process-heading p {
+      max-width: 570px;
+      margin: 0;
+    }
+
+    .process-brand {
+      width: 100%;
+      aspect-ratio: 1;
+    }
+
+    .process-brand img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
     .btn {
       display: inline-flex;
       align-items: center;
@@ -134,9 +163,9 @@
     }
 
     .nav {
-      min-height: 96px;
+      min-height: 76px;
       display: flex;
-      justify-content: space-between;
+      justify-content: flex-end;
       align-items: center;
       gap: 25px;
     }
@@ -145,12 +174,6 @@
       display: inline-flex;
       align-items: center;
       flex-shrink: 0;
-    }
-
-    .logo img {
-      width: 90px;
-      height: 90px;
-      object-fit: contain;
     }
 
     .nav-links {
@@ -656,12 +679,7 @@
 
       .menu-toggle { display: block; }
 
-      .nav { min-height: 72px; }
-
-      .logo img {
-        width: 64px;
-        height: 64px;
-      }
+      .nav { min-height: 68px; }
 
       .footer-logo img {
         width: 108px;
@@ -671,7 +689,7 @@
       .nav-links {
         display: none;
         position: absolute;
-        top: 72px;
+        top: 68px;
         left: 0;
         right: 0;
         padding: 20px 5%;
@@ -689,6 +707,17 @@
       .hero {
         grid-template-columns: 1fr;
         padding: 60px 0;
+      }
+
+      .process-heading {
+        grid-template-columns: minmax(0, 1fr) 88px;
+        gap: 12px;
+        padding: 18px;
+        border-radius: 16px;
+      }
+
+      .process-heading h2 {
+        font-size: 30px;
       }
 
       .hero-photo { min-height: 330px; }
@@ -743,10 +772,6 @@
 
   <header>
     <div class="container nav">
-      <a class="logo" href="#start" aria-label="Magnesowy Świat — strona główna">
-        <img src="logo-magnesowy-swiat.png" alt="Logo Magnesowy Świat">
-      </a>
-
       <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
 
       <nav class="nav-links" id="navLinks">
@@ -804,10 +829,15 @@
     <!-- JAK DZIAŁAMY -->
 
     <section class="section container" id="jak-dzialamy">
-      <div class="section-heading">
-        <div class="eyebrow">Prosto i przyjemnie</div>
-        <h2>Jak powstają Wasze magnesy?</h2>
-        <p>Cały proces odbywa się podczas wydarzenia. Goście mogą cieszyć się chwilą, a my zajmujemy się pamiątkami.</p>
+      <div class="section-heading process-heading">
+        <div>
+          <div class="eyebrow">Prosto i przyjemnie</div>
+          <h2>Jak powstają Wasze magnesy?</h2>
+          <p>Cały proces odbywa się podczas wydarzenia. Goście mogą cieszyć się chwilą, a my zajmujemy się pamiątkami.</p>
+        </div>
+        <div class="process-brand">
+          <img src="logo-magnesowy-swiat.png" alt="Magnesowy Świat — magnesy na każdą okazję">
+        </div>
       </div>
 
       <div class="steps">
