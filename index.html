@@ -165,7 +165,7 @@
     .nav {
       min-height: 76px;
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       gap: 25px;
     }
@@ -174,6 +174,18 @@
       display: inline-flex;
       align-items: center;
       flex-shrink: 0;
+    }
+
+    .header-wordmark {
+      width: clamp(165px, 17vw, 210px);
+      flex-shrink: 0;
+      line-height: 0;
+    }
+
+    .header-wordmark img {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
     }
 
     .nav-links {
@@ -674,16 +686,16 @@
       .price-card.featured { transform: none; }
     }
 
-    @media (max-width: 650px) {
-      .section { padding: 70px 0; }
-
+    @media (max-width: 760px) {
       .menu-toggle { display: block; }
 
-      .nav { min-height: 68px; }
+      .nav {
+        min-height: 68px;
+        gap: 16px;
+      }
 
-      .footer-logo img {
-        width: 108px;
-        height: 108px;
+      .header-wordmark {
+        width: min(185px, 56vw);
       }
 
       .nav-links {
@@ -703,6 +715,15 @@
       .nav-links.open { display: flex; }
 
       .nav-links .nav-cta { text-align: center; }
+    }
+
+    @media (max-width: 650px) {
+      .section { padding: 70px 0; }
+
+      .footer-logo img {
+        width: 108px;
+        height: 108px;
+      }
 
       .hero {
         grid-template-columns: 1fr;
@@ -772,6 +793,10 @@
 
   <header>
     <div class="container nav">
+      <a class="header-wordmark" href="#start" aria-label="Magnesowy Świat — strona główna">
+        <img src="magnesowy-swiat-wordmark.png" alt="Magnesowy Świat">
+      </a>
+
       <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
 
       <nav class="nav-links" id="navLinks">
