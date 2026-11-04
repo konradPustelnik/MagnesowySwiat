@@ -8,7 +8,7 @@ Prosta strona wizytówka w jednym pliku HTML.
 
 Strona jest opublikowana bezpłatnie w GitHub Pages. Repozytorium z jej kodem jest publiczne, więc każdy może je przeglądać, ale zmiany wprowadzać mogą tylko właściciel i osoby z uprawnieniami do zapisu.
 
-Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak działamy” i stopce. Plik `magnesowy-swiat-wordmark.png` to poziomy napis używany w nagłówku. Zostaw oba pliki w folderze projektu obok `index.html`.
+Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak działamy”. Zostaw go w folderze projektu obok `index.html`.
 
 ## Uruchomienie lokalnie
 

@@ -177,15 +177,18 @@
     }
 
     .header-wordmark {
-      width: clamp(165px, 17vw, 210px);
+      color: var(--olive-dark);
       flex-shrink: 0;
-      line-height: 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 2vw, 22px);
+      font-weight: 600;
+      letter-spacing: .02em;
+      line-height: 1;
+      white-space: nowrap;
     }
 
-    .header-wordmark img {
-      width: 100%;
-      height: auto;
-      object-fit: contain;
+    .header-wordmark span {
+      color: var(--olive);
     }
 
     .nav-links {
@@ -652,15 +655,14 @@
       flex-wrap: wrap;
     }
 
-    .footer-logo {
-      padding: 4px 8px;
-      border-radius: 4px;
-      background: var(--paper);
-    }
-
-    .footer-logo img {
-      width: 126px;
-      height: 126px;
+    .footer-wordmark {
+      color: #e2c481;
+      font-family: 'Playfair Display', serif;
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: .02em;
+      line-height: 1.2;
+      white-space: nowrap;
     }
 
     footer p {
@@ -695,7 +697,7 @@
       }
 
       .header-wordmark {
-        width: min(185px, 56vw);
+        font-size: clamp(16px, 5vw, 19px);
       }
 
       .nav-links {
@@ -719,11 +721,6 @@
 
     @media (max-width: 650px) {
       .section { padding: 70px 0; }
-
-      .footer-logo img {
-        width: 108px;
-        height: 108px;
-      }
 
       .hero {
         grid-template-columns: 1fr;
@@ -794,7 +791,7 @@
   <header>
     <div class="container nav">
       <a class="header-wordmark" href="#start" aria-label="Magnesowy Świat — strona główna">
-        <img src="magnesowy-swiat-wordmark.png" alt="Magnesowy Świat">
+        Magnesowy <span>Świat</span>
       </a>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
@@ -1261,8 +1258,8 @@
   <footer>
     <div class="container footer-inner">
       <div>
-        <a class="logo footer-logo" href="#start" aria-label="Magnesowy Świat — strona główna">
-          <img src="logo-magnesowy-swiat.png" alt="Logo Magnesowy Świat">
+        <a class="footer-wordmark" href="#start" aria-label="Magnesowy Świat — strona główna">
+          Magnesowy Świat
         </a>
         <p>Niech dobre chwile zostaną z Tobą na dłużej.</p>
       </div>
