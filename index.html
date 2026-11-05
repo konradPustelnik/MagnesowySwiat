@@ -1191,6 +1191,7 @@
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_next" id="formNext">
 
             <!-- Pole antyspamowe -->
             <input type="text" name="_honey" style="display:none">
@@ -1352,56 +1353,18 @@
     const contactForm = document.querySelector('#kontakt form');
     const formStatus = document.getElementById('formStatus');
     const submitButton = contactForm.querySelector('[type="submit"]');
-    contactForm.addEventListener('submit', async function (event) {
-      event.preventDefault();
-      formStatus.textContent = '';
-      formStatus.removeAttribute('data-state');
+    const formNext = document.getElementById('formNext');
+    formNext.value = new URL('?wyslano=1#kontakt', window.location.href).href;
+
+    if (new URLSearchParams(window.location.search).get('wyslano') === '1') {
+      formStatus.dataset.state = 'success';
+      formStatus.textContent = 'Dziękujemy! Formularz został przyjęty. Skontaktujemy się z Tobą.';
+      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+    }
+
+    contactForm.addEventListener('submit', function () {
       submitButton.disabled = true;
       submitButton.textContent = 'Wysyłanie...';
-
-      try {
-        const formData = new FormData(contactForm);
-        const response = await fetch('https://formsubmit.co/ajax/magnesowyswiat@gmail.com', {
-          method: 'POST',
-          body: JSON.stringify(Object.fromEntries(formData.entries())),
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-          }
-        });
-        const result = await response.json();
-
-        if (!response.ok || (result.success !== true && result.success !== 'true')) {
-          throw new Error(result.message || 'Serwis pocztowy nie przyjął formularza.');
-        }
-
-        contactForm.reset();
-        eventDate.value = localToday;
-        formStatus.dataset.state = 'success';
-        formStatus.textContent = 'Dziękujemy! Wiadomość została wysłana. Skontaktujemy się z Tobą.';
-      } catch (error) {
-        formStatus.dataset.state = 'error';
-        const errorDetails = error instanceof Error && error.message
-          ? ' (' + error.message.slice(0, 240) + ')'
-          : '';
-        formStatus.textContent = 'Nie udało się wysłać formularza przez serwis pocztowy'
-          + errorDetails
-          + '. Spróbuj ponownie lub wyślij wiadomość bezpośrednio: ';
-        const fallbackMessage = Array.from(new FormData(contactForm).entries())
-          .filter(function ([name]) { return !name.startsWith('_'); })
-          .map(function ([name, value]) { return name + ': ' + value; })
-          .join('\n');
-        const fallbackLink = document.createElement('a');
-        fallbackLink.href = 'mailto:magnesowyswiat@gmail.com?subject='
-          + encodeURIComponent('Zapytanie ze strony Magnesowy Świat')
-          + '&body=' + encodeURIComponent(fallbackMessage);
-        fallbackLink.textContent = 'magnesowyswiat@gmail.com';
-        formStatus.appendChild(fallbackLink);
-        console.error('Błąd wysyłania formularza:', error);
-      } finally {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Wyślij zapytanie';
-      }
     });
 
     // Menu mobilne
