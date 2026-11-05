@@ -659,6 +659,11 @@
       color: #8a2f22;
     }
 
+    .form-status a {
+      font-weight: 700;
+      text-decoration: underline;
+    }
+
     /* Stopka */
 
     footer {
@@ -1199,7 +1204,7 @@
 
               <div class="field">
                 <label for="email">Adres e-mail *</label>
-                <input type="email" id="email" name="email" placeholder="twoj@email.pl" required>
+                <input type="email" id="email" name="_replyto" placeholder="twoj@email.pl" required>
               </div>
 
               <div class="field">
@@ -1355,10 +1360,14 @@
       submitButton.textContent = 'Wysyłanie...';
 
       try {
-        const response = await fetch(contactForm.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
+        const formData = new FormData(contactForm);
+        const response = await fetch('https://formsubmit.co/ajax/magnesowyswiat@gmail.com', {
           method: 'POST',
-          body: new FormData(contactForm),
-          headers: { Accept: 'application/json' }
+          body: JSON.stringify(Object.fromEntries(formData.entries())),
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json'
+          }
         });
         const result = await response.json();
 
@@ -1372,7 +1381,22 @@
         formStatus.textContent = 'Dziękujemy! Wiadomość została wysłana. Skontaktujemy się z Tobą.';
       } catch (error) {
         formStatus.dataset.state = 'error';
-        formStatus.textContent = 'Nie udało się wysłać formularza. Spróbuj ponownie albo napisz na magnesowyswiat@gmail.com.';
+        const errorDetails = error instanceof Error && error.message
+          ? ' (' + error.message.slice(0, 240) + ')'
+          : '';
+        formStatus.textContent = 'Nie udało się wysłać formularza przez serwis pocztowy'
+          + errorDetails
+          + '. Spróbuj ponownie lub wyślij wiadomość bezpośrednio: ';
+        const fallbackMessage = Array.from(new FormData(contactForm).entries())
+          .filter(function ([name]) { return !name.startsWith('_'); })
+          .map(function ([name, value]) { return name + ': ' + value; })
+          .join('\n');
+        const fallbackLink = document.createElement('a');
+        fallbackLink.href = 'mailto:magnesowyswiat@gmail.com?subject='
+          + encodeURIComponent('Zapytanie ze strony Magnesowy Świat')
+          + '&body=' + encodeURIComponent(fallbackMessage);
+        fallbackLink.textContent = 'magnesowyswiat@gmail.com';
+        formStatus.appendChild(fallbackLink);
         console.error('Błąd wysyłania formularza:', error);
       } finally {
         submitButton.disabled = false;
