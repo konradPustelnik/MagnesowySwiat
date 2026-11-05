@@ -31,4 +31,4 @@ Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak dzi
 
 Jeśli port 8000 jest zajęty, uruchom serwer na innym porcie, np. `py -m http.server 8001`, a następnie odwiedź **http://localhost:8001/**.
 
-Nie otwieraj pliku `index.html` bezpośrednio przez `file://` — formularz korzysta z FormSubmit i wymaga uruchomienia przez serwer HTTP. Przy pierwszym użyciu FormSubmit trzeba też potwierdzić adres odbiorczy w wiadomości weryfikacyjnej od tej usługi.
+Formularz otwiera przygotowaną wiadomość w domyślnej aplikacji pocztowej użytkownika. Wiadomość nie jest wysyłana automatycznie — użytkownik musi sprawdzić jej treść i kliknąć „Wyślij”. Automatyczna wysyłka ze statycznej strony wymaga skonfigurowanej zewnętrznej usługi formularzy albo własnego backendu; nie należy umieszczać poświadczeń SMTP w kodzie strony.

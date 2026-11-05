@@ -654,6 +654,11 @@
       color: #28532b;
     }
 
+    .form-status[data-state="pending"] {
+      background: #f3efe6;
+      color: #5d482b;
+    }
+
     .form-status[data-state="error"] {
       background: #f8e9e6;
       color: #8a2f22;
@@ -1183,18 +1188,7 @@
 
         <div class="contact-box">
 
-          <form
-            action="https://formsubmit.co/magnesowyswiat@gmail.com"
-            method="POST"
-          >
-
-            <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
-            <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" id="formNext">
-
-            <!-- Pole antyspamowe -->
-            <input type="text" name="_honey" style="display:none">
+          <form id="contactForm">
 
             <div class="form-grid">
 
@@ -1205,7 +1199,7 @@
 
               <div class="field">
                 <label for="email">Adres e-mail *</label>
-                <input type="email" id="email" name="_replyto" placeholder="twoj@email.pl" required>
+                <input type="email" id="email" name="Adres e-mail" placeholder="twoj@email.pl" required>
               </div>
 
               <div class="field">
@@ -1270,15 +1264,15 @@
               <input type="checkbox" name="Zgoda na kontakt" value="Tak" required>
               <span>
                 Wyrażam zgodę na kontakt w celu udzielenia odpowiedzi na moje zapytanie.
-                Wysłanie formularza oznacza przekazanie podanych danych w celu obsługi zapytania.
+                Po kliknięciu przycisku otworzy się moja aplikacja pocztowa i samodzielnie wyślę przygotowaną wiadomość.
               </span>
             </label>
 
-            <button type="submit" class="btn form-submit">Wyślij zapytanie</button>
+            <button type="submit" class="btn form-submit">Otwórz wiadomość e-mail</button>
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
 
             <p class="form-info">
-              Pola oznaczone * są obowiązkowe. Odpowiemy najszybciej, jak to możliwe.
+              Pola oznaczone * są obowiązkowe. Po otwarciu aplikacji sprawdź wiadomość i kliknij „Wyślij”.
               Możesz też napisać bezpośrednio na
               <a href="mailto:magnesowyswiat@gmail.com">magnesowyswiat@gmail.com</a>.
             </p>
@@ -1350,21 +1344,25 @@
       locationSuggestions.appendChild(option);
     });
 
-    const contactForm = document.querySelector('#kontakt form');
+    const contactForm = document.getElementById('contactForm');
     const formStatus = document.getElementById('formStatus');
-    const submitButton = contactForm.querySelector('[type="submit"]');
-    const formNext = document.getElementById('formNext');
-    formNext.value = new URL('?wyslano=1#kontakt', window.location.href).href;
+    contactForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const message = Array.from(new FormData(contactForm).entries())
+        .filter(function ([name]) { return name !== 'Zgoda na kontakt'; })
+        .map(function ([name, value]) { return name + ': ' + value; })
+        .join('\n');
+      const mailto = 'mailto:magnesowyswiat@gmail.com?subject='
+        + encodeURIComponent('Zapytanie ze strony Magnesowy Świat')
+        + '&body=' + encodeURIComponent(message);
 
-    if (new URLSearchParams(window.location.search).get('wyslano') === '1') {
-      formStatus.dataset.state = 'success';
-      formStatus.textContent = 'Dziękujemy! Formularz został przyjęty. Skontaktujemy się z Tobą.';
-      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
-    }
-
-    contactForm.addEventListener('submit', function () {
-      submitButton.disabled = true;
-      submitButton.textContent = 'Wysyłanie...';
+      formStatus.dataset.state = 'pending';
+      formStatus.textContent = 'Przygotowuję wiadomość. W aplikacji pocztowej sprawdź ją i kliknij „Wyślij”. Jeśli aplikacja się nie otworzy, kliknij: ';
+      const mailLink = document.createElement('a');
+      mailLink.href = mailto;
+      mailLink.textContent = 'otwórz wiadomość e-mail';
+      formStatus.appendChild(mailLink);
+      window.location.href = mailto;
     });
 
     // Menu mobilne
