@@ -639,6 +639,26 @@
       margin: 15px 0 0;
     }
 
+    .form-status {
+      margin: 16px 0 0;
+      padding: 12px;
+      border-radius: 3px;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .form-status:empty { display: none; }
+
+    .form-status[data-state="success"] {
+      background: #e8f1e7;
+      color: #28532b;
+    }
+
+    .form-status[data-state="error"] {
+      background: #f8e9e6;
+      color: #8a2f22;
+    }
+
     /* Stopka */
 
     footer {
@@ -1165,8 +1185,7 @@
 
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="true">
-            <input type="hidden" name="_next" id="formNext">
+            <input type="hidden" name="_captcha" value="false">
 
             <!-- Pole antyspamowe -->
             <input type="text" name="_honey" style="display:none">
@@ -1199,29 +1218,27 @@
               </div>
 
               <div class="field">
-                <label for="date">Data wydarzenia (DD/MM/RRRR) *</label>
+                <label for="date">Data wydarzenia *</label>
                 <input
-                  type="text"
+                  type="date"
                   id="date"
                   name="Data wydarzenia"
-                  placeholder="DD/MM/RRRR"
-                  inputmode="numeric"
-                  autocomplete="off"
-                  pattern="[0-9]{2}/[0-9]{2}/[0-9]{4}"
                   aria-describedby="date-format"
                   required
                 >
-                <small class="field-hint" id="date-format">Wpisz datę w formacie dzień/miesiąc/rok.</small>
+                <small class="field-hint" id="date-format">Wybierz dzień wydarzenia. Nie można wybrać daty z przeszłości.</small>
               </div>
 
               <div class="field">
                 <label for="location">Miejsce wydarzenia *</label>
-                <input type="text" id="location" name="Miejsce wydarzenia" placeholder="Miasto, lokal lub adres" required>
+                <input type="text" id="location" name="Miejsce wydarzenia" list="locationSuggestions" placeholder="Zacznij wpisywać miejscowość lub wpisz dowolne miejsce" autocomplete="off" required>
+                <datalist id="locationSuggestions"></datalist>
               </div>
 
               <div class="field">
                 <label for="guests">Szacowana liczba uczestników *</label>
-                <input type="number" id="guests" name="Szacowana liczba uczestników" min="1" placeholder="Np. 150" required>
+                <input type="number" id="guests" name="Szacowana liczba uczestników" min="1" max="10000" step="1" placeholder="Np. 150" aria-describedby="guests-hint" required>
+                <small id="guests-hint">Wpisz liczbę od 1 do 10 000. Przy większych wydarzeniach skontaktuj się z nami bezpośrednio.</small>
               </div>
 
               <div class="field full">
@@ -1252,6 +1269,7 @@
             </label>
 
             <button type="submit" class="btn form-submit">Wyślij zapytanie</button>
+            <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
 
             <p class="form-info">
               Pola oznaczone * są obowiązkowe. Odpowiemy najszybciej, jak to możliwe.
@@ -1287,41 +1305,80 @@
   </footer>
 
   <script>
-    const formNext = document.getElementById('formNext');
-    formNext.value = window.location.href.split('#')[0] + '#start';
-
     const eventDate = document.getElementById('date');
-    const validateEventDate = function () {
-      const value = eventDate.value.trim();
+    const today = new Date();
+    const localToday = [
+      today.getFullYear(),
+      String(today.getMonth() + 1).padStart(2, '0'),
+      String(today.getDate()).padStart(2, '0')
+    ].join('-');
+    eventDate.min = localToday;
+    eventDate.value = localToday;
 
-      if (!value) {
-        eventDate.setCustomValidity('');
-        return;
+    const countyLocations = [
+      'Abramowice', 'Bałażówka', 'Białe', 'Chyszówki', 'Dobra', 'Glisne',
+      'Golców', 'Góra Świętego Jana', 'Gruszowiec', 'Jadamwola', 'Janowice',
+      'Jasionów', 'Jastrzębie', 'Jaworzna', 'Jodłownik', 'Jurków', 'Kamienica',
+      'Kamionka Mała', 'Kanina', 'Kasina Wielka', 'Kasinka Mała', 'Kicznia',
+      'Kisielówka', 'Kłodne', 'Kobyłczyna', 'Kobylica', 'Konina', 'Koninki',
+      'Koszary', 'Kostrza', 'Krasne-Lasocice', 'Krosna', 'Laskowa', 'Leśniówka',
+      'Limanowa', 'Lipowe', 'Lubomierz', 'Łętowe', 'Łososina Górna', 'Łostówka',
+      'Łukowica', 'Makowica', 'Męcina', 'Młynne', 'Młyńczyska', 'Mordarka',
+      'Mstów', 'Mszana Dolna', 'Mszana Górna', 'Niedźwiedź', 'Nowe Rybie',
+      'Olszówka', 'Owieczka', 'Pasierbiec', 'Piekiełko', 'Pisarzowa',
+      'Podłopień', 'Podobin', 'Pogorzany', 'Porąbka', 'Poręba Wielka',
+      'Półrzeczki', 'Przenosza', 'Przysłop', 'Przyszowa', 'Raba Niżna',
+      'Raciborzany', 'Roztoka', 'Rupniów', 'Rzeki', 'Sadek', 'Sechna',
+      'Siekierczyna', 'Skrzydlna', 'Słomka', 'Słopnice', 'Słopnice Królewskie',
+      'Słopnice Szlacheckie', 'Słupia', 'Smykań', 'Sowliny', 'Stara Wieś',
+      'Stare Rybie', 'Stronie', 'Stróża', 'Strzeszyce', 'Szczawa', 'Szczyrzyc',
+      'Szyk', 'Szarysz', 'Świdnik', 'Tymbark', 'Ujanowice', 'Walowa Góra',
+      'Węgierskie', 'Wilczyce', 'Wilkowisko', 'Wola Skrzydlańska', 'Wolica',
+      'Wyrąbiska', 'Wysokie', 'Zagórów', 'Zalesie', 'Zamieście', 'Zasadne',
+      'Zawada', 'Zawadka', 'Zbludza', 'Żerosławice', 'Żmiąca'
+    ];
+    const locationSuggestions = document.getElementById('locationSuggestions');
+    countyLocations.forEach(function (location) {
+      const option = document.createElement('option');
+      option.value = location;
+      locationSuggestions.appendChild(option);
+    });
+
+    const contactForm = document.querySelector('#kontakt form');
+    const formStatus = document.getElementById('formStatus');
+    const submitButton = contactForm.querySelector('[type="submit"]');
+    contactForm.addEventListener('submit', async function (event) {
+      event.preventDefault();
+      formStatus.textContent = '';
+      formStatus.removeAttribute('data-state');
+      submitButton.disabled = true;
+      submitButton.textContent = 'Wysyłanie...';
+
+      try {
+        const response = await fetch(contactForm.action.replace('formsubmit.co/', 'formsubmit.co/ajax/'), {
+          method: 'POST',
+          body: new FormData(contactForm),
+          headers: { Accept: 'application/json' }
+        });
+        const result = await response.json();
+
+        if (!response.ok || (result.success !== true && result.success !== 'true')) {
+          throw new Error(result.message || 'Serwis pocztowy nie przyjął formularza.');
+        }
+
+        contactForm.reset();
+        eventDate.value = localToday;
+        formStatus.dataset.state = 'success';
+        formStatus.textContent = 'Dziękujemy! Wiadomość została wysłana. Skontaktujemy się z Tobą.';
+      } catch (error) {
+        formStatus.dataset.state = 'error';
+        formStatus.textContent = 'Nie udało się wysłać formularza. Spróbuj ponownie albo napisz na magnesowyswiat@gmail.com.';
+        console.error('Błąd wysyłania formularza:', error);
+      } finally {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Wyślij zapytanie';
       }
-
-      const match = value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
-      if (!match) {
-        eventDate.setCustomValidity('Wpisz datę w formacie DD/MM/RRRR.');
-        return;
-      }
-
-      const day = Number(match[1]);
-      const month = Number(match[2]);
-      const year = Number(match[3]);
-      const date = new Date(year, month - 1, day);
-
-      if (year < 1000 || date.getFullYear() !== year || date.getMonth() !== month - 1 || date.getDate() !== day) {
-        eventDate.setCustomValidity('Wpisz prawidłową datę.');
-        return;
-      }
-
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      eventDate.setCustomValidity(date < today ? 'Data wydarzenia nie może być z przeszłości.' : '');
-    };
-
-    eventDate.addEventListener('input', validateEventDate);
-    eventDate.addEventListener('change', validateEventDate);
+    });
 
     // Menu mobilne
     const menuToggle = document.getElementById('menuToggle');
