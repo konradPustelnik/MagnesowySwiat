@@ -12,6 +12,7 @@
 .service-hero h1 { margin: 12px 0 20px; font-size: clamp(34px, 4vw, 52px); }
 .service-hero h1 span { color: var(--olive); }
 .service-hero p { font-size: 15px; }
+.order-hero h1 { font-size: clamp(32px, 3.3vw, 44px); }
 .service-hero img { height: 430px; border-radius: 16px; box-shadow: var(--shadow); }
 .breadcrumbs { padding-top: 24px; font-size: 12px; color: var(--muted); }
 .breadcrumbs a { text-decoration: underline; text-underline-offset: 3px; }
@@ -19,6 +20,10 @@
 .service-card { padding: 26px; border: 1px solid var(--line); background: var(--paper); border-radius: 12px; }
 .service-card h3 { margin: 0 0 12px; font-size: 23px; }
 .service-card p { margin: 0; font-size: 14px; }
+.order-steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.order-steps .service-card p + p { margin-top: 12px; }
+.order-closing { margin: 28px auto 0; text-align: center; }
+.order-closing p { color: var(--olive-dark); }
 .service-note { max-width: 780px; margin: 24px auto 0; text-align: center; font-size: 13px; }
 .service-cta { text-align: center; padding: 34px; background: var(--sage); border: 1px solid var(--line); border-radius: 16px; }
 .service-cta .hero-buttons { justify-content: center; }
