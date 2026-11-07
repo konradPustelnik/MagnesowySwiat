@@ -338,7 +338,7 @@
 
     .feature-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      grid-template-columns: repeat(3, 1fr);
       gap: 30px;
     }
 
@@ -372,7 +372,7 @@
 
     .steps {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 35px;
     }
 
@@ -617,6 +617,19 @@
 
     .personalization li { margin-bottom: 10px; }
 
+    /* O nas */
+
+    .about-copy {
+      max-width: 790px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .about-copy p:last-child {
+      color: var(--olive-dark);
+      font-weight: 600;
+    }
+
     /* FAQ */
 
     .faq-list {
@@ -807,6 +820,7 @@
     @media (max-width: 900px) {
       .occasion-grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
       .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { grid-template-columns: repeat(2, 1fr); }
       .inclusions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .hero { gap: 30px; }
       .hero-photo img { height: 400px; }
@@ -944,19 +958,18 @@
       <div>
         <div class="eyebrow">Magnesowy Świat · Fotomagnesy na żywo</div>
 
-        <h1>Magnesowy Świat – wspomnienia, które <span>zostają z Tobą na dłużej!</span></h1>
+        <h1>Wspomnienia, do których <span>wraca się każdego dnia.</span></h1>
 
         <div class="hero-copy">
-          <p>Wyjątkowe chwile zasługują na wyjątkową pamiątkę!</p>
-          <p>W Magnesowym Świecie zamieniamy piękne momenty w niepowtarzalne magnesy ze zdjęciami, które przywołują uśmiech i najpiękniejsze wspomnienia.</p>
-          <p>Towarzyszymy Wam podczas wesel, urodzin, chrzcin, komunii, jubileuszy, imprez firmowych i innych wyjątkowych wydarzeń. Fotografujemy gości i tworzymy personalizowane magnesy na miejscu, dzięki czemu każdy może zabrać ze sobą kawałek tych niezapomnianych chwil.</p>
-          <p>Nie organizujesz wydarzenia? Żaden problem! Realizujemy również indywidualne zamówienia na magnesy ze zdjęciami – idealne na prezent, podziękowanie dla gości, upominek firmowy lub po prostu wyjątkową pamiątkę.</p>
-          <p>Ty tworzysz wspomnienia, my sprawiamy, że zostają na dłużej! ❤️</p>
+          <p>Wyjątkowe chwile zasługują na wyjątkowe pamiątki.</p>
+          <p>Wyobraź sobie, że uśmiechy, spontaniczne momenty i najpiękniejsze emocje z Twojej uroczystości zostają z gośćmi na dłużej.</p>
+          <p>W Magnesowym Świecie zamieniamy fotografie w personalizowane magnesy, które powstają na żywo, podczas Twojego wydarzenia. Fotografujemy gości, przygotowujemy zdjęcia i tworzymy magnesy na miejscu, aby każdy mógł zabrać ze sobą mały fragment wspólnie spędzonych chwil.</p>
+          <p>Mały magnes. Wielkie wspomnienia.</p>
         </div>
 
         <div class="hero-buttons">
-          <a href="#kontakt" class="btn">Zapytaj o ofertę</a>
-          <a href="#jak-dzialamy" class="btn btn-outline">Zobacz, jak działamy</a>
+          <a href="#pakiety" class="btn">Poznaj nasze pakiety</a>
+          <a href="#kontakt" class="btn btn-outline">Zapytaj o wolny termin</a>
         </div>
 
         <div class="hero-note">
@@ -983,8 +996,8 @@
       <div class="section-heading process-heading">
         <div>
           <div class="eyebrow">Prosto i przyjemnie</div>
-          <h2>Jak powstają Wasze magnesy?</h2>
-          <p>Cały proces odbywa się podczas wydarzenia. Goście mogą cieszyć się chwilą, a my zajmujemy się pamiątkami.</p>
+          <h2>Od uśmiechu do magnesu — w kilku prostych krokach!</h2>
+          <p>Magnesy tworzymy podczas Twojej uroczystości. Nie musisz czekać tygodniami na zdjęcia ani zastanawiać się, co podarować gościom.</p>
         </div>
         <div class="process-brand">
           <img src="logo-magnesowy-swiat.png" alt="Magnesowy Świat — magnesy na każdą okazję">
@@ -995,23 +1008,30 @@
 
         <div class="step">
           <div class="step-number">1</div>
-          <h3>Robimy zdjęcie</h3>
-          <p>Najczęściej to my robimy zdjęcia profesjonalnym sprzętem. Na życzenie przygotujemy też magnes ze zdjęcia z telefonu gościa.</p>
+          <h3>Pstryk! Łapiemy wyjątkowe chwile</h3>
+          <p>Fotografujemy gości — ich uśmiechy, spontaniczne pozy, wspólne przytulasy i szalone miny.</p>
         </div>
 
         <div class="step">
           <div class="step-number">2</div>
-          <h3>Tworzymy magnes</h3>
-          <p>Przygotowujemy fotografię w wybranym stylu i wykonujemy z niej trwały fotomagnes.</p>
+          <h3>Chwile zamieniamy w magnesy</h3>
+          <p>Zdjęcia trafiają prosto do naszego stanowiska, gdzie na bieżąco tworzymy z nich personalizowane magnesy fotograficzne.</p>
         </div>
 
         <div class="step">
           <div class="step-number">3</div>
-          <h3>Wspomnienie gotowe!</h3>
-          <p>Gotowy magnes trafia do gościa – bezpośrednio lub za pośrednictwem organizatora.</p>
+          <h3>Pamiątka jest gotowa!</h3>
+          <p>Goście odbierają gotowe magnesy jeszcze podczas uroczystości i zabierają je ze sobą do domu.</p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">4</div>
+          <h3>Wspomnienia zostają na dłużej</h3>
+          <p>To pamiątka, która może każdego dnia przypominać o wspólnie spędzonych chwilach.</p>
         </div>
 
       </div>
+      <p class="gallery-note">Jedno zdjęcie. Jeden magnes. Tysiące uśmiechów.</p>
     </section>
 
     <!-- OKAZJE -->
@@ -1032,36 +1052,37 @@
         <article class="occasion-card">
           <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Dekoracja sali przygotowana na przyjęcie weselne" loading="lazy" decoding="async">
           <div class="occasion-card-content">
-            <h3>Wesela</h3>
-            <p>Wyjątkowa pamiątka dla gości i piękne wspomnienie Waszego dnia.</p>
+            <h3>Wesela i przyjęcia ślubne</h3>
+            <p>Podaruj gościom osobistą pamiątkę z Waszego dnia — wspólne zdjęcie, zabawny kadr lub romantyczny moment.</p>
           </div>
         </article>
 
         <article class="occasion-card">
           <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Kolorowe dekoracje na uroczystości rodzinnej" loading="lazy" decoding="async">
           <div class="occasion-card-content">
-            <h3>Uroczystości rodzinne</h3>
-            <p>Urodziny, jubileusze, chrzciny, komunie i spotkania rodzinne.</p>
+            <h3>Urodziny i osiemnastki</h3>
+            <p>Urodziny, osiemnastki i kolejne jubileusze — najlepsze prezenty przypominają o wspólnie spędzonym czasie.</p>
           </div>
         </article>
 
         <article class="occasion-card">
           <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=80" alt="Przygotowana sala na wydarzenie firmowe" loading="lazy" decoding="async">
           <div class="occasion-card-content">
-            <h3>Eventy firmowe</h3>
-            <p>Integracje, gale, konferencje i firmowe spotkania z charakterem.</p>
+            <h3>Jubileusze i rocznice</h3>
+            <p>Wyjątkowe historie zasługują na pamiątki, które zachowają atmosferę tych spotkań na dłużej.</p>
           </div>
         </article>
 
         <article class="occasion-card">
           <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80" alt="Uczestnicy wydarzenia plenerowego" loading="lazy" decoding="async">
           <div class="occasion-card-content">
-            <h3>Eventy i imprezy</h3>
-            <p>Festyny, targi, imprezy plenerowe i wydarzenia specjalne.</p>
+            <h3>Eventy firmowe</h3>
+            <p>Integracje, jubileusze firmowe, konferencje i pikniki z magnesem dopasowanym do marki.</p>
           </div>
         </article>
 
       </div>
+      <p class="gallery-note">Chrzty, komunie, studniówki, bale, spotkania rodzinne i imprezy tematyczne — każda okazja jest dobra, żeby zatrzymać wspomnienia.</p>
     </section>
 
     <!-- INSPIRACJE -->
@@ -1069,8 +1090,8 @@
     <section class="section container" id="galeria">
       <div class="section-heading">
         <div class="eyebrow">Małe rzeczy, wielkie emocje</div>
-        <h2>Zdjęcia, które zostają na lodówce</h2>
-        <p>Fotografia zamieniona w osobistą pamiątkę — przygotowaną z myślą o wydarzeniu i jego uczestnikach.</p>
+        <h2>Zobacz, jak wyglądają wspomnienia zamienione w magnesy.</h2>
+        <p>Każdy magnes opowiada inną historię — od romantycznych kadrów po spontaniczne zdjęcia z przyjaciółmi.</p>
       </div>
 
       <div class="gallery-grid">
@@ -1097,7 +1118,7 @@
       <p class="gallery-note">
         To zdjęcia ilustracyjne z
         <a href="https://unsplash.com/@squared_one1" target="_blank" rel="noopener noreferrer">Unsplash (Kristyna Squared.one)</a>,
-        a nie nasze realizacje. Zastąpimy je zdjęciami własnych magnesów i stanowiska podczas wydarzenia.
+        a nie nasze realizacje. Zainspiruj się i wyobraź sobie własne wydarzenie z Magnesowym Światem.
       </p>
     </section>
 
@@ -1107,10 +1128,9 @@
       <div class="container">
         <div class="section-heading">
           <div class="eyebrow">Co nas wyróżnia?</div>
-          <h2>To coś więcej niż zwykłe zdjęcie</h2>
+          <h2>Mały detal, który robi wielką różnicę.</h2>
           <p>
-            Dbamy o to, aby każdy gość mógł zabrać ze sobą coś osobistego –
-            drobny upominek, który wywoła uśmiech jeszcze długo po wydarzeniu.
+            Bo wspomnienia zasługują na coś więcej niż miejsce w pamięci telefonu.
           </p>
         </div>
 
@@ -1118,20 +1138,20 @@
 
           <div class="feature">
             <div class="feature-icon">♡</div>
-            <h3>Twoje własne zdjęcia</h3>
-            <p>Zdjęcia wykonujemy profesjonalnym sprzętem. Na życzenie przygotujemy również magnes ze zdjęcia z telefonu gościa.</p>
+            <h3>Pamiątka od razu</h3>
+            <p>Magnesy powstają podczas uroczystości, więc goście zabierają je ze sobą jeszcze tego samego dnia.</p>
           </div>
 
           <div class="feature">
             <div class="feature-icon">▣</div>
-            <h3>Większy format magnesu</h3>
-            <p>Nasze magnesy mają 6,35 × 6,35 cm, podczas gdy u konkurencji najczęściej spotyka się format 5 × 5 cm. Większy format pozwala lepiej wyeksponować zdjęcie.</p>
+            <h3>Coś naprawdę osobistego</h3>
+            <p>Każdy magnes przedstawia niepowtarzalny moment i osoby, które są dla nas ważne.</p>
           </div>
 
           <div class="feature">
             <div class="feature-icon">✉</div>
-            <h3>Wygodna dostawa</h3>
-            <p>Gość otrzymuje numerek, a gotowy magnes może zostać dostarczony bezpośrednio do jego stolika.</p>
+            <h3>Atrakcja dla gości</h3>
+            <p>Fotografowanie i obserwowanie, jak zdjęcie zmienia się w magnes, to dodatkowy element zabawy.</p>
           </div>
 
           <div class="feature">
@@ -1140,8 +1160,21 @@
             <p>Możemy dodać datę, imiona, logo firmy lub motyw graficzny dopasowany do wydarzenia.</p>
           </div>
 
+          <div class="feature">
+            <div class="feature-icon" aria-hidden="true">♡</div>
+            <h3>Pamiątka na lata</h3>
+            <p>Magnes na lodówce lub tablicy magnetycznej częściej przypomina o wydarzeniu niż zdjęcie ukryte w telefonie.</p>
+          </div>
+
+          <div class="feature">
+            <div class="feature-icon" aria-hidden="true">✦</div>
+            <h3>Na różne okazje</h3>
+            <p>Od kameralnych urodzin po duże wesela i eventy firmowe — dopasujemy usługę do wydarzenia.</p>
+          </div>
+
         </div>
       </div>
+    </section>
     <!-- PAKIETY -->
 
     <section class="section pricing" id="pakiety">
@@ -1235,19 +1268,33 @@
 
         <div>
           <div class="eyebrow">Również dla biznesu</div>
-          <h2>Twoja marka na dłużej w pamięci</h2>
+          <h2>Twoja marka. Ich wspomnienia.</h2>
           <p>
-            Fotomagnesy mogą być nie tylko pamiątką z wydarzenia,
-            ale również oryginalnym upominkiem promocyjnym.
+            Szukasz oryginalnej atrakcji na wydarzenie firmowe, która jednocześnie pozostawi uczestnikom trwałą pamiątkę?
+            Magnesy fotograficzne tworzone podczas eventu łączą dobrą zabawę z indywidualnym akcentem Twojej marki.
           </p>
           <ul>
-            <li>Logo firmy na magnesie</li>
-            <li>Data i nazwa wydarzenia</li>
-            <li>Projekt dopasowany do identyfikacji wizualnej</li>
-            <li>Pamiątki dla uczestników konferencji i targów</li>
+            <li>Imprezy integracyjne i jubileusze przedsiębiorstw</li>
+            <li>Konferencje, targi i wydarzenia promocyjne</li>
+            <li>Pikniki firmowe i świąteczne spotkania pracownicze</li>
+            <li>Projekt magnesu z logo, nazwą wydarzenia lub motywem dopasowanym do marki</li>
           </ul>
-          <a href="#kontakt" class="btn">Zapytaj o ofertę firmową</a>
+          <p><strong>Zadbaj o to, żeby uczestnicy zabrali z Twojego wydarzenia coś, co wywoła uśmiech również następnego dnia.</strong></p>
+          <a href="#kontakt" class="btn">Poproś o ofertę dla firmy</a>
         </div>
+      </div>
+    </section>
+
+    <!-- O NAS -->
+
+    <section class="section container" id="o-nas">
+      <div class="about-copy">
+        <div class="eyebrow">Poznaj Magnesowy Świat</div>
+        <h2>Małe pamiątki, wielkie historie.</h2>
+        <p>Magnesowy Świat powstał z pomysłu, by zatrzymywać piękne chwile w formie, do której można wracać każdego dnia.</p>
+        <p>Wierzymy, że najcenniejsze pamiątki nie muszą być duże ani kosztowne. Czasem wystarczy jedno zdjęcie, żeby przypomnieć sobie atmosferę wyjątkowego dnia, wspólny śmiech czy spotkanie z bliskimi.</p>
+        <p>Tworzymy personalizowane magnesy fotograficzne, które łączą w sobie fotografię, emocje i odrobinę dobrej zabawy. Każdy magnes to coś więcej niż upominek — mała pamiątka z wielką historią.</p>
+        <p>Magnesowy Świat — magnesy na każdą okazję.</p>
       </div>
     </section>
 
@@ -1262,33 +1309,38 @@
       <div class="faq-list">
 
         <details>
-          <summary>Czy obsługujecie tylko wesela?</summary>
-          <p>Nie! Realizujemy również uroczystości rodzinne, urodziny, jubileusze, chrzciny, komunie, eventy firmowe, konferencje, gale, festyny i inne wydarzenia.</p>
+          <summary>Czy magnesy powstają podczas uroczystości?</summary>
+          <p>Tak! Fotografujemy gości i wykonujemy magnesy na miejscu. Gotowe pamiątki są wydawane jeszcze podczas wydarzenia.</p>
         </details>
 
         <details>
-          <summary>Czy goście mogą przesłać własne zdjęcia?</summary>
-          <p>Oczywiście, choć standardowo zdjęcia wykonujemy na miejscu profesjonalnym sprzętem. Jeśli gość woli, możemy przygotować magnes z wybranego przez niego zdjęcia z telefonu.</p>
+          <summary>Ile magnesów otrzymamy?</summary>
+          <p>Liczba magnesów zależy od wybranego pakietu. Oferujemy pakiety do 100, 150, 250 i 350 sztuk.</p>
         </details>
 
         <details>
-          <summary>Czy możemy dodać logo lub własny projekt?</summary>
-          <p>Tak. Możemy przygotować projekt z logo firmy, datą wydarzenia, imionami lub innymi elementami graficznymi.</p>
+          <summary>Czy możemy spersonalizować magnesy?</summary>
+          <p>Tak, projekt może uwzględniać imiona, datę uroczystości, nazwę wydarzenia lub motyw graficzny. Szczegóły ustalimy przed realizacją.</p>
         </details>
 
         <details>
-          <summary>Czy gotowe magnesy trafiają bezpośrednio do gości?</summary>
-          <p>Możemy zorganizować przekazywanie magnesów bezpośrednio gościom lub dostarczanie ich do stolików za pośrednictwem organizatora.</p>
+          <summary>Czy potrzebujecie specjalnego miejsca?</summary>
+          <p>Potrzebujemy stabilnego miejsca na stanowisko do produkcji magnesów oraz dostępu do zasilania elektrycznego. Szczegóły ustalamy przed uroczystością.</p>
         </details>
 
         <details>
-          <summary>Jak poznać cenę usługi?</summary>
-          <p>Wyślij nam zapytanie przez formularz. Podaj rodzaj wydarzenia, termin, miejsce i szacowaną liczbę uczestników. Przygotujemy ofertę dopasowaną do Twoich potrzeb.</p>
+          <summary>Czy dojeżdżacie do innych miejscowości?</summary>
+          <p>Tak, możliwość dojazdu i ewentualny koszt transportu ustalamy indywidualnie na podstawie lokalizacji wydarzenia.</p>
         </details>
 
         <details>
-          <summary>Z jakim wyprzedzeniem trzeba zarezerwować termin?</summary>
-          <p>Najlepiej skontaktować się z nami możliwie wcześnie. Dostępność terminu potwierdzimy indywidualnie.</p>
+          <summary>Czy można zamówić dodatkowe magnesy lub własny pakiet?</summary>
+          <p>W miarę możliwości technicznych i dostępności materiałów możemy zwiększyć liczbę magnesów. Jeśli gotowe pakiety nie pasują, przygotujemy indywidualną propozycję.</p>
+        </details>
+
+        <details>
+          <summary>Jak zarezerwować termin?</summary>
+          <p>Wypełnij formularz kontaktowy i podaj datę, miejsce oraz rodzaj wydarzenia. Sprawdzimy dostępność i przedstawimy ofertę. Szczegóły rezerwacji i płatności potwierdzimy w umowie.</p>
         </details>
 
       </div>
@@ -1300,7 +1352,7 @@
       <div class="container">
         <div class="section-heading">
           <div class="eyebrow" style="color:var(--gold-light);">Porozmawiajmy o Twoim wydarzeniu</div>
-          <h2>Stwórzmy razem coś wyjątkowego</h2>
+          <h2>Zatrzymajmy razem Wasze najpiękniejsze chwile!</h2>
           <p>
             Opowiedz nam o swoim wydarzeniu. Skontaktujemy się z Tobą
             i przygotujemy propozycję dopasowaną do Twoich oczekiwań.
@@ -1331,6 +1383,11 @@
               <div class="field">
                 <label for="email">Adres e-mail *</label>
                 <input type="email" id="email" name="email" placeholder="twoj@email.pl" required>
+              </div>
+
+              <div class="field">
+                <label for="phone">Numer telefonu</label>
+                <input type="tel" id="phone" name="Numer telefonu" autocomplete="tel" placeholder="Np. 500 600 700">
               </div>
 
               <div class="field">
@@ -1426,7 +1483,11 @@
 
       <div class="footer-links">
         <a href="#okazje">Okazje</a>
+        <a href="#jak-dzialamy">Jak działamy</a>
+        <a href="#galeria">Galeria</a>
         <a href="#pakiety">Pakiety</a>
+        <a href="#oferta-firmowa">Dla firm</a>
+        <a href="#o-nas">O nas</a>
         <a href="#faq">FAQ</a>
         <a href="#kontakt">Kontakt</a>
       </div>
