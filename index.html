@@ -1371,6 +1371,7 @@
 
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
+            <input type="hidden" name="_captcha" value="false">
             <input type="hidden" name="_url" value="https://konradpustelnik.github.io/MagnesowySwiat/">
             <input type="hidden" name="_next" value="https://konradpustelnik.github.io/MagnesowySwiat/?wyslano=1#kontakt">
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
@@ -1462,7 +1463,7 @@
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
 
             <p class="form-info">
-              Pola oznaczone * są obowiązkowe. Po kliknięciu otworzy się strona FormSubmit, na której może pojawić się weryfikacja antyspamowa.
+              Pola oznaczone * są obowiązkowe. Po kliknięciu przejdziesz do potwierdzenia wysyłki.
               Możesz też napisać bezpośrednio na
               <a href="mailto:magnesowyswiat@gmail.com">magnesowyswiat@gmail.com</a>.
             </p>
@@ -1554,7 +1555,7 @@
     contactForm.addEventListener('submit', function () {
       submitButton.textContent = 'Przechodzenie do wysyłki…';
       formStatus.dataset.state = 'pending';
-      formStatus.textContent = 'Za chwilę otworzy się strona wysyłki. Jeśli pojawi się weryfikacja, wykonaj ją, aby wysłać zapytanie.';
+      formStatus.textContent = 'Przechodzimy do potwierdzenia wysyłki. Poczekaj chwilę.';
     });
 
     window.addEventListener('pageshow', function () {
