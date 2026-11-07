@@ -1,6 +1,17 @@
 # Magnesowy Świat
 
-Prosta strona wizytówka w jednym pliku HTML.
+Statyczna strona wizytówka z podstronami usług, wspólnymi stylami CSS i JavaScriptem, publikowana na GitHub Pages.
+
+## Oferta i podstrony
+
+- W menu „Oferta” znajduje się przed „Jak działamy”; sekcja `#oferta` na stronie głównej ma dwa kafelki ze zdjęciami.
+- `/magnesy-na-zywo/` opisuje obsługę wydarzeń i prowadzi do istniejących pakietów, FAQ i formularza kontaktowego.
+- `/magnesy-na-zamowienie/` opisuje zamówienia z własnych zdjęć. Formularz **przygotowuje treść zapytania**, nie składa płatnego zamówienia i nie wysyła automatycznie poczty. Użytkownik otwiera wiadomość we własnym programie pocztowym lub Gmailu i sam ją wysyła; zdjęcia może załączyć do e-maila. Jest to świadoma alternatywa dla niepotwierdzonych doręczeń przez FormSubmit, nie naprawa dotychczasowego dostawcy.
+- Wycena, termin i sposób przekazania gotowych magnesów wymagają indywidualnego uzgodnienia. Nie dodano nieustalonych cen, płatności ani automatycznego uploadu zdjęć.
+- `assets/site.css` zawiera przeniesione z `index.html` wspólne style, `assets/offers.css` — kafelki i układ podstron, `assets/service-pages.js` — ich menu i przygotowanie wiadomości. Istniejący formularz wydarzenia nadal korzysta z FormSubmit.
+- Oba nowe adresy mają własne title, opis i canonical oraz są w `sitemap.xml`. Zdjęcia pochodzą z dotychczas używanych zasobów Unsplash i pozostają oznaczone jako ilustracyjne.
+
+Test podstron i treści zapytania (bez wysyłki): `.\.venv-tests\Scripts\python.exe tests/test_offers.py`. Sprawdza linki, zasoby, nawigację, szerokości 360/768/1440 px, walidację i zachowanie znaków specjalnych w linkach pocztowych. Wymaga środowiska Selenium instalowanego przez istniejący `test-mail.cmd`.
 
 Najnowszy tekst głównej sekcji został podany bezpośrednio przez właściciela: nagłówek H1 „Wyjątkowe magnesy na każdą okazję” oraz wstęp „✨ Tworzone z myślą o Twoich wspomnieniach.” z informacją o magnesach na żywo i indywidualnych zamówieniach ze zdjęć. Wcześniejsze cofnięcie lokalnej sekcji i opisów poniżej jest zapisem historii; osobna sekcja zasięgu nadal pozostaje usunięta.
 

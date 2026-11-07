@@ -65,7 +65,7 @@ class SEOTests(unittest.TestCase):
         self.assertIn('Sitemap: ' + CANONICAL + 'sitemap.xml', robots)
         self.assertNotIn('Disallow: /\n', robots)
         urls = ET.parse(ROOT / 'sitemap.xml').findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
-        self.assertEqual([u.text for u in urls], [CANONICAL])
+        self.assertEqual([u.text for u in urls], [CANONICAL, CANONICAL + 'magnesy-na-zywo/', CANONICAL + 'magnesy-na-zamowienie/'])
         descriptions = [a['content'] for t, a in self.page.tags if t == 'meta' and a.get('name') == 'description']
         self.assertEqual(len(descriptions), 1)
         self.assertIn('Magnesowy Świat', descriptions[0])
