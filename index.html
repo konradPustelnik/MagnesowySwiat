@@ -467,12 +467,30 @@
       font-family: 'Playfair Display', serif;
       color: var(--olive);
       font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .price-amount {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .service-time {
+      color: var(--muted);
+      font-size: 11px;
       margin-bottom: 15px;
     }
 
     .price-card p {
       font-size: 12px;
       min-height: 55px;
+    }
+
+    .price-card p.service-time {
+      font-size: 11px;
+      min-height: 0;
+      margin: 0 0 15px;
     }
 
     .price-card ul {
@@ -1060,7 +1078,9 @@
 
           <article class="price-card">
             <h3>Mini</h3>
-            <div class="price-range">50–100</div>
+            <div class="price-range">50–100 magnesów</div>
+            <div class="price-amount">1 000 zł</div>
+            <p class="service-time">Około 2 godz. obsługi</p>
             <p>Na kameralne przyjęcia, urodziny i mniejsze uroczystości.</p>
             <a href="#kontakt" class="btn btn-outline choose-package" data-package="Mini">Zapytaj o pakiet</a>
           </article>
@@ -1068,23 +1088,29 @@
           <article class="price-card featured">
             <div class="popular">Często wybierany</div>
             <h3>Standard</h3>
-            <div class="price-range">150–250</div>
+            <div class="price-range">150–250 magnesów</div>
+            <div class="price-amount">2 000 zł</div>
+            <p class="service-time">3–4 godz. obsługi</p>
             <p>Uniwersalny wybór na wesele i przyjęcie średniej wielkości.</p>
             <a href="#kontakt" class="btn choose-package" data-package="Standard">Zapytaj o pakiet</a>
           </article>
 
           <article class="price-card">
             <h3>Premium</h3>
-            <div class="price-range">300–400</div>
+            <div class="price-range">300–400 magnesów</div>
+            <div class="price-amount">3 000 zł</div>
+            <p class="service-time">4–5 godz. obsługi</p>
             <p>Większa pula magnesów na duże wesela i wydarzenia.</p>
             <a href="#kontakt" class="btn btn-outline choose-package" data-package="Premium">Zapytaj o pakiet</a>
           </article>
 
           <article class="price-card">
-            <h3>Wyjątkowy</h3>
-            <div class="price-range">400–600</div>
+            <h3>Platinum</h3>
+            <div class="price-range">400–600 magnesów</div>
+            <div class="price-amount">5 000 zł</div>
+            <p class="service-time">6 godz. obsługi</p>
             <p>Największa pula magnesów i dodatkowy motyw pamiątkowy dopasowany do wydarzenia.</p>
-            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Wyjątkowy">Zapytaj o pakiet</a>
+            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Platinum">Zapytaj o pakiet</a>
           </article>
 
         </div>
@@ -1093,9 +1119,8 @@
           W każdym pakiecie wykonujemy gościom profesjonalne zdjęcia na miejscu,
           przygotowujemy fotomagnesy podczas wydarzenia i dopasowujemy projekt do okazji.
           Na życzenie możemy też zrobić magnes ze zdjęcia wykonanego telefonem gościa.
-          Liczby magnesów i cenę potwierdzamy w indywidualnej ofercie.
           <br><br>
-          Pakiet Wyjątkowy może dodatkowo obejmować pamiątkowy motyw wydarzenia —
+          Pakiet Platinum może dodatkowo obejmować pamiątkowy motyw wydarzenia —
           na weselu np. zdjęcie Pary Młodej, a przy evencie firmowym logo lub zdjęcie organizatora.
         </p>
       </div>
@@ -1255,10 +1280,10 @@
                 <label for="package">Interesujący pakiet</label>
                 <select id="package" name="Wybrany pakiet">
                   <option value="">Nie wiem – poproszę o doradztwo</option>
-                  <option>Mini (50–100 magnesów)</option>
-                  <option>Standard (150–250 magnesów)</option>
-                  <option>Premium (300–400 magnesów)</option>
-                  <option>Wyjątkowy (400–600 magnesów)</option>
+                  <option>Mini (50–100 magnesów, 1 000 zł)</option>
+                  <option>Standard (150–250 magnesów, 2 000 zł)</option>
+                  <option>Premium (300–400 magnesów, 3 000 zł)</option>
+                  <option>Platinum (400–600 magnesów, 5 000 zł)</option>
                   <option>Oferta indywidualna / firmowa</option>
                 </select>
               </div>
