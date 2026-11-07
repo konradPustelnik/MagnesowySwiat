@@ -152,6 +152,14 @@
 
     .btn-outline:hover { color: white; }
 
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    .faq-list a, .form-info a, .gallery-note a { text-decoration: underline; }
+    .btn:disabled { opacity: .65; cursor: wait; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition: none !important; }
+    }
+
     /* Nawigacja */
 
     header {
@@ -827,7 +835,7 @@
       .hero-photo { min-height: 400px; }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 1100px) {
       .menu-toggle { display: block; }
 
       .nav {
@@ -936,9 +944,9 @@
         <img src="logo-magnesowy-swiat-header.png" alt="">
       </a>
 
-      <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
+      <button type="button" class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-controls="navLinks" aria-expanded="false">☰</button>
 
-      <nav class="nav-links" id="navLinks">
+      <nav class="nav-links" id="navLinks" aria-label="Menu główne">
         <a href="#jak-dzialamy">Jak działamy</a>
         <a href="#okazje">Okazje</a>
         <a href="#galeria">Galeria</a>
@@ -962,8 +970,8 @@
 
         <div class="hero-copy">
           <p>Wyjątkowe chwile zasługują na wyjątkowe pamiątki.</p>
-          <p>Wyobraź sobie, że uśmiechy, spontaniczne momenty i najpiękniejsze emocje z Twojej uroczystości zostają z gośćmi na dłużej.</p>
-          <p>W Magnesowym Świecie zamieniamy fotografie w personalizowane magnesy, które powstają na żywo, podczas Twojego wydarzenia. Fotografujemy gości, przygotowujemy zdjęcia i tworzymy magnesy na miejscu, aby każdy mógł zabrać ze sobą mały fragment wspólnie spędzonych chwil.</p>
+          <p>Fotomagnesy to osobista pamiątka z wesela, urodzin, jubileuszu lub wydarzenia firmowego — gotowa jeszcze podczas spotkania.</p>
+          <p>Fotografujemy gości i na miejscu tworzymy magnesy ze zdjęciami. Projekt dopasowujemy do okazji: dodajemy imiona, datę, motyw graficzny lub logo firmy.</p>
           <p>Mały magnes. Wielkie wspomnienia.</p>
         </div>
 
@@ -996,8 +1004,8 @@
       <div class="section-heading process-heading">
         <div>
           <div class="eyebrow">Prosto i przyjemnie</div>
-          <h2>Od uśmiechu do magnesu — w kilku prostych krokach!</h2>
-          <p>Magnesy tworzymy podczas Twojej uroczystości. Nie musisz czekać tygodniami na zdjęcia ani zastanawiać się, co podarować gościom.</p>
+          <h2>Od zdjęcia do magnesu w trzech krokach</h2>
+          <p>My zajmujemy się zdjęciami i przygotowaniem magnesów, a Twoi goście cieszą się spotkaniem i zabierają pamiątki do domu.</p>
         </div>
         <div class="process-brand">
           <img src="logo-magnesowy-swiat.png" alt="Magnesowy Świat — magnesy na każdą okazję">
@@ -1008,19 +1016,19 @@
 
         <div class="step">
           <div class="step-number">1</div>
-          <h3>Pstryk! Łapiemy wyjątkowe chwile</h3>
-          <p>Fotografujemy gości — ich uśmiechy, spontaniczne pozy, wspólne przytulasy i szalone miny.</p>
+          <h3>Fotografujemy gości</h3>
+          <p>Uwieczniamy wspólne uśmiechy, spontaniczne momenty i pozowane zdjęcia z bliskimi.</p>
         </div>
 
         <div class="step">
           <div class="step-number">2</div>
-          <h3>Chwile zamieniamy w magnesy</h3>
+          <h3>Przygotowujemy magnesy</h3>
           <p>Zdjęcia trafiają prosto do naszego stanowiska, gdzie na bieżąco tworzymy z nich personalizowane magnesy fotograficzne.</p>
         </div>
 
         <div class="step">
           <div class="step-number">3</div>
-          <h3>Pamiątka jest gotowa!</h3>
+          <h3>Wręczamy gotowe pamiątki</h3>
           <p>Goście odbierają gotowe magnesy jeszcze podczas uroczystości i zabierają je ze sobą do domu.</p>
         </div>
 
@@ -1036,7 +1044,7 @@
         <h2>Gdzie możemy się spotkać?</h2>
         <p>
           Niezależnie od tego, czy organizujesz kameralne przyjęcie,
-          duże wesele czy wydarzenie firmowe – przygotujemy fotomagnesy
+          duże wesele czy wydarzenie firmowe, przygotujemy fotomagnesy
           dopasowane do charakteru Twojej imprezy.
         </p>
       </div>
@@ -1055,7 +1063,7 @@
           <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Kolorowe dekoracje na uroczystości rodzinnej" loading="lazy" decoding="async">
           <div class="occasion-card-content">
             <h3>Urodziny i osiemnastki</h3>
-            <p>Urodziny, osiemnastki i kolejne jubileusze — najlepsze prezenty przypominają o wspólnie spędzonym czasie.</p>
+            <p>Zatrzymaj radość ze wspólnego świętowania na zdjęciach, które goście zabiorą ze sobą w formie magnesów.</p>
           </div>
         </article>
 
@@ -1084,7 +1092,7 @@
     <section class="section container" id="galeria">
       <div class="section-heading">
         <div class="eyebrow">Małe rzeczy, wielkie emocje</div>
-        <h2>Zobacz, jak wyglądają wspomnienia zamienione w magnesy.</h2>
+        <h2>Fotomagnesy — zobacz inspiracje</h2>
         <p>Każdy magnes opowiada inną historię — od romantycznych kadrów po spontaniczne zdjęcia z przyjaciółmi.</p>
       </div>
 
@@ -1122,9 +1130,9 @@
       <div class="container">
         <div class="section-heading">
           <div class="eyebrow">Co nas wyróżnia?</div>
-          <h2>Mały detal, który robi wielką różnicę.</h2>
+          <h2>Co zyskują Twoi goście?</h2>
           <p>
-            Bo wspomnienia zasługują na coś więcej niż miejsce w pamięci telefonu.
+            Wspólne zdjęcia, dobra zabawa i pamiątka, do której można wracać każdego dnia.
           </p>
         </div>
 
@@ -1241,11 +1249,11 @@
         </div>
 
         <div class="pricing-custom">
-          <p>Nie znalazłeś pakietu dla siebie? Przygotujemy indywidualną ofertę dopasowaną do liczby gości, charakteru wydarzenia i Twoich oczekiwań.</p>
+          <p>Potrzebujesz innego pakietu? Przygotujemy indywidualną ofertę dopasowaną do liczby gości, charakteru wydarzenia i Twoich oczekiwań.</p>
           <a href="#kontakt" class="btn choose-package" data-package="Oferta indywidualna">Zapytaj o indywidualną ofertę</a>
         </div>
 
-        <p class="pricing-note">Podane ceny dotyczą wskazanego zakresu usługi. Koszt dojazdu poza ustalony obszar wyceniany jest indywidualnie. Liczba magnesów oznacza maksymalny limit w ramach pakietu. Szczegóły realizacji potwierdzamy przed zawarciem umowy.</p>
+        <p class="pricing-note">Podane ceny dotyczą wskazanego zakresu usługi. Możliwość dojazdu i jego koszt ustalamy indywidualnie na podstawie miejsca wydarzenia. Podana liczba magnesów to maksymalna liczba sztuk w danym pakiecie. Szczegóły realizacji potwierdzamy przed zawarciem umowy.</p>
       </div>
     </section>
 
@@ -1274,7 +1282,7 @@
             <li>Projekt magnesu z logo, nazwą wydarzenia lub motywem dopasowanym do marki</li>
           </ul>
           <p><strong>Zadbaj o to, żeby uczestnicy zabrali z Twojego wydarzenia coś, co wywoła uśmiech również następnego dnia.</strong></p>
-          <a href="#kontakt" class="btn">Poproś o ofertę dla firmy</a>
+          <a href="#kontakt" class="btn choose-package" data-package="Oferta indywidualna" data-event-type="Event firmowy">Poproś o ofertę dla firmy</a>
         </div>
       </div>
     </section>
@@ -1284,7 +1292,7 @@
     <section class="section container" id="o-nas">
       <div class="about-copy">
         <div class="eyebrow">Poznaj Magnesowy Świat</div>
-        <h2>Małe pamiątki, wielkie historie.</h2>
+        <h2>Małe pamiątki, wielkie historie</h2>
         <p>Magnesowy Świat powstał z pomysłu, by zatrzymywać piękne chwile w formie, do której można wracać każdego dnia.</p>
         <p>Wierzymy, że najcenniejsze pamiątki nie muszą być duże ani kosztowne. Czasem wystarczy jedno zdjęcie, żeby przypomnieć sobie atmosferę wyjątkowego dnia, wspólny śmiech czy spotkanie z bliskimi.</p>
         <p>Tworzymy personalizowane magnesy fotograficzne, które łączą w sobie fotografię, emocje i odrobinę dobrej zabawy. Każdy magnes to coś więcej niż upominek — mała pamiątka z wielką historią.</p>
@@ -1309,7 +1317,7 @@
 
         <details>
           <summary>Ile magnesów otrzymamy?</summary>
-          <p>Liczba magnesów zależy od wybranego pakietu. Oferujemy pakiety do 100, 150, 250 i 350 sztuk.</p>
+          <p>Pakiety obejmują maksymalnie 100, 150, 250 lub 350 magnesów. Porównaj <a href="#pakiety">ceny i czas obsługi w sekcji pakietów</a>.</p>
         </details>
 
         <details>
@@ -1334,7 +1342,7 @@
 
         <details>
           <summary>Jak zarezerwować termin?</summary>
-          <p>Wypełnij formularz kontaktowy i podaj datę, miejsce oraz rodzaj wydarzenia. Sprawdzimy dostępność i przedstawimy ofertę. Szczegóły rezerwacji i płatności potwierdzimy w umowie.</p>
+          <p>Wypełnij <a href="#kontakt">formularz kontaktowy</a> i podaj datę, miejsce oraz rodzaj wydarzenia. Sprawdzimy dostępność i przedstawimy ofertę. Samo wysłanie zapytania nie rezerwuje terminu — warunki rezerwacji i płatności potwierdzimy w umowie.</p>
         </details>
 
       </div>
@@ -1346,7 +1354,7 @@
       <div class="container">
         <div class="section-heading">
           <div class="eyebrow" style="color:var(--gold-light);">Porozmawiajmy o Twoim wydarzeniu</div>
-          <h2>Zatrzymajmy razem Wasze najpiękniejsze chwile!</h2>
+          <h2>Zapytaj o termin i ofertę</h2>
           <p>
             Opowiedz nam o swoim wydarzeniu. Skontaktujemy się z Tobą
             i przygotujemy propozycję dopasowaną do Twoich oczekiwań.
@@ -1364,19 +1372,19 @@
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_next" id="formNext">
-            <input type="text" name="_honey" style="display:none">
+            <input type="hidden" name="_next" value="https://konradpustelnik.github.io/MagnesowySwiat/?wyslano=1#kontakt">
+            <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
 
             <div class="form-grid">
 
               <div class="field">
                 <label for="name">Imię i nazwisko *</label>
-                <input type="text" id="name" name="Imię i nazwisko" placeholder="Jak się nazywasz?" required>
+                <input type="text" id="name" name="Imię i nazwisko" autocomplete="name" maxlength="150" placeholder="Jak się nazywasz?" required>
               </div>
 
               <div class="field">
                 <label for="email">Adres e-mail *</label>
-                <input type="email" id="email" name="email" placeholder="twoj@email.pl" required>
+                <input type="email" id="email" name="email" autocomplete="email" maxlength="254" placeholder="twoj@email.pl" required>
               </div>
 
               <div class="field">
@@ -1391,7 +1399,7 @@
                   <option>Wesele</option>
                   <option>Urodziny</option>
                   <option>Jubileusz</option>
-                  <option>Chrzciny / komunia</option>
+                  <option>Chrzest / komunia</option>
                   <option>Event firmowy</option>
                   <option>Konferencja / gala</option>
                   <option>Festyn / impreza plenerowa</option>
@@ -1413,7 +1421,7 @@
 
               <div class="field">
                 <label for="location">Miejsce wydarzenia *</label>
-                <input type="text" id="location" name="Miejsce wydarzenia" list="locationSuggestions" placeholder="Zacznij wpisywać miejscowość lub wpisz dowolne miejsce" autocomplete="off" required>
+                <input type="text" id="location" name="Miejsce wydarzenia" list="locationSuggestions" placeholder="Miejscowość i nazwa obiektu" maxlength="250" autocomplete="off" required>
                 <datalist id="locationSuggestions"></datalist>
               </div>
 
@@ -1437,7 +1445,7 @@
 
               <div class="field full">
                 <label for="message">Dodatkowe informacje</label>
-                <textarea id="message" name="Wiadomość" placeholder="Napisz nam coś więcej o wydarzeniu, swoich pomysłach lub oczekiwaniach..."></textarea>
+                <textarea id="message" name="Wiadomość" maxlength="5000" placeholder="Napisz nam coś więcej o wydarzeniu, swoich pomysłach lub oczekiwaniach..."></textarea>
               </div>
 
             </div>
@@ -1476,9 +1484,10 @@
       </div>
 
       <div class="footer-links">
-        <a href="#okazje">Okazje</a>
         <a href="#jak-dzialamy">Jak działamy</a>
+        <a href="#okazje">Okazje</a>
         <a href="#galeria">Galeria</a>
+        <a href="#wyrozniki">Co nas wyróżnia</a>
         <a href="#pakiety">Pakiety</a>
         <a href="#oferta-firmowa">Dla firm</a>
         <a href="#o-nas">O nas</a>
@@ -1499,7 +1508,7 @@
       String(today.getDate()).padStart(2, '0')
     ].join('-');
     eventDate.min = localToday;
-    eventDate.value = localToday;
+
 
     const countyLocations = [
       'Abramowice', 'Bałażówka', 'Białe', 'Chyszówki', 'Dobra', 'Glisne',
@@ -1532,19 +1541,58 @@
 
     const contactForm = document.getElementById('contactForm');
     const formStatus = document.getElementById('formStatus');
-    const formNext = document.getElementById('formNext');
-    formNext.value = new URL('?wyslano=1#kontakt', window.location.href).href;
+    const submitButton = contactForm.querySelector('[type="submit"]');
 
+    // A return URL alone does not prove that an email was delivered.
     if (new URLSearchParams(window.location.search).get('wyslano') === '1') {
-      formStatus.dataset.state = 'success';
-      formStatus.textContent = 'Dziękujemy! Formularz został przyjęty przez serwis pocztowy.';
-      window.history.replaceState(null, '', window.location.pathname + window.location.hash);
+      formStatus.textContent = 'Powrót z formularza. Jeśli nie masz pewności, czy zapytanie zostało wysłane, napisz na magnesowyswiat@gmail.com.';
+      const cleanUrl = new URL(window.location.href);
+      cleanUrl.searchParams.delete('wyslano');
+      window.history.replaceState(null, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
     }
 
-    contactForm.addEventListener('submit', function () {
-      const submitButton = contactForm.querySelector('[type="submit"]');
+    contactForm.addEventListener('submit', async function (event) {
+      // Browsers without Fetch retain the regular HTML form submission.
+      if (!window.fetch || !window.AbortController) return;
+      event.preventDefault();
+      if (submitButton.disabled || !contactForm.reportValidity()) return;
+      const controller = new AbortController();
+      const timeout = window.setTimeout(function () { controller.abort(); }, 30000);
       submitButton.disabled = true;
-      submitButton.textContent = 'Wysyłanie...';
+      submitButton.textContent = 'Wysyłanie…';
+      contactForm.setAttribute('aria-busy', 'true');
+      formStatus.dataset.state = 'pending';
+      formStatus.textContent = 'Wysyłamy zapytanie. Poczekaj na potwierdzenie.';
+      try {
+        const data = new FormData(contactForm);
+        data.delete('_next');
+        data.set('_replyto', document.getElementById('email').value.trim());
+        const response = await fetch('https://formsubmit.co/ajax/magnesowyswiat@gmail.com', {
+          method: 'POST',
+          body: data,
+          headers: { 'Accept': 'application/json' },
+          signal: controller.signal
+        });
+        const result = await response.json();
+        if (!response.ok || !(result.success === true || result.success === 'true')) {
+          throw new Error('Submission was not accepted');
+        }
+        formStatus.dataset.state = 'success';
+        formStatus.textContent = 'Dziękujemy! Serwis przyjął zapytanie do wysłania. Odpowiemy na podany adres e-mail. Wysłanie zapytania nie oznacza rezerwacji terminu.';
+        contactForm.reset();
+      } catch (error) {
+        formStatus.dataset.state = 'error';
+        formStatus.replaceChildren(document.createTextNode('Nie udało się potwierdzić wysłania. Twoje dane pozostały w formularzu. Spróbuj ponownie lub napisz na '));
+        const emailLink = document.createElement('a');
+        emailLink.href = 'mailto:magnesowyswiat@gmail.com';
+        emailLink.textContent = 'magnesowyswiat@gmail.com';
+        formStatus.append(emailLink, document.createTextNode('. Jeśli wiadomość już dotarła, ponowna próba może wysłać ją drugi raz.'));
+      } finally {
+        window.clearTimeout(timeout);
+        submitButton.disabled = false;
+        submitButton.textContent = 'Wyślij zapytanie';
+        contactForm.removeAttribute('aria-busy');
+      }
     });
 
     // Menu mobilne
@@ -1554,7 +1602,18 @@
     menuToggle.addEventListener('click', function () {
       const isOpen = navLinks.classList.toggle('open');
       menuToggle.setAttribute('aria-expanded', isOpen);
+      menuToggle.setAttribute('aria-label', isOpen ? 'Zamknij menu' : 'Otwórz menu');
       menuToggle.textContent = isOpen ? '✕' : '☰';
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape' && navLinks.classList.contains('open')) {
+        navLinks.classList.remove('open');
+        menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Otwórz menu');
+        menuToggle.textContent = '☰';
+        menuToggle.focus();
+      }
     });
 
     // Zamykanie menu po kliknięciu w link
@@ -1562,6 +1621,7 @@
       link.addEventListener('click', function() {
         navLinks.classList.remove('open');
         menuToggle.setAttribute('aria-expanded', 'false');
+        menuToggle.setAttribute('aria-label', 'Otwórz menu');
         menuToggle.textContent = '☰';
       });
     });
@@ -1569,6 +1629,9 @@
     // Wybór pakietu automatycznie ustawia go w formularzu
     document.querySelectorAll('.choose-package').forEach(function(button) {
       button.addEventListener('click', function() {
+        if (button.dataset.eventType) {
+          document.getElementById('event-type').value = button.dataset.eventType;
+        }
         const packageName = button.dataset.package;
         const packageSelect = document.getElementById('package');
 
