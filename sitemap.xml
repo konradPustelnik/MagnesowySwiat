@@ -1,12 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://magnesowyswiat.pl/</loc>
-  </url>
-  <url>
-    <loc>https://magnesowyswiat.pl/magnesy-na-zywo/</loc>
-  </url>
-  <url>
-    <loc>https://magnesowyswiat.pl/magnesy-na-zamowienie/</loc>
-  </url>
+  <url><loc>https://magnesowyswiat.pl/</loc></url>
+  <url><loc>https://magnesowyswiat.pl/magnesy-na-zywo.html</loc></url>
+  <url><loc>https://magnesowyswiat.pl/magnesy-na-zamowienie.html</loc></url>
 </urlset>

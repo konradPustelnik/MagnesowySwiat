@@ -1,3 +1,5 @@
+> Aktualizacja: wersja 2 jest teraz stroną główną. Poprzednia strona i jej zasoby są w `backup/` (otwórz `backup/index.html`). Formularze nowej strony przygotowują lokalny szkic, nie wysyłają e-maili ani zdjęć. Braki integracji, cen i danych opisano w `wersja-2/README.md`.
+
 # Magnesowy Świat
 
 Statyczna strona wizytówka z podstronami usług, wspólnymi stylami CSS i JavaScriptem, publikowana na GitHub Pages.
