@@ -16,6 +16,8 @@ Stan ustaleń: **7 listopada 2026**. Przygotowane poprawki SEO, zasięgu i favic
 
 **Poczta nie ma potwierdzonego działania od formularza do skrzynki.** FormSubmit wyświetlił ekran przyjęcia testowego zgłoszenia, ale właściciel zgłosił, że wiadomość nie dotarła. Nie traktujemy tego jako udanego testu doręczenia. Dotychczasowy test przeglądarkowy bez `--confirm-delivery` sprawdza tylko odpowiedź usługi; nie odczytuje skrzynki. Przyczyna niedoręczenia nie została ustalona.
 
+Właściciel zauważył możliwy związek niedoręczeń z wypełnieniem „Dodatkowych informacji” i podał przykład `rabacik ?`. To hipoteza do sprawdzenia, a nie ustalona przyczyna. Test lokalny sprawdza zachowanie pustej wiadomości, dokładnego przykładu `rabacik ?` oraz tekstu z polskimi znakami i nowym wierszem w `FormData`, poprawność walidacji i puste pole `_honey`. Nie sprawdza filtrów FormSubmit ani Gmaila. Następny krok: porównać dwa zgłoszenia różniące się tylko wiadomością i potwierdzić oba odbiory w skrzynce; nie uznawać samych ekranów sukcesu za dowód.
+
 | Priorytet | Ryzyko / ustalenie | Co jeszcze trzeba zrobić | Warunek zamknięcia |
 | --- | --- | --- | --- |
 | P0 | Niedoręczone zgłoszenia mogą oznaczać utratę zapytań klientów, mimo ekranu sukcesu FormSubmit. | Sprawdzić aktywację odbiorcy, spam, wszystkie wiadomości i filtry skrzynki. Przeprowadzić jeden kontrolowany test z unikalnym kodem i rzeczywistym adresem kontaktowym. Jeśli nadal nie dociera, zgłosić problem dostawcy; rozważyć inny mechanizm wysyłki z możliwością sprawdzenia statusu doręczenia. | Nowa wiadomość z kodem faktycznie odebrana w skrzynce; możliwość odpowiedzi na adres klienta sprawdzona. Sam HTTP 200 lub `provider_accepted: true` nie wystarcza. |

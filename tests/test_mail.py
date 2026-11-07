@@ -95,6 +95,13 @@ class MailTests(unittest.TestCase):
         self.assertFalse(b.execute_script('return arguments[0].checkValidity()', form))
         self.fill_form('LOCAL-NO-EMAIL')
         self.assertTrue(b.execute_script('return arguments[0].checkValidity()', form))
+        # Verify the optional message is serialized intact, without contacting the provider.
+        for message in ('', 'rabacik ?', 'Proszę o ofertę na wesele.\nŁącznie 150 gości — zdjęcia z rodziną.'):
+            b.execute_script("document.getElementById('message').value = arguments[0]", message)
+            self.assertTrue(b.execute_script('return arguments[0].checkValidity()', form))
+            serialized = b.execute_script("return new FormData(arguments[0]).get('Wiadomość')", form)
+            self.assertEqual(serialized, message)
+            self.assertEqual(b.execute_script("return new FormData(arguments[0]).get('_honey')", form), '')
         b.find_element(By.ID, 'email').clear()
         b.find_element(By.ID, 'email').send_keys('niepoprawny-email')
         self.assertFalse(b.execute_script('return arguments[0].checkValidity()', form))
