@@ -73,7 +73,7 @@ class SEOTests(unittest.TestCase):
     def test_headings_and_general_content(self):
         h1 = [text for tag, text in self.page.headings if tag == 'h1']
         self.assertEqual(len(h1), 1)
-        self.assertEqual(h1[0], 'Magnesowy Świat – Magnesy na żywo na weselach i eventach | Limanowa, Nowy Sącz, Kraków')
+        self.assertEqual(h1[0], 'Magnesy na żywo na weselach i eventach | Limanowa, Nowy Sącz, Kraków')
         self.assertNotIn('id="obszar-dzialania"', self.source)
         previous = 1
         for tag, text in self.page.headings:
