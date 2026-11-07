@@ -106,6 +106,21 @@ class MailTests(unittest.TestCase):
         self.assertEqual(broken, [])
         report['local_validation'] = 'passed'
 
+    def test_01b_confirmation_and_automatic_return(self):
+        b = self.browser
+        b.execute_cdp_cmd('Network.setBlockedURLs', {'urls': ['*formsubmit.co*']})
+        local_url = f'http://127.0.0.1:{self.server.server_port}/'
+        b.get(local_url + '?wyslano=1#kontakt')
+        dialog = b.find_element(By.ID, 'sendConfirmation')
+        self.assertTrue(b.execute_script('return arguments[0].open', dialog))
+        self.assertIn('Dziękujemy za zapytanie!', dialog.text)
+        WebDriverWait(b, 8).until(lambda d: d.current_url == local_url)
+        self.assertFalse(b.execute_script("return document.getElementById('sendConfirmation').open"))
+        b.get(local_url + '?wyslano=1#kontakt')
+        b.find_element(By.ID, 'returnHome').click()
+        WebDriverWait(b, 5).until(lambda d: d.current_url == local_url)
+        self.assertFalse(b.execute_script("return document.getElementById('sendConfirmation').open"))
+
     @unittest.skipUnless(args.live, 'Tryb lokalny: nie wysylamy wiadomosci.')
     def test_02_live_provider_and_optional_delivery(self):
         b = self.browser

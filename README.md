@@ -45,6 +45,8 @@ Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak dzi
 
 To samo kwadratowe logo jest ustawione jako favicon (ikona karty przeglądarki) i ikona skrótu na urządzeniach Apple. Po publikacji przeglądarka może przez pewien czas wyświetlać poprzednią ikonę z pamięci podręcznej; sprawdź nową kartę prywatną. Zmiana favicon nie usuwa komunikatu „Not secure” — wymaga on działającego HTTPS domeny.
 
+Po powrocie z FormSubmit pod adres z `?wyslano=1#kontakt` strona pokazuje okno podziękowania i po 5 sekundach wraca do początku, odświeżając stronę i formularz. Przycisk „Wróć teraz” pozwala wrócić wcześniej. Okno informuje o przekazaniu zapytania do wysłania, nie o potwierdzonym doręczeniu. Jest wyświetlane po powrocie z usługi, a nie przy samym kliknięciu „Wyślij”; jeśli FormSubmit zatrzyma użytkownika na własnym ekranie, okno naszej strony nie zostanie jeszcze pokazane.
+
 ## Uruchomienie lokalnie
 
 1. Zainstaluj Pythona, jeśli nie masz go na komputerze.

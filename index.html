@@ -853,6 +853,21 @@
       text-decoration: underline;
     }
 
+    .confirmation-dialog {
+      width: min(480px, 90vw);
+      padding: 36px 28px;
+      border: 1px solid var(--gold);
+      border-radius: 16px;
+      background: var(--paper);
+      color: var(--ink);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+    .confirmation-dialog::backdrop { background: rgba(56, 42, 22, .65); }
+    .confirmation-dialog h2 { font-size: clamp(28px, 6vw, 36px); }
+    .confirmation-dialog p { font-size: 14px; }
+    .confirmation-mark { font-size: 36px; color: var(--gold); }
+
     /* Stopka */
 
     footer {
@@ -1600,6 +1615,14 @@
     </div>
   </footer>
 
+  <dialog class="confirmation-dialog" id="sendConfirmation" aria-labelledby="confirmationTitle" aria-describedby="confirmationDescription">
+    <div class="confirmation-mark" aria-hidden="true">✓</div>
+    <h2 id="confirmationTitle">Dziękujemy za zapytanie!</h2>
+    <p id="confirmationDescription">Zapytanie zostało przekazane do wysłania. Odpowiemy na podany adres e-mail. Rezerwację terminu potwierdzimy osobno.</p>
+    <p>Powrót na stronę za <span id="returnCountdown">5</span> s.</p>
+    <button type="button" class="btn" id="returnHome" autofocus>Wróć teraz</button>
+  </dialog>
+
   <script>
     const eventDate = document.getElementById('date');
     const today = new Date();
@@ -1650,6 +1673,24 @@
       const cleanUrl = new URL(window.location.href);
       cleanUrl.searchParams.delete('wyslano');
       window.history.replaceState(null, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
+      const confirmation = document.getElementById('sendConfirmation');
+      const countdown = document.getElementById('returnCountdown');
+      let seconds = 5;
+      const returnToStart = function () {
+        window.clearInterval(returnTimer);
+        window.location.replace(window.location.pathname);
+      };
+      const returnTimer = window.setInterval(function () {
+        seconds -= 1;
+        countdown.textContent = seconds;
+        if (seconds <= 0) returnToStart();
+      }, 1000);
+      document.getElementById('returnHome').addEventListener('click', returnToStart);
+      confirmation.addEventListener('cancel', function (event) {
+        event.preventDefault();
+        returnToStart();
+      });
+      confirmation.showModal();
     }
 
     contactForm.addEventListener('submit', function () {
