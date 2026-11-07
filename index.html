@@ -1371,7 +1371,7 @@
 
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
-            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_url" value="https://konradpustelnik.github.io/MagnesowySwiat/">
             <input type="hidden" name="_next" value="https://konradpustelnik.github.io/MagnesowySwiat/?wyslano=1#kontakt">
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
 
@@ -1462,7 +1462,7 @@
             <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
 
             <p class="form-info">
-              Pola oznaczone * są obowiązkowe. Odpowiemy najszybciej, jak to możliwe.
+              Pola oznaczone * są obowiązkowe. Po kliknięciu otworzy się strona FormSubmit, na której może pojawić się weryfikacja antyspamowa.
               Możesz też napisać bezpośrednio na
               <a href="mailto:magnesowyswiat@gmail.com">magnesowyswiat@gmail.com</a>.
             </p>
@@ -1551,47 +1551,18 @@
       window.history.replaceState(null, '', cleanUrl.pathname + cleanUrl.search + cleanUrl.hash);
     }
 
-    contactForm.addEventListener('submit', async function (event) {
-      // Browsers without Fetch retain the regular HTML form submission.
-      if (!window.fetch || !window.AbortController) return;
-      event.preventDefault();
-      if (submitButton.disabled || !contactForm.reportValidity()) return;
-      const controller = new AbortController();
-      const timeout = window.setTimeout(function () { controller.abort(); }, 30000);
-      submitButton.disabled = true;
-      submitButton.textContent = 'Wysyłanie…';
-      contactForm.setAttribute('aria-busy', 'true');
+    contactForm.addEventListener('submit', function () {
+      submitButton.textContent = 'Przechodzenie do wysyłki…';
       formStatus.dataset.state = 'pending';
-      formStatus.textContent = 'Wysyłamy zapytanie. Poczekaj na potwierdzenie.';
-      try {
-        const data = new FormData(contactForm);
-        data.delete('_next');
-        data.set('_replyto', document.getElementById('email').value.trim());
-        const response = await fetch('https://formsubmit.co/ajax/magnesowyswiat@gmail.com', {
-          method: 'POST',
-          body: data,
-          headers: { 'Accept': 'application/json' },
-          signal: controller.signal
-        });
-        const result = await response.json();
-        if (!response.ok || !(result.success === true || result.success === 'true')) {
-          throw new Error('Submission was not accepted');
-        }
-        formStatus.dataset.state = 'success';
-        formStatus.textContent = 'Dziękujemy! Serwis przyjął zapytanie do wysłania. Odpowiemy na podany adres e-mail. Wysłanie zapytania nie oznacza rezerwacji terminu.';
-        contactForm.reset();
-      } catch (error) {
-        formStatus.dataset.state = 'error';
-        formStatus.replaceChildren(document.createTextNode('Nie udało się potwierdzić wysłania. Twoje dane pozostały w formularzu. Spróbuj ponownie lub napisz na '));
-        const emailLink = document.createElement('a');
-        emailLink.href = 'mailto:magnesowyswiat@gmail.com';
-        emailLink.textContent = 'magnesowyswiat@gmail.com';
-        formStatus.append(emailLink, document.createTextNode('. Jeśli wiadomość już dotarła, ponowna próba może wysłać ją drugi raz.'));
-      } finally {
-        window.clearTimeout(timeout);
-        submitButton.disabled = false;
-        submitButton.textContent = 'Wyślij zapytanie';
-        contactForm.removeAttribute('aria-busy');
+      formStatus.textContent = 'Za chwilę otworzy się strona wysyłki. Jeśli pojawi się weryfikacja, wykonaj ją, aby wysłać zapytanie.';
+    });
+
+    window.addEventListener('pageshow', function () {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Wyślij zapytanie';
+      if (formStatus.dataset.state === 'pending') {
+        formStatus.textContent = '';
+        delete formStatus.dataset.state;
       }
     });
 

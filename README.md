@@ -31,7 +31,7 @@ Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak dzi
 
 Jeśli port 8000 jest zajęty, uruchom serwer na innym porcie, np. `py -m http.server 8001`, a następnie odwiedź **http://localhost:8001/**.
 
-Formularz wysyła zapytania na `magnesowyswiat@gmail.com` przez FormSubmit. JavaScript korzysta z endpointu AJAX: pokazuje stan wysyłania, sprawdza odpowiedź usługi i czyści formularz dopiero po przyjęciu zgłoszenia. Przy błędzie lub przekroczeniu 30 sekund zachowuje dane i udostępnia bezpośredni adres e-mail. Bez JavaScript działa standardowy formularz HTML.
+Formularz wysyła zapytania na `magnesowyswiat@gmail.com` standardową metodą HTML POST do FormSubmit. Nie korzysta z AJAX ani Fetch, więc wysyłka nie zależy od dostępu CORS do API. Pole `_url` wskazuje publiczny adres strony; `_next` zawiera pełny adres powrotu. Włączona jest domyślna ochrona antyspamowa FormSubmit. Po kliknięciu użytkownik przechodzi do usługi i wykonuje weryfikację, jeśli zostanie wyświetlona. Formularz działa również bez JavaScript.
 
 Przed korzystaniem z formularza trzeba potwierdzić adres odbiorczy w wiadomości aktywacyjnej od FormSubmit. Akceptacja zgłoszenia przez API nie potwierdza doręczenia do skrzynki. Po publikacji wyślij próbne zapytanie z własnym adresem kontaktowym, sprawdź skrzynkę odbiorczą i spam oraz przetestuj odpowiedź na wiadomość. W razie wiadomości aktywacyjnej zatwierdź ją i ponów test. Wysłanie zapytania nie rezerwuje terminu.
 
