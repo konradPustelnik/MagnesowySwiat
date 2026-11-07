@@ -41,6 +41,14 @@ Nie otwieraj pliku `index.html` bezpośrednio przez `file://` do testowania wysy
 
 Wymagania: Windows, Python 3.10+ i Google Chrome. Otwórz terminal w folderze projektu. Pierwsze uruchomienie pobierze Selenium i odpowiedni sterownik Chrome; potrzebuje internetu. Nie wymaga Node.js ani hasła do poczty.
 
+**Prawdziwa wysyłka z lokalnego serwera, niezależna od DNS i domeny:**
+
+```powershell
+.\test-mail.cmd --local-live --confirm-delivery
+```
+
+Ten tryb sam uruchamia lokalny serwer HTTP, otwiera lokalny `index.html` i wysyła jedno prawdziwe zgłoszenie do FormSubmit. Wyłącznie w pamięci przeglądarki testowej zmienia adres powrotu `_next` na lokalny, żeby nie trafić na niedziałającą domenę. Nie zmienia plików strony ani odbiorcy. Sprawdza rzeczywistą wysyłkę lokalnego kodu; nie potwierdza poprawności domeny i powrotu na stronę produkcyjną. Bez `--confirm-delivery` sprawdza przyjęcie zgłoszenia, bez potwierdzenia odbioru.
+
 **Pełny test z potwierdzeniem odbioru:**
 
 ```powershell
@@ -64,7 +72,7 @@ Pozostałe tryby:
 
 Tryb lokalny blokuje połączenia z FormSubmit w przeglądarce. Sprawdza wymagane pola, błędny e-mail, datę z przeszłości, konfigurację odbiorcy i odnośniki wewnętrzne. W trybie `--live` test korzysta z opublikowanego kodu, więc najpierw trzeba wdrożyć zmiany, które chcesz sprawdzić.
 
-Raport JSON i zrzuty przeglądarki są zapisywane w `test-results/`. `provider_accepted: true` oznacza powrót po obsłudze zgłoszenia przez FormSubmit; dopiero `delivery: confirmed_by_owner` oznacza ręcznie potwierdzony odbiór wiadomości z kodem. Raporty, środowisko `.venv-tests/` i zrzuty nie trafiają do Git. Test zakończony powodzeniem potwierdza działanie w chwili uruchomienia, nie gwarantuje przyszłej dostępności usług pocztowych.
+Raport JSON i zrzuty przeglądarki są zapisywane w `test-results/`. `provider_accepted: true` oznacza ekran FormSubmit „The form was submitted successfully” lub powrót po obsłudze zgłoszenia; dopiero `delivery: confirmed_by_owner` oznacza ręcznie potwierdzony odbiór wiadomości z kodem. Raporty, środowisko `.venv-tests/` i zrzuty nie trafiają do Git. Test zakończony powodzeniem potwierdza działanie w chwili uruchomienia, nie gwarantuje przyszłej dostępności usług pocztowych.
 
 Przy błędzie aktywacji zatwierdź wiadomość „Activate Form” w skrzynce. Przy innym błędzie sprawdź zrzut w `test-results/` — nie zakładaj, że HTTP 200 lub sam parametr `wyslano=1` potwierdza dostarczenie e-maila.
 

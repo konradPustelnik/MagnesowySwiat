@@ -19,21 +19,30 @@ PUBLIC_URL = 'https://konradpustelnik.github.io/MagnesowySwiat/'
 RECIPIENT = 'magnesowyswiat@gmail.com'
 parser = argparse.ArgumentParser(description='Test formularza w Chrome (domyslnie bez wysylania e-maila).')
 parser.add_argument('--live', action='store_true', help='Wyslij JEDNO prawdziwe zgloszenie testowe.')
+parser.add_argument('--local-live', action='store_true', help='Wyslij prawdziwe zgloszenie z lokalnego serwera, bez domeny.')
 parser.add_argument('--confirm-delivery', action='store_true', help='Potwierdz kod z odebranej wiadomosci.')
 parser.add_argument('--url', default=PUBLIC_URL, help='Adres opublikowanej strony (domyslnie GitHub Pages).')
 args = parser.parse_args()
+if args.local_live:
+    args.live = True
 if args.confirm_delivery and not args.live:
     parser.error('--confirm-delivery wymaga --live')
 
 RESULTS = ROOT / 'test-results'
 RESULTS.mkdir(exist_ok=True)
-report = {'started_utc': datetime.now(timezone.utc).isoformat(), 'mode': 'live' if args.live else 'local',
+report = {'started_utc': datetime.now(timezone.utc).isoformat(), 'mode': 'local-live' if args.local_live else ('live' if args.live else 'local'),
           'provider_accepted': False, 'delivery': 'not_checked'}
 
 
 class QuietHandler(SimpleHTTPRequestHandler):
     def log_message(self, *args):
         pass
+
+    def handle(self):
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # Chrome may close speculative connections during teardown.
 
 
 class MailTests(unittest.TestCase):
@@ -101,11 +110,17 @@ class MailTests(unittest.TestCase):
     def test_02_live_provider_and_optional_delivery(self):
         b = self.browser
         b.execute_cdp_cmd('Network.setBlockedURLs', {'urls': []})
-        b.get(args.url)
-        report['requested_url'] = args.url
+        source_url = f'http://127.0.0.1:{self.server.server_port}/' if args.local_live else args.url
+        b.get(source_url)
+        report['requested_url'] = source_url
         report['landing_url'] = b.current_url
         self.assertTrue(b.find_elements(By.ID, 'contactForm'),
             'Pod adresem ' + b.current_url + ' nie ma formularza contactForm. Tytul strony: ' + b.title)
+        if args.local_live:
+            # Only the return destination changes, in this test browser, not in source.
+            # Production return still depends on the public domain and is not tested here.
+            b.execute_script("document.querySelector('[name=\"_next\"]').value = arguments[0]", source_url + '?wyslano=1#kontakt')
+            report['return_url_overridden_for_local_test'] = True
         marker = 'MS-TEST-' + uuid.uuid4().hex[:12].upper()
         report['marker'] = marker
         self.fill_form(marker)
@@ -129,6 +144,9 @@ class MailTests(unittest.TestCase):
                     return True
             if url.hostname == 'formsubmit.co':
                 text = driver.find_element(By.TAG_NAME, 'body').text.lower()
+                if 'the form was submitted successfully.' in text:
+                    report['acceptance_evidence'] = 'provider_success_page'
+                    return True
                 for failure in ('needs activation', 'unable to submit', 'not a robot', 'something went wrong', 'error'):
                     if failure in text:
                         raise AssertionError('FormSubmit nie potwierdzil wysylki: ' + text[:700])
@@ -137,7 +155,7 @@ class MailTests(unittest.TestCase):
         WebDriverWait(b, 45).until(accepted_or_rejected,
             'Brak potwierdzonego powrotu z FormSubmit. Zobacz zrzut w test-results. Nie ponawiam automatycznie.')
         report['provider_accepted'] = True
-        print('PASS: rzeczywisty formularz przeszedl przez FormSubmit i wrocil na strone.', flush=True)
+        print('PASS: FormSubmit potwierdzil przyjecie rzeczywistego formularza.', flush=True)
         if args.confirm_delivery:
             print(f'Otworz {RECIPIENT} (takze spam). Znajdz NOWA wiadomosc z kodem {marker}.', flush=True)
             answer = input('Przepisz kod z TRESCI odebranego e-maila (Enter = brak potwierdzenia): ').strip()
@@ -145,7 +163,8 @@ class MailTests(unittest.TestCase):
             report['delivery'] = 'confirmed_by_owner'
             print('PASS: wlasciciel potwierdzil odebranie wiadomosci z unikalnym kodem.', flush=True)
         else:
-            print('DORECZENIE NIEZWERYFIKOWANE. Pelny test: test-mail.cmd --live --confirm-delivery', flush=True)
+            mode_flag = '--local-live' if args.local_live else '--live'
+            print(f'DORECZENIE NIEZWERYFIKOWANE. Pelny test: test-mail.cmd {mode_flag} --confirm-delivery', flush=True)
 
 
 if __name__ == '__main__':
