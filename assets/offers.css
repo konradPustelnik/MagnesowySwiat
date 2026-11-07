@@ -1,14 +1,13 @@
 .offers { padding-top: 32px; }
 .offer-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.offer-card { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: var(--paper); box-shadow: var(--shadow); transition: transform .2s, border-color .2s; }
-.offer-card:hover { transform: translateY(-4px); border-color: var(--gold); }
-.offer-image { position: relative; }
-.offer-image img { height: 280px; }
-.offer-label { position: absolute; left: 18px; bottom: 18px; max-width: calc(100% - 36px); background: var(--paper); border: 1px solid var(--line); padding: 6px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; color: var(--olive-dark); }
-.offer-content { flex: 1; display: flex; flex-direction: column; padding: 26px; }
-.offer-content h3 { margin: 0 0 12px; font-size: clamp(25px, 3vw, 32px); }
-.offer-content p { margin: 0 0 24px; font-size: 14px; }
-.offer-action { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-top: auto; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--olive); font-weight: 700; }
+.offer-card { display: flex; flex-direction: column; }
+.offer-image { overflow: hidden; border-radius: 20px; }
+.offer-image img { height: auto; aspect-ratio: 7 / 5; transition: transform .2s; }
+.offer-card:hover .offer-image img { transform: scale(1.02); }
+.offer-card:hover h3 { color: var(--olive); }
+.offer-content { padding: 18px 0 0; }
+.offer-content h3 { margin: 0 0 6px; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: clamp(22px, 2.2vw, 26px); }
+.offer-content p { margin: 0; font-size: 14px; }
 .service-hero { display: grid; grid-template-columns: 1.15fr 1fr; gap: 48px; align-items: center; padding: 36px 0 48px; }
 .service-hero h1 { margin: 12px 0 20px; font-size: clamp(34px, 4vw, 52px); }
 .service-hero h1 span { color: var(--olive); }
@@ -39,10 +38,9 @@
 }
 @media (max-width: 650px) {
   .offer-grid, .service-grid, .service-hero { grid-template-columns: 1fr; }
-  .offer-image img { height: 230px; }
-  .offer-content { padding: 22px; }
+  .offer-content { padding: 14px 0 0; }
   .service-hero { gap: 22px; padding-top: 24px; }
   .service-hero img { height: 300px; }
   .service-cta { padding: 24px 18px; }
 }
-@media (prefers-reduced-motion: reduce) { .offer-card { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .offer-image img { transition: none; } }
