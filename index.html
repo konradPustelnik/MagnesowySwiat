@@ -167,7 +167,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 25px;
+      gap: clamp(10px, 1.4vw, 18px);
     }
 
     .logo {
@@ -177,18 +177,14 @@
     }
 
     .header-wordmark {
-      color: var(--olive-dark);
+      display: block;
       flex-shrink: 0;
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(18px, 2vw, 22px);
-      font-weight: 600;
-      letter-spacing: .02em;
-      line-height: 1;
-      white-space: nowrap;
     }
 
-    .header-wordmark span {
-      color: var(--olive);
+    .header-wordmark img {
+      display: block;
+      width: clamp(150px, 18vw, 245px);
+      height: auto;
     }
 
     .nav-links {
@@ -912,7 +908,7 @@
   <header>
     <div class="container nav">
       <a class="header-wordmark" href="#start" aria-label="Magnesowy Świat — strona główna">
-        Magnesowy <span>Świat</span>
+        <img src="logo-magnesowy-swiat-wordmark.png" alt="">
       </a>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
