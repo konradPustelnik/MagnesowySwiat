@@ -117,6 +117,16 @@ Raport JSON i zrzuty przeglądarki są zapisywane w `test-results/`. `provider_a
 
 **Jak czytać wynik:** `tests_passed: true` oznacza przejście testów wybranego trybu, a nie automatycznie sprawną pocztę. W trybie lokalnym test wysyłki jest pomijany. `delivery: not_checked` oznacza brak potwierdzenia doręczenia, również gdy test usługi zakończył się `OK`. Raport `report.json` jest zastępowany przy kolejnym uruchomieniu; przed następną próbą zachowaj kopię raportu i kodu zgłoszenia, jeśli chcesz porównywać wyniki. Nie przepisuj kodu z terminala jako dowodu odbioru — ma pochodzić z nowej wiadomości w skrzynce.
 
+Aktualizacja testów: każde uruchomienie zapisuje również osobny raport z datą w nazwie, więc wcześniejsze raporty JSON nie są już tracone. Pole `end_to_end_passed` jest prawdziwe tylko po ręcznym potwierdzeniu kodu z odebranej wiadomości. Tryb live bez potwierdzenia odbioru kończy się kodem **2 (wynik niepełny)**, nawet jeśli techniczne scenariusze unittest pokazały `OK`. Kod 1 oznacza błąd, a 0 — zaliczenie wybranego trybu (w lokalnym nadal bez wysyłki).
+
+Regresja znaków specjalnych: lokalny test wysyła prawdziwy POST do kontrolowanego serwera testowego i porównuje odebraną treść znak po znaku, w tym `:()@&%$#*($#^*!@(#&#@%&@(#$@!`. Nie usuwa ani nie podmienia znaków. Na serwerze produkcyjnym zgłoszenie z tym ciągiem zostało przyjęte przez FormSubmit (kod testu `MS-TEST-1D9FE5A5C1A0`), ale właściciel potwierdził, że wiadomość **nie dotarła**. Test doręczenia jest więc niezaliczony. Przesłanie znaków przez formularz jest poprawne; bez logów dostawcy i poczty nie ustalono, na którym etapie po przyjęciu zgłoszenia wiadomość została zatrzymana. Nie należy zmieniać kodowania ani usuwać znaków jako pozornej naprawy.
+
+Pełne powtórzenie testu dokładnego ciągu (wysyła jedną wiadomość; kod jest w temacie, aby nie zmieniać treści badanego pola):
+
+```powershell
+.\test-mail.cmd --live --special-characters --confirm-delivery
+```
+
 Przy błędzie aktywacji zatwierdź wiadomość „Activate Form” w skrzynce. Przy innym błędzie sprawdź zrzut w `test-results/` — nie zakładaj, że HTTP 200 lub sam parametr `wyslano=1` potwierdza dostarczenie e-maila.
 
 ## Testy SEO — bez publikacji i wysyłania e-maili

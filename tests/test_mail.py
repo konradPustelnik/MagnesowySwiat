@@ -4,6 +4,7 @@ from datetime import date, timedelta, datetime, timezone
 from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 import json
+import queue
 from pathlib import Path
 import threading
 import unittest
@@ -17,10 +18,12 @@ from selenium.webdriver.support.ui import Select, WebDriverWait
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC_URL = 'https://magnesowyswiat.pl/'
 RECIPIENT = 'magnesowyswiat@gmail.com'
+SPECIAL_MESSAGE = ':()@&%$#*($#^*!@(#&#@%&@(#$@!'
 parser = argparse.ArgumentParser(description='Test formularza w Chrome (domyslnie bez wysylania e-maila).')
 parser.add_argument('--live', action='store_true', help='Wyslij JEDNO prawdziwe zgloszenie testowe.')
 parser.add_argument('--local-live', action='store_true', help='Wyslij prawdziwe zgloszenie z lokalnego serwera, bez domeny.')
 parser.add_argument('--confirm-delivery', action='store_true', help='Potwierdz kod z odebranej wiadomosci.')
+parser.add_argument('--special-characters', action='store_true', help='W trybie live wyslij dokladny zgloszony ciag znakow specjalnych; kod testu znajdzie sie w temacie.')
 parser.add_argument('--url', default=PUBLIC_URL, help='Adres opublikowanej strony (domyslnie https://magnesowyswiat.pl/).')
 args = parser.parse_args()
 if args.local_live:
@@ -44,11 +47,26 @@ class QuietHandler(SimpleHTTPRequestHandler):
         except (BrokenPipeError, ConnectionResetError):
             pass  # Chrome may close speculative connections during teardown.
 
+    def do_POST(self):
+        if self.path != '/capture-mail-test':
+            self.send_error(404)
+            return
+        body = self.rfile.read(int(self.headers['Content-Length']))
+        self.server.captured_mail.put({
+            'content_type': self.headers.get('Content-Type', ''),
+            'fields': parse_qs(body.decode('ascii'), encoding='utf-8', errors='strict', keep_blank_values=True)
+        })
+        self.send_response(200)
+        self.send_header('Content-Type', 'text/html; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(b'<h1>Local transport test only - no email sent</h1>')
+
 
 class MailTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.server = ThreadingHTTPServer(('127.0.0.1', 0), partial(QuietHandler, directory=str(ROOT)))
+        cls.server.captured_mail = queue.Queue()
         threading.Thread(target=cls.server.serve_forever, daemon=True).start()
         cls.addClassCleanup(cls.server.server_close)
         cls.addClassCleanup(cls.server.shutdown)
@@ -96,7 +114,7 @@ class MailTests(unittest.TestCase):
         self.fill_form('LOCAL-NO-EMAIL')
         self.assertTrue(b.execute_script('return arguments[0].checkValidity()', form))
         # Verify the optional message is serialized intact, without contacting the provider.
-        for message in ('', 'rabacik ?', 'Proszę o ofertę na wesele.\nŁącznie 150 gości — zdjęcia z rodziną.'):
+        for message in ('', 'rabacik ?', SPECIAL_MESSAGE, 'Proszę o ofertę na wesele.\nŁącznie 150 gości — zdjęcia z rodziną.'):
             b.execute_script("document.getElementById('message').value = arguments[0]", message)
             self.assertTrue(b.execute_script('return arguments[0].checkValidity()', form))
             serialized = b.execute_script("return new FormData(arguments[0]).get('Wiadomość')", form)
@@ -112,6 +130,22 @@ class MailTests(unittest.TestCase):
         broken = b.execute_script("return Array.from(document.querySelectorAll('a[href^=\"#\"]')).filter(a => !document.getElementById(a.hash.slice(1))).map(a => a.hash)")
         self.assertEqual(broken, [])
         report['local_validation'] = 'passed'
+
+    def test_01a_real_http_preserves_special_characters(self):
+        b = self.browser
+        b.execute_cdp_cmd('Network.setBlockedURLs', {'urls': ['*formsubmit.co*']})
+        local_url = f'http://127.0.0.1:{self.server.server_port}/'
+        for message in ('rabacik ?', SPECIAL_MESSAGE, 'Zażółć gęślą jaźń & + % # = ?'):
+            b.get(local_url)
+            self.fill_form('LOCAL-HTTP-NO-EMAIL')
+            b.execute_script("document.getElementById('message').value = arguments[0]", message)
+            b.execute_script("document.getElementById('contactForm').action = arguments[0]", local_url + 'capture-mail-test')
+            b.find_element(By.CSS_SELECTOR, '#contactForm [type="submit"]').click()
+            captured = self.server.captured_mail.get(timeout=5)
+            self.assertTrue(captured['content_type'].startswith('application/x-www-form-urlencoded'))
+            self.assertEqual(captured['fields']['Wiadomość'], [message])
+            self.assertEqual(captured['fields']['_honey'], [''])
+        report['special_characters_http_transport'] = 'passed'
 
     def test_01b_confirmation_and_automatic_return(self):
         b = self.browser
@@ -146,6 +180,10 @@ class MailTests(unittest.TestCase):
         marker = 'MS-TEST-' + uuid.uuid4().hex[:12].upper()
         report['marker'] = marker
         self.fill_form(marker)
+        if args.special_characters:
+            b.execute_script("document.getElementById('message').value = arguments[0]", SPECIAL_MESSAGE)
+            b.execute_script("document.querySelector('[name=\"_subject\"]').value += ' - ' + arguments[0]", marker)
+            report['message_case'] = 'exact_special_characters'
         form = b.find_element(By.ID, 'contactForm')
         self.assertTrue(b.execute_script('return arguments[0].checkValidity()', form))
         self.assertEqual(form.get_attribute('action'), f'https://formsubmit.co/{RECIPIENT}')
@@ -186,7 +224,8 @@ class MailTests(unittest.TestCase):
             print('PASS: wlasciciel potwierdzil odebranie wiadomosci z unikalnym kodem.', flush=True)
         else:
             mode_flag = '--local-live' if args.local_live else '--live'
-            print(f'DORECZENIE NIEZWERYFIKOWANE. Pelny test: test-mail.cmd {mode_flag} --confirm-delivery', flush=True)
+            case_flag = ' --special-characters' if args.special_characters else ''
+            print(f'DORECZENIE NIEZWERYFIKOWANE. Pelny test: test-mail.cmd {mode_flag}{case_flag} --confirm-delivery', flush=True)
 
 
 if __name__ == '__main__':
@@ -194,7 +233,17 @@ if __name__ == '__main__':
     try:
         result = unittest.TextTestRunner(verbosity=2).run(suite)
         report['tests_passed'] = result.wasSuccessful()
+        report['end_to_end_passed'] = args.live and result.wasSuccessful() and report['delivery'] == 'confirmed_by_owner'
+        report['outcome'] = ('failed' if not result.wasSuccessful() else
+                             'delivery_confirmed' if report['end_to_end_passed'] else
+                             'delivery_unverified' if args.live else 'local_checks_only')
     finally:
-        (RESULTS / 'report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
+        serialized_report = json.dumps(report, ensure_ascii=False, indent=2)
+        (RESULTS / 'report.json').write_text(serialized_report, encoding='utf-8')
+        timestamp = report['started_utc'].replace(':', '-').replace('+', '_')
+        (RESULTS / ('report-' + timestamp + '.json')).write_text(serialized_report, encoding='utf-8')
     print('Raport i zrzuty: ' + str(RESULTS))
+    if args.live and result.wasSuccessful() and not report['end_to_end_passed']:
+        print('WYNIK NIEPELNY: usluga przyjela zgloszenie, ale nie potwierdzono odbioru e-maila (kod wyjscia 2).')
+        raise SystemExit(2)
     raise SystemExit(0 if result.wasSuccessful() else 1)
