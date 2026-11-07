@@ -2,6 +2,8 @@
 
 Prosta strona wizytówka w jednym pliku HTML.
 
+**Aktualizacja wyglądu i treści:** na prośbę właściciela cofnięto promowanie Limanowej w nagłówku i metadanych oraz usunięto sekcję lokalnego zasięgu wraz z jej odnośnikami. Przywrócono poprzedni ogólny tekst wstępu i informacje o dojeździe. Zachowano poprawki techniczne domeny, favicon, format magnesów 6,35 × 6,35 cm, brązowe tło i okno potwierdzenia formularza. Audyt i propozycje lokalnego SEO poniżej oraz w osobnym dokumencie są zapisem wcześniejszych prac, nie opisem obecnej treści strony.
+
 ## Strona internetowa
 
 **Docelowy adres strony:** [https://magnesowyswiat.pl/](https://magnesowyswiat.pl/)

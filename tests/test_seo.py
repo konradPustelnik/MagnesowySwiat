@@ -68,19 +68,13 @@ class SEOTests(unittest.TestCase):
         self.assertEqual([u.text for u in urls], [CANONICAL])
         descriptions = [a['content'] for t, a in self.page.tags if t == 'meta' and a.get('name') == 'description']
         self.assertEqual(len(descriptions), 1)
-        self.assertIn('Limanowa', descriptions[0])
-        self.assertIn('Magnesy na wesele', descriptions[0])
+        self.assertIn('Magnesowy Świat', descriptions[0])
 
-    def test_headings_and_local_content(self):
+    def test_headings_and_general_content(self):
         h1 = [text for tag, text in self.page.headings if tag == 'h1']
         self.assertEqual(len(h1), 1)
-        self.assertIn('Fotomagnesy', h1[0])
-        self.assertIn('Limanow', h1[0])
-        self.assertIn('powiat limanowski', self.source)
-        self.assertIn('powiat nowosądecki', self.source)
-        self.assertIn('Nowy Sącz', self.source)
-        self.assertIn('Dalszy dojazd jest dodatkowo płatny.', self.source)
-        self.assertIn('przed potwierdzeniem rezerwacji', self.source)
+        self.assertIn('Wspomnienia, do których', h1[0])
+        self.assertNotIn('id="obszar-dzialania"', self.source)
         previous = 1
         for tag, text in self.page.headings:
             level = int(tag[1])
@@ -94,7 +88,7 @@ class SEOTests(unittest.TestCase):
         service = next(n for n in nodes if n['@type'] == 'Service')
         self.assertEqual(org['email'], 'magnesowyswiat@gmail.com')
         self.assertEqual(org['url'], CANONICAL)
-        self.assertEqual({a['name'] for a in service['areaServed']}, {'powiat limanowski', 'powiat nowosądecki'})
+        self.assertNotIn('areaServed', service)
         serialized = json.dumps(nodes)
         for forbidden in ('aggregateRating', 'review', 'streetAddress', 'telephone', 'openingHours', 'geo'):
             self.assertNotIn('"' + forbidden + '"', serialized)

@@ -1,5 +1,7 @@
 # Audyt i plan lokalnego SEO — Magnesowy Świat
 
+**Dokument historyczny:** właściciel następnie zlecił cofnięcie lokalnej promocji Limanowej. Usunięto sekcję zasięgu i jej odnośniki oraz lokalne frazy w metadanych/H1 i areaServed. Poniższe opisy i wyniki dotyczą wcześniejszej wersji. Zachowano niezwiązane poprawki techniczne i późniejsze funkcje strony.
+
 Data: 7 listopada 2026. Stan wyjściowy kodu: commit `0915756`.
 Zakres początkowy: lokalne przygotowanie zmian. **Aktualizacja 7 listopada 2026: właściciel zatwierdził publikację wszystkich przygotowanych zmian i ponownie zezwolił na publikowanie kolejnych sprawdzonych poprawek bez pytania. Wcześniejsze wstrzymanie publikacji tej partii zostało odwołane.**
 
