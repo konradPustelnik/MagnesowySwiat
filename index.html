@@ -425,23 +425,24 @@
 
     .pricing-grid {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 18px;
       align-items: stretch;
     }
 
     .price-card {
       background: var(--paper);
-      padding: 29px 23px;
+      padding: 30px 22px 24px;
       border: 1px solid var(--line);
+      min-width: 0;
+      height: 100%;
       display: flex;
       flex-direction: column;
       position: relative;
     }
 
     .price-card.featured {
-      border: 2px solid var(--olive);
-      transform: translateY(-8px);
+      border: 2px solid var(--gold);
     }
 
     .popular {
@@ -449,58 +450,63 @@
       top: -13px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--olive);
-      color: white;
-      padding: 5px 13px;
+      background: var(--gold);
+      color: var(--olive-dark);
+      padding: 4px 11px;
       font-size: 9px;
       text-transform: uppercase;
       letter-spacing: 1px;
+      font-weight: 700;
       white-space: nowrap;
     }
 
     .price-card h3 {
-      font-size: 25px;
-      margin: 0 0 7px;
-    }
-
-    .price-range {
-      font-family: 'Playfair Display', serif;
-      color: var(--olive);
-      font-size: 24px;
-      margin-bottom: 8px;
+      font-size: clamp(20px, 2vw, 25px);
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin: 0 0 12px;
     }
 
     .price-amount {
-      font-size: 20px;
+      font-family: 'Playfair Display', serif;
+      color: var(--olive);
+      font-size: clamp(25px, 2.4vw, 31px);
+      line-height: 1.2;
       font-weight: 600;
-      margin-bottom: 4px;
+      margin-bottom: 18px;
     }
 
-    .service-time {
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 15px;
+    .package-details {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 17px;
+      border-top: 1px solid var(--line);
     }
 
-    .price-card p {
+    .package-details li {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
       font-size: 12px;
-      min-height: 55px;
+      line-height: 1.45;
     }
 
-    .price-card p.service-time {
-      font-size: 11px;
-      min-height: 0;
-      margin: 0 0 15px;
+    .package-details strong {
+      color: var(--ink);
+      font-size: 13px;
+      font-weight: 600;
     }
 
-    .price-card ul {
-      padding-left: 17px;
-      margin: 10px 0 25px;
-      font-size: 12px;
+    .package-details span {
       color: var(--muted);
     }
 
-    .price-card li { margin-bottom: 9px; }
+    .price-card .package-description {
+      flex: 1;
+      font-size: 12px;
+      margin: 0 0 22px;
+    }
 
     .price-card .btn {
       width: 100%;
@@ -509,11 +515,75 @@
       font-size: 11px;
     }
 
+    .price-card.featured .btn {
+      background: var(--gold);
+      color: var(--olive-dark);
+      border-color: var(--gold);
+    }
+
+    .price-card.featured .btn:hover {
+      background: var(--olive-dark);
+      color: white;
+      border-color: var(--olive-dark);
+    }
+
+    .package-includes {
+      margin: 56px 0 0;
+      padding: 35px 38px;
+      background: var(--paper);
+      border: 1px solid var(--line);
+    }
+
+    .package-includes h3 {
+      text-align: center;
+      font-size: clamp(23px, 3vw, 30px);
+      margin: 0 0 26px;
+    }
+
+    .inclusions-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px 30px;
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .inclusions-grid li {
+      display: flex;
+      align-items: flex-start;
+      gap: 11px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    .inclusion-icon {
+      flex: 0 0 auto;
+      color: var(--gold);
+      font-size: 16px;
+      line-height: 1.35;
+    }
+
+    .pricing-custom {
+      max-width: 690px;
+      margin: 42px auto 0;
+      text-align: center;
+    }
+
+    .pricing-custom p {
+      margin: 0 auto 20px;
+    }
+
+    .pricing-custom .btn {
+      padding: 13px 22px;
+    }
+
     .pricing-note {
       text-align: center;
-      font-size: 12px;
-      margin: 35px auto 0;
-      max-width: 700px;
+      font-size: 11px;
+      line-height: 1.6;
+      margin: 22px auto 0;
+      max-width: 780px;
     }
 
     /* Personalizacja */
@@ -730,10 +800,10 @@
     @media (max-width: 900px) {
       .occasion-grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
       .feature-grid { grid-template-columns: repeat(2, 1fr); }
+      .inclusions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
       .hero { gap: 30px; }
       .hero-photo img { height: 400px; }
       .hero-photo { min-height: 400px; }
-      .price-card.featured { transform: none; }
     }
 
     @media (max-width: 760px) {
@@ -809,6 +879,9 @@
       .personalization {
         grid-template-columns: 1fr;
       }
+
+      .inclusions-grid { grid-template-columns: 1fr; }
+      .package-includes { padding: 28px 22px; }
 
       .occasion-card img { height: 220px; }
 
@@ -1068,61 +1141,76 @@
         <div class="section-heading">
           <div class="eyebrow">Wybierz coś dla siebie</div>
           <h2>Nasze pakiety</h2>
-          <p>
-            Dopasujemy liczbę magnesów do wielkości wydarzenia.
-            Ostateczną ofertę przygotujemy indywidualnie.
-          </p>
+          <p>Wybierz pakiet dopasowany do charakteru wydarzenia, liczby magnesów i czasu obsługi.</p>
         </div>
 
         <div class="pricing-grid">
 
           <article class="price-card">
             <h3>Mini</h3>
-            <div class="price-range">50–100 magnesów</div>
-            <div class="price-amount">1 000 zł</div>
-            <p class="service-time">Około 2 godz. obsługi</p>
-            <p>Na kameralne przyjęcia, urodziny i mniejsze uroczystości.</p>
+            <div class="price-amount">1 190 zł</div>
+            <ul class="package-details">
+              <li><strong>Do 100 magnesów</strong><span>fotograficznych</span></li>
+              <li><strong>Do 3 godzin</strong><span>obsługi wydarzenia</span></li>
+            </ul>
+            <p class="package-description">Idealny na kameralne uroczystości, urodziny i mniejsze przyjęcia. Wyjątkowa pamiątka dla najbliższych.</p>
             <a href="#kontakt" class="btn btn-outline choose-package" data-package="Mini">Zapytaj o pakiet</a>
           </article>
 
-          <article class="price-card featured">
-            <div class="popular">Często wybierany</div>
+          <article class="price-card">
             <h3>Standard</h3>
-            <div class="price-range">150–250 magnesów</div>
-            <div class="price-amount">2 000 zł</div>
-            <p class="service-time">3–4 godz. obsługi</p>
-            <p>Uniwersalny wybór na wesele i przyjęcie średniej wielkości.</p>
-            <a href="#kontakt" class="btn choose-package" data-package="Standard">Zapytaj o pakiet</a>
+            <div class="price-amount">1 490 zł</div>
+            <ul class="package-details">
+              <li><strong>Do 150 magnesów</strong><span>fotograficznych</span></li>
+              <li><strong>Do 4 godzin</strong><span>obsługi wydarzenia</span></li>
+            </ul>
+            <p class="package-description">Doskonały wybór na przyjęcia rodzinne, jubileusze i wesela z mniejszą liczbą gości.</p>
+            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Standard">Zapytaj o pakiet</a>
           </article>
 
-          <article class="price-card">
+          <article class="price-card featured">
+            <div class="popular">Polecany</div>
             <h3>Gold</h3>
-            <div class="price-range">300–400 magnesów</div>
-            <div class="price-amount">3 000 zł</div>
-            <p class="service-time">4–5 godz. obsługi</p>
-            <p>Większa pula magnesów na duże wesela i wydarzenia.</p>
-            <a href="#kontakt" class="btn btn-outline choose-package" data-package="Gold">Zapytaj o pakiet</a>
+            <div class="price-amount">2 390 zł</div>
+            <ul class="package-details">
+              <li><strong>Do 250 magnesów</strong><span>fotograficznych</span></li>
+              <li><strong>Do 5 godzin</strong><span>obsługi wydarzenia</span></li>
+            </ul>
+            <p class="package-description">Świetny wybór na wesela i większe uroczystości. Więcej zdjęć, więcej uśmiechów i jeszcze więcej wspomnień.</p>
+            <a href="#kontakt" class="btn choose-package" data-package="Gold">Zapytaj o pakiet</a>
           </article>
 
           <article class="price-card">
             <h3>Premium</h3>
-            <div class="price-range">400–600 magnesów</div>
-            <div class="price-amount">5 000 zł</div>
-            <p class="service-time">6 godz. obsługi</p>
-            <p>Największa pula magnesów i dodatkowy motyw pamiątkowy dopasowany do wydarzenia.</p>
+            <div class="price-amount">3 290 zł</div>
+            <ul class="package-details">
+              <li><strong>Do 350 magnesów</strong><span>fotograficznych</span></li>
+              <li><strong>Do 6 godzin</strong><span>obsługi wydarzenia</span></li>
+            </ul>
+            <p class="package-description">Rozbudowany pakiet na duże wesela, jubileusze i eventy firmowe. Jeszcze więcej wyjątkowych pamiątek dla uczestników.</p>
             <a href="#kontakt" class="btn btn-outline choose-package" data-package="Premium">Zapytaj o pakiet</a>
           </article>
 
         </div>
 
-        <p class="pricing-note">
-          W każdym pakiecie wykonujemy gościom profesjonalne zdjęcia na miejscu,
-          przygotowujemy fotomagnesy podczas wydarzenia i dopasowujemy projekt do okazji.
-          Na życzenie możemy też zrobić magnes ze zdjęcia wykonanego telefonem gościa.
-          <br><br>
-          Pakiet Premium może dodatkowo obejmować pamiątkowy motyw wydarzenia —
-          na weselu np. zdjęcie Pary Młodej, a przy evencie firmowym logo lub zdjęcie organizatora.
-        </p>
+        <div class="package-includes">
+          <h3>Co zawiera każdy pakiet?</h3>
+          <ul class="inclusions-grid">
+            <li><span class="inclusion-icon" aria-hidden="true">✦</span><span>Fotografowanie gości podczas wydarzenia.</span></li>
+            <li><span class="inclusion-icon" aria-hidden="true">✦</span><span>Produkcję magnesów fotograficznych na miejscu.</span></li>
+            <li><span class="inclusion-icon" aria-hidden="true">✦</span><span>Magnesy o wymiarach około 6,35 × 6,35 cm.</span></li>
+            <li><span class="inclusion-icon" aria-hidden="true">✦</span><span>Personalizację magnesów, np. datę uroczystości, imiona lub motyw wydarzenia.</span></li>
+            <li><span class="inclusion-icon" aria-hidden="true">✦</span><span>Sprzęt i materiały potrzebne do wykonania usługi.</span></li>
+            <li><span class="inclusion-icon" aria-hidden="true">✦</span><span>Wydawanie gotowych magnesów gościom jeszcze podczas uroczystości.</span></li>
+          </ul>
+        </div>
+
+        <div class="pricing-custom">
+          <p>Nie znalazłeś pakietu dla siebie? Przygotujemy indywidualną ofertę dopasowaną do liczby gości, charakteru wydarzenia i Twoich oczekiwań.</p>
+          <a href="#kontakt" class="btn choose-package" data-package="Oferta indywidualna">Zapytaj o indywidualną ofertę</a>
+        </div>
+
+        <p class="pricing-note">Podane ceny dotyczą wskazanego zakresu usługi. Koszt dojazdu poza ustalony obszar wyceniany jest indywidualnie. Liczba magnesów oznacza maksymalny limit w ramach pakietu. Szczegóły realizacji potwierdzamy przed zawarciem umowy.</p>
       </div>
     </section>
 
@@ -1280,10 +1368,10 @@
                 <label for="package">Interesujący pakiet</label>
                 <select id="package" name="Wybrany pakiet">
                   <option value="">Nie wiem – poproszę o doradztwo</option>
-                  <option>Mini (50–100 magnesów, 1 000 zł)</option>
-                  <option>Standard (150–250 magnesów, 2 000 zł)</option>
-                  <option>Gold (300–400 magnesów, 3 000 zł)</option>
-                  <option>Premium (400–600 magnesów, 5 000 zł)</option>
+                  <option>Mini — do 100 magnesów — 1 190 zł</option>
+                  <option>Standard — do 150 magnesów — 1 490 zł</option>
+                  <option>Gold — do 250 magnesów — 2 390 zł</option>
+                  <option>Premium — do 350 magnesów — 3 290 zł</option>
                   <option>Oferta indywidualna / firmowa</option>
                 </select>
               </div>
