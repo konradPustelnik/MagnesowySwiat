@@ -5,3 +5,4 @@
 - Make focused, complete changes that fit the existing site. Avoid unrelated edits, preserve existing behavior unless a change is needed, and update directly related documentation.
 - Verify each change with the smallest relevant check before publishing. Do not push broken or unverified changes; explain any blocker instead.
 - For each requested repository change, commit the completed, verified work and push it to the configured GitHub remote. Include only changes related to the request; do not commit or push unrelated user work.
+- The owner explicitly authorized publishing requested, verified website changes to `origin/main` and GitHub Pages without asking for confirmation again (2026-11-07). Treat publication as part of completing these tasks. This authorization does not cover unrelated changes, destructive Git operations, or bypassing platform access controls.
