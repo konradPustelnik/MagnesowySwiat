@@ -133,6 +133,8 @@ Przy błędzie aktywacji zatwierdź wiadomość „Activate Form” w skrzynce. 
 
 ## Testy SEO — bez publikacji i wysyłania e-maili
 
+Sekcja „Jak działamy” ma zwarty nagłówek i mniejsze odstępy; na telefonie numery są obok opisów. Całość po kliknięciu w nawigację sprawdzono w jednym ekranie przy 1366×768, 1280×600, 1210×580, 768×900, 390×844 i 360×740 px. Przy innych rozmiarach lub powiększeniu tekstu treść nadal może wymagać przewijania — nie jest obcinana. Test tej sekcji (bez wysyłki poczty): `.\.venv-tests\Scripts\python.exe tests/test_process_layout.py`. Zrzuty zapisują się w `test-results/process-*.png`.
+
 Podstawowe testy wymagają wyłącznie Pythona:
 
 ```powershell
