@@ -2,7 +2,7 @@
 
 Prosta strona wizytówka w jednym pliku HTML.
 
-Najnowszy tekst głównej sekcji został podany bezpośrednio przez właściciela: nagłówek H1 „Wyjątkowe magnesy na każdą okazję” oraz wstęp „✨ Mały magnes. Wielkie wspomnienia.” z informacją o magnesach na żywo i indywidualnych zamówieniach ze zdjęć. Wcześniejsze cofnięcie lokalnej sekcji i opisów poniżej jest zapisem historii; osobna sekcja zasięgu nadal pozostaje usunięta.
+Najnowszy tekst głównej sekcji został podany bezpośrednio przez właściciela: nagłówek H1 „Wyjątkowe magnesy na każdą okazję” oraz wstęp „✨ Tworzone z myślą o Twoich wspomnieniach.” z informacją o magnesach na żywo i indywidualnych zamówieniach ze zdjęć. Wcześniejsze cofnięcie lokalnej sekcji i opisów poniżej jest zapisem historii; osobna sekcja zasięgu nadal pozostaje usunięta.
 
 **Aktualizacja wyglądu i treści:** na prośbę właściciela cofnięto promowanie Limanowej w nagłówku i metadanych oraz usunięto sekcję lokalnego zasięgu wraz z jej odnośnikami. Przywrócono poprzedni ogólny tekst wstępu i informacje o dojeździe. Zachowano poprawki techniczne domeny, favicon, format magnesów 6,35 × 6,35 cm, brązowe tło i okno potwierdzenia formularza. Audyt i propozycje lokalnego SEO poniżej oraz w osobnym dokumencie są zapisem wcześniejszych prac, nie opisem obecnej treści strony.
 
