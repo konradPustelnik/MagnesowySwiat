@@ -15,13 +15,13 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import Select, WebDriverWait
 
 ROOT = Path(__file__).resolve().parents[1]
-PUBLIC_URL = 'https://konradpustelnik.github.io/MagnesowySwiat/'
+PUBLIC_URL = 'https://magnesowyswiat.pl/'
 RECIPIENT = 'magnesowyswiat@gmail.com'
 parser = argparse.ArgumentParser(description='Test formularza w Chrome (domyslnie bez wysylania e-maila).')
 parser.add_argument('--live', action='store_true', help='Wyslij JEDNO prawdziwe zgloszenie testowe.')
 parser.add_argument('--local-live', action='store_true', help='Wyslij prawdziwe zgloszenie z lokalnego serwera, bez domeny.')
 parser.add_argument('--confirm-delivery', action='store_true', help='Potwierdz kod z odebranej wiadomosci.')
-parser.add_argument('--url', default=PUBLIC_URL, help='Adres opublikowanej strony (domyslnie GitHub Pages).')
+parser.add_argument('--url', default=PUBLIC_URL, help='Adres opublikowanej strony (domyslnie https://magnesowyswiat.pl/).')
 args = parser.parse_args()
 if args.local_live:
     args.live = True

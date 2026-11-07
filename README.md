@@ -4,11 +4,46 @@ Prosta strona wizytówka w jednym pliku HTML.
 
 ## Strona internetowa
 
-**Zobacz stronę:** [https://konradpustelnik.github.io/MagnesowySwiat/](https://konradpustelnik.github.io/MagnesowySwiat/)
+**Docelowy adres strony:** [https://magnesowyswiat.pl/](https://magnesowyswiat.pl/)
+
+Hosting: GitHub Pages, repozytorium `konradpustelnik/MagnesowySwiat`. Stary adres `konradpustelnik.github.io/MagnesowySwiat/` przekierowuje na domenę ustawioną w GitHub Pages. Domena wymaga prawidłowego DNS i aktywnego HTTPS. Audyt i poprawki SEO: [docs/seo-audyt-i-plan.md](docs/seo-audyt-i-plan.md). Właściciel zatwierdził publikację tej partii 7 listopada 2026 i ponownie udzielił zgody na publikowanie kolejnych sprawdzonych zmian bez pytania.
 
 Strona jest opublikowana bezpłatnie w GitHub Pages. Repozytorium z jej kodem jest publiczne, więc każdy może je przeglądać, ale zmiany wprowadzać mogą tylko właściciel i osoby z uprawnieniami do zapisu.
 
+## Status audytu, ryzyka i pozostałe prace
+
+Stan ustaleń: **7 listopada 2026**. Przygotowane poprawki SEO, zasięgu i favicon zostały zatwierdzone do publikacji. Poniższe problemy domeny pochodzą z pomiaru podczas audytu — nie są deklaracją jej aktualnego stanu. Stan konkretnego wdrożenia należy sprawdzić w GitHub Pages i na publicznej stronie.
+
+**Poczta nie ma potwierdzonego działania od formularza do skrzynki.** FormSubmit wyświetlił ekran przyjęcia testowego zgłoszenia, ale właściciel zgłosił, że wiadomość nie dotarła. Nie traktujemy tego jako udanego testu doręczenia. Dotychczasowy test przeglądarkowy bez `--confirm-delivery` sprawdza tylko odpowiedź usługi; nie odczytuje skrzynki. Przyczyna niedoręczenia nie została ustalona.
+
+| Priorytet | Ryzyko / ustalenie | Co jeszcze trzeba zrobić | Warunek zamknięcia |
+| --- | --- | --- | --- |
+| P0 | Niedoręczone zgłoszenia mogą oznaczać utratę zapytań klientów, mimo ekranu sukcesu FormSubmit. | Sprawdzić aktywację odbiorcy, spam, wszystkie wiadomości i filtry skrzynki. Przeprowadzić jeden kontrolowany test z unikalnym kodem i rzeczywistym adresem kontaktowym. Jeśli nadal nie dociera, zgłosić problem dostawcy; rozważyć inny mechanizm wysyłki z możliwością sprawdzenia statusu doręczenia. | Nowa wiadomość z kodem faktycznie odebrana w skrzynce; możliwość odpowiedzi na adres klienta sprawdzona. Sam HTTP 200 lub `provider_accepted: true` nie wystarcza. |
+| P0 | W audycie domena prowadziła do strony startowej OVH, a HTTPS nie odpowiadał. Użytkownicy i roboty mogli otrzymywać niewłaściwą stronę. | Poprawić DNS i ustawienia GitHub Pages, uruchomić certyfikat HTTPS; sprawdzić domenę główną, www, HTTP oraz stary adres GitHub Pages. Nie zmieniać przy tym rekordów pocztowych bez potrzeby. | Wszystkie warianty prowadzą do `https://magnesowyswiat.pl/`, gdzie serwowana jest strona firmy, bez błędu certyfikatu. |
+| P1 | Sam zapis kodu w repozytorium nie potwierdza zakończenia wdrożenia; canonical sam nie naprawi domeny. | Publikacja jest zatwierdzona. Sprawdzić zakończenie GitHub Pages, publiczną zawartość, docelowy adres oraz powrót z formularza. | Kod z poprawkami jest dostępny pod działającą domeną HTTPS. |
+| P1 | Stan indeksowania w Google jest nieznany. | Po wdrożeniu sprawdzić canonical, robots, sitemap, nagłówki HTTP i brak `noindex`; zweryfikować domenę w Search Console, zgłosić sitemap i sprawdzić URL Inspection. | Google ma dostęp do właściwej treści; raport indeksowania został sprawdzony. Nie gwarantuje to pozycji ani natychmiastowej indeksacji. |
+| P1 | Dane lokalne muszą odpowiadać rzeczywistej ofercie. Głównie powiat limanowski i okolice; potwierdzono także powiat nowosądecki oraz dodatkową opłatę za dalsze wyjazdy. Miasto Nowy Sącz jest osobną jednostką. | Potwierdzić obsługę samego miasta Nowy Sącz i doprecyzować sposób wyceny dojazdu. Każdą lokalizację i koszt potwierdzać przed rezerwacją; nie deklarować nieustalonego bezpłatnego promienia ani stawki kilometrowej. | Właściciel zatwierdził obszary i warunki; treść oraz JSON-LD są z nimi zgodne. |
+| P2 | JSON-LD przeszedł testy lokalne, ale nie zewnętrzną walidację Google. | Sprawdzić Organization w Rich Results Test i cały graf w Schema Markup Validator. Nie uzupełniać brakujących danych fikcyjnym adresem, telefonem, ocenami lub godzinami. | Brak błędów składni i zgodność danych z widoczną treścią. Nie każdy typ schema daje rozszerzony wynik w Google. |
+| P2 | Lokalne wyniki mobilne nie potwierdzają szybkości na telefonach klientów. Logotypy PNG ważą łącznie około 637 KB; fonty i zdjęcia zależą od usług zewnętrznych. | Uruchomić PageSpeed Insights po naprawie domeny, sprawdzić LCP/CLS/INP i realne urządzenie; rozważyć kompresję logotypów, a własne zdjęcia optymalizować przed dodaniem. | Wyniki produkcyjne i konkretne problemy są zapisane; brak regresji menu, pakietów i formularza. |
+| P2 | Powielone strony miast i zdjęcia stockowe przedstawiane jako portfolio obniżałyby wiarygodność treści. | Przygotować odrębne podstrony usług z użytecznymi informacjami; strony miast dopiero z rzeczywistą treścią lokalną. Pozyskać własne fotografie z prawem publikacji. | Każda podstrona wnosi inną wartość, ma własny canonical i jest uwzględniona w sitemap dopiero po utworzeniu. |
+
+**Przygotowane lokalnie:** title i meta description, H1 opisujący usługę, sekcja obszaru obsługi, canonical, Open Graph, `robots.txt`, `sitemap.xml`, Organization/Service JSON-LD, wymiary i warianty rozmiarów obrazów oraz spójne adresy formularza. Zachowano złotą identyfikację, pakiety i mechanizm formularza.
+
+**Sprawdzone lokalnie:** 4 testy kontraktów SEO oraz test przeglądarkowy przy 360, 390, 768 i 1440 px; brak przewijania poziomego, działanie menu i wyboru pakietów. Lokalna walidacja formularza również przeszła. To nie jest potwierdzenie dostarczenia poczty ani indeksowania strony. Szczegóły: [pełny audyt i plan](docs/seo-audyt-i-plan.md).
+
+Kolejność dalszej pracy:
+
+1. Wyjaśnić niedoręczanie poczty i potwierdzić odbiór kontrolnego zgłoszenia.
+2. Naprawić domenę/HTTPS i doprecyzować sposób indywidualnej wyceny dojazdu.
+3. Opublikować zatwierdzone poprawki i sprawdzić wynik wdrożenia GitHub Pages.
+4. Sprawdzić SEO, mobilność i pełną ścieżkę formularza na produkcji; zgłosić sitemap w Search Console.
+5. Rozwinąć podstrony `/magnesy-na-wesele/`, `/fotomagnesy-na-eventy/`, `/obszar-dzialania/`. Osobne strony Limanowej i Nowego Sącza pozostają propozycją warunkową, bez powielania tekstu.
+
+**Zasięg i dojazd — aktualizacja od właściciela:** działamy przede wszystkim w powiecie limanowskim i okolicach; wcześniej potwierdzono także obsługę powiatu nowosądeckiego. Dalsze wyjazdy są możliwe po uzgodnieniu, za dodatkową opłatą za dojazd. W lokalnej wersji strony informacja jest wyróżniona w sekcji obszaru działania oraz powtórzona przy pakietach i w FAQ. Koszt ma być podany przed potwierdzeniem rezerwacji. Nie ustalono stałej stawki za kilometr, limitu kilometrów ani granicy bezpłatnego dojazdu — nie należy ich dopisywać bez potwierdzenia.
+
 Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak działamy”. Zostaw go w folderze projektu obok `index.html`.
+
+To samo kwadratowe logo jest ustawione jako favicon (ikona karty przeglądarki) i ikona skrótu na urządzeniach Apple. Po publikacji przeglądarka może przez pewien czas wyświetlać poprzednią ikonę z pamięci podręcznej; sprawdź nową kartę prywatną. Zmiana favicon nie usuwa komunikatu „Not secure” — wymaga on działającego HTTPS domeny.
 
 ## Uruchomienie lokalnie
 
@@ -74,6 +109,24 @@ Tryb lokalny blokuje połączenia z FormSubmit w przeglądarce. Sprawdza wymagan
 
 Raport JSON i zrzuty przeglądarki są zapisywane w `test-results/`. `provider_accepted: true` oznacza ekran FormSubmit „The form was submitted successfully” lub powrót po obsłudze zgłoszenia; dopiero `delivery: confirmed_by_owner` oznacza ręcznie potwierdzony odbiór wiadomości z kodem. Raporty, środowisko `.venv-tests/` i zrzuty nie trafiają do Git. Test zakończony powodzeniem potwierdza działanie w chwili uruchomienia, nie gwarantuje przyszłej dostępności usług pocztowych.
 
+**Jak czytać wynik:** `tests_passed: true` oznacza przejście testów wybranego trybu, a nie automatycznie sprawną pocztę. W trybie lokalnym test wysyłki jest pomijany. `delivery: not_checked` oznacza brak potwierdzenia doręczenia, również gdy test usługi zakończył się `OK`. Raport `report.json` jest zastępowany przy kolejnym uruchomieniu; przed następną próbą zachowaj kopię raportu i kodu zgłoszenia, jeśli chcesz porównywać wyniki. Nie przepisuj kodu z terminala jako dowodu odbioru — ma pochodzić z nowej wiadomości w skrzynce.
+
 Przy błędzie aktywacji zatwierdź wiadomość „Activate Form” w skrzynce. Przy innym błędzie sprawdź zrzut w `test-results/` — nie zakładaj, że HTTP 200 lub sam parametr `wyslano=1` potwierdza dostarczenie e-maila.
+
+## Testy SEO — bez publikacji i wysyłania e-maili
+
+Podstawowe testy wymagają wyłącznie Pythona:
+
+```powershell
+python tests/test_seo.py
+```
+
+Test przeglądarkowy sprawdza również układ przy 360, 390, 768 i 1440 px, mobilne menu oraz wybór pakietów. Jeżeli nie masz jeszcze środowiska testowego, uruchom najpierw `.\test-mail.cmd` — zainstaluje zależności i wykona test lokalny bez wysyłki.
+
+```powershell
+.\.venv-tests\Scripts\python.exe tests/test_seo.py --browser
+```
+
+Raport: `test-results/seo-browser.json`, zrzuty: `test-results/seo-*.png`. Są to lokalne pomiary Chrome, bez symulacji sieci komórkowej; nie zastępują danych terenowych Core Web Vitals ani potwierdzenia indeksowania w Search Console. Testy sprawdzają canonical, sitemap, robots, hierarchię nagłówków, obrazy, zakres faktów JSON-LD i konfigurację formularza. Nie wysyłają zgłoszenia do FormSubmit.
 
 Jeśli test zgłasza brak `contactForm` i stronę „Site en construction”, domena kieruje na stronę startową hostingu zamiast na stronę projektu. Najpierw trzeba poprawić publikację lub DNS. Test kończy się wtedy błędem przed wysłaniem wiadomości.

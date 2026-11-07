@@ -4,12 +4,67 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Magnesowy Świat – fotomagnesy tworzone na żywo podczas wesel, uroczystości rodzinnych i eventów firmowych. Wyjątkowa pamiątka dla Twoich gości.">
-  <title>Magnesowy Świat | Fotomagnesy na wydarzenia</title>
+  <meta name="description" content="Magnesy na wesele i fotomagnesy na żywo. Limanowa, powiat limanowski i nowosądecki. Personalizacja i zdjęcia podczas wydarzenia. Zapytaj o termin.">
+  <title>Fotomagnesy i magnesy na wesele Limanowa | Magnesowy Świat</title>
+  <link rel="icon" type="image/png" sizes="768x768" href="logo-magnesowy-swiat.png?v=1">
+  <link rel="apple-touch-icon" href="logo-magnesowy-swiat.png?v=1">
+
+  <link rel="canonical" href="https://magnesowyswiat.pl/">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="pl_PL">
+  <meta property="og:site_name" content="Magnesowy Świat">
+  <meta property="og:title" content="Fotomagnesy i magnesy na wesele Limanowa | Magnesowy Świat">
+  <meta property="og:description" content="Magnesy na wesele i fotomagnesy na żywo. Limanowa, powiat limanowski i nowosądecki. Personalizacja i zdjęcia podczas wydarzenia. Zapytaj o termin.">
+  <meta property="og:url" content="https://magnesowyswiat.pl/">
+  <meta property="og:image" content="https://magnesowyswiat.pl/logo-magnesowy-swiat.png">
+  <meta property="og:image:alt" content="Logo Magnesowy Świat — magnesy na każdą okazję">
+  <meta property="og:image:width" content="768">
+  <meta property="og:image:height" content="768">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://magnesowyswiat.pl/#organizacja",
+      "name": "Magnesowy Świat",
+      "url": "https://magnesowyswiat.pl/",
+      "email": "magnesowyswiat@gmail.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://magnesowyswiat.pl/logo-magnesowy-swiat.png",
+        "width": 768,
+        "height": 768
+      }
+    },
+    {
+      "@type": "Service",
+      "@id": "https://magnesowyswiat.pl/#usluga",
+      "name": "Personalizowane fotomagnesy na żywo podczas wydarzeń",
+      "serviceType": "Fotografowanie gości i produkcja fotomagnesów na miejscu",
+      "url": "https://magnesowyswiat.pl/#jak-dzialamy",
+      "provider": {
+        "@id": "https://magnesowyswiat.pl/#organizacja"
+      },
+      "areaServed": [
+        {
+          "@type": "AdministrativeArea",
+          "name": "powiat limanowski"
+        },
+        {
+          "@type": "AdministrativeArea",
+          "name": "powiat nowosądecki"
+        }
+      ]
+    }
+  ]
+}
+  </script>
 
   <style>
     :root {
@@ -625,6 +680,19 @@
 
     .personalization li { margin-bottom: 10px; }
 
+    /* Obszar działania */
+    .text-link { text-decoration: underline; text-underline-offset: 3px; }
+    .area-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .area-card { padding: 28px; background: var(--paper); border: 1px solid var(--line); border-radius: 4px; }
+    .area-card h3 { font-size: 24px; margin: 0 0 14px; }
+    .area-label { display: inline-block; margin-bottom: 16px; padding: 5px 12px; border-radius: 20px; background: var(--sage); color: var(--olive-dark); font-size: 11px; font-weight: 700; letter-spacing: .4px; }
+    .area-card--travel { border-color: var(--gold); background: linear-gradient(135deg, var(--paper), var(--cream)); }
+    .area-travel-note { margin: 18px 0 0; padding: 14px 16px; border-left: 3px solid var(--gold); color: var(--olive-dark); font-size: 14px; }
+    .area-card p { font-size: 14px; }
+    .area-contact { max-width: 780px; margin: 28px auto 0; text-align: center; }
+    .area-contact p { font-size: 14px; }
+    @media (max-width: 650px) { .area-grid { grid-template-columns: 1fr; } }
+
     /* O nas */
 
     .about-copy {
@@ -819,6 +887,8 @@
 
     .footer-links {
       display: flex;
+      flex-wrap: wrap;
+      max-width: 100%;
       gap: 18px;
       font-size: 11px;
     }
@@ -941,7 +1011,7 @@
   <header>
     <div class="container nav">
       <a class="header-wordmark" href="#start" aria-label="Magnesowy Świat — strona główna">
-        <img src="logo-magnesowy-swiat-header.png" alt="">
+        <img src="logo-magnesowy-swiat-header.png" alt="" width="720" height="182">
       </a>
 
       <button type="button" class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-controls="navLinks" aria-expanded="false">☰</button>
@@ -966,10 +1036,10 @@
       <div>
         <div class="eyebrow">Magnesowy Świat · Fotomagnesy na żywo</div>
 
-        <h1>Wspomnienia, do których <span>wraca się każdego dnia.</span></h1>
+        <h1>Fotomagnesy na wesele i eventy <span>w Limanowej i okolicach</span></h1>
 
         <div class="hero-copy">
-          <p>Wyjątkowe chwile zasługują na wyjątkowe pamiątki.</p>
+          <p>Tworzymy magnesy na wesele, urodziny, jubileusze i eventy firmowe. Działamy przede wszystkim w powiecie limanowskim i okolicach. Dalsze wyjazdy są możliwe za dodatkową opłatą za dojazd — <a class="text-link" href="#obszar-dzialania">sprawdź, gdzie możemy przyjechać</a>.</p>
           <p>Fotomagnesy to osobista pamiątka z wesela, urodzin, jubileuszu lub wydarzenia firmowego — gotowa jeszcze podczas spotkania.</p>
           <p>Fotografujemy gości i na miejscu tworzymy magnesy ze zdjęciami. Projekt dopasowujemy do okazji: dodajemy imiona, datę, motyw graficzny lub logo firmy.</p>
           <p>Mały magnes. Wielkie wspomnienia.</p>
@@ -990,7 +1060,7 @@
           src="https://images.unsplash.com/photo-1686644472167-4dabcd14bc53?auto=format&fit=crop&w=1000&q=85"
           alt="Dłoń umieszcza magnes ze zdjęciem na lodówce"
           fetchpriority="high"
-        >
+         width="1000" height="750" srcset="https://images.unsplash.com/photo-1686644472167-4dabcd14bc53?auto=format&amp;fit=crop&amp;w=320&amp;q=85 320w, https://images.unsplash.com/photo-1686644472167-4dabcd14bc53?auto=format&amp;fit=crop&amp;w=480&amp;q=85 480w, https://images.unsplash.com/photo-1686644472167-4dabcd14bc53?auto=format&amp;fit=crop&amp;w=1000&amp;q=85 1000w" sizes="(max-width: 650px) 90vw, (max-width: 900px) calc(45vw - 15px), (max-width: 1288px) calc(45vw - 30px), 553px">
         <div class="floating-note">
           Zdjęcie, które zostaje na dłużej.
           <small>Magnesowy Świat</small>
@@ -1008,7 +1078,7 @@
           <p>My zajmujemy się zdjęciami i przygotowaniem magnesów, a Twoi goście cieszą się spotkaniem i zabierają pamiątki do domu.</p>
         </div>
         <div class="process-brand">
-          <img src="logo-magnesowy-swiat.png" alt="Magnesowy Świat — magnesy na każdą okazję">
+          <img src="logo-magnesowy-swiat.png" alt="Magnesowy Świat — magnesy na każdą okazję" width="768" height="768" loading="lazy" decoding="async">
         </div>
       </div>
 
@@ -1052,7 +1122,7 @@
       <div class="occasion-grid">
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Dekoracja sali przygotowana na przyjęcie weselne" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=700&q=80" alt="Dekoracja sali przygotowana na przyjęcie weselne" loading="lazy" decoding="async" width="700" height="467" srcset="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&amp;fit=crop&amp;w=700&amp;q=80 700w" sizes="(max-width: 650px) 90vw, (max-width: 900px) calc(45vw - 9px), (max-width: 1288px) calc(22.5vw - 14px), 275px">
           <div class="occasion-card-content">
             <h3>Wesela i przyjęcia ślubne</h3>
             <p>Podaruj gościom osobistą pamiątkę z Waszego dnia — wspólne zdjęcie, zabawny kadr lub romantyczny moment.</p>
@@ -1060,7 +1130,7 @@
         </article>
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Kolorowe dekoracje na uroczystości rodzinnej" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&fit=crop&w=700&q=80" alt="Kolorowe dekoracje na uroczystości rodzinnej" loading="lazy" decoding="async" width="700" height="467" srcset="https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1530103862676-de8c9debad1d?auto=format&amp;fit=crop&amp;w=700&amp;q=80 700w" sizes="(max-width: 650px) 90vw, (max-width: 900px) calc(45vw - 9px), (max-width: 1288px) calc(22.5vw - 14px), 275px">
           <div class="occasion-card-content">
             <h3>Urodziny i osiemnastki</h3>
             <p>Zatrzymaj radość ze wspólnego świętowania na zdjęciach, które goście zabiorą ze sobą w formie magnesów.</p>
@@ -1068,7 +1138,7 @@
         </article>
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=80" alt="Przygotowana sala na wydarzenie firmowe" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=700&q=80" alt="Stoły i dekoracje w sali przygotowanej na uroczystość" loading="lazy" decoding="async" width="700" height="467" srcset="https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&amp;fit=crop&amp;w=700&amp;q=80 700w" sizes="(max-width: 650px) 90vw, (max-width: 900px) calc(45vw - 9px), (max-width: 1288px) calc(22.5vw - 14px), 275px">
           <div class="occasion-card-content">
             <h3>Jubileusze i rocznice</h3>
             <p>Wyjątkowe historie zasługują na pamiątki, które zachowają atmosferę tych spotkań na dłużej.</p>
@@ -1076,7 +1146,7 @@
         </article>
 
         <article class="occasion-card">
-          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80" alt="Uczestnicy wydarzenia plenerowego" loading="lazy" decoding="async">
+          <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=700&q=80" alt="Uczestnicy wydarzenia plenerowego" loading="lazy" decoding="async" width="700" height="467" srcset="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&amp;fit=crop&amp;w=700&amp;q=80 700w" sizes="(max-width: 650px) 90vw, (max-width: 900px) calc(45vw - 9px), (max-width: 1288px) calc(22.5vw - 14px), 275px">
           <div class="occasion-card-content">
             <h3>Eventy firmowe</h3>
             <p>Integracje, jubileusze firmowe, konferencje i pikniki z magnesem dopasowanym do marki.</p>
@@ -1102,19 +1172,19 @@
           alt="Lodówka z okrągłymi magnesami ze zdjęciami rodziny"
           loading="lazy"
           decoding="async"
-        >
+         width="800" height="533" srcset="https://images.unsplash.com/photo-1684741940768-c40eca4ac4ab?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1684741940768-c40eca4ac4ab?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1684741940768-c40eca4ac4ab?auto=format&amp;fit=crop&amp;w=800&amp;q=80 800w" sizes="(max-width: 650px) 90vw, (max-width: 1288px) calc(30vw - 12px), 375px">
         <img
           src="https://images.unsplash.com/photo-1686644823534-eba27f016efb?auto=format&fit=crop&w=800&q=80"
           alt="Zdjęcia i pamiątki przypięte do lodówki"
           loading="lazy"
           decoding="async"
-        >
+         width="800" height="800" srcset="https://images.unsplash.com/photo-1686644823534-eba27f016efb?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1686644823534-eba27f016efb?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1686644823534-eba27f016efb?auto=format&amp;fit=crop&amp;w=800&amp;q=80 800w" sizes="(max-width: 650px) 90vw, (max-width: 1288px) calc(30vw - 12px), 375px">
         <img
           src="https://images.unsplash.com/photo-1686644823172-e9b24140af3a?auto=format&fit=crop&w=800&q=80"
           alt="Kolorowe fotografie wyeksponowane na lodówce"
           loading="lazy"
           decoding="async"
-        >
+         width="800" height="1200" srcset="https://images.unsplash.com/photo-1686644823172-e9b24140af3a?auto=format&amp;fit=crop&amp;w=320&amp;q=80 320w, https://images.unsplash.com/photo-1686644823172-e9b24140af3a?auto=format&amp;fit=crop&amp;w=480&amp;q=80 480w, https://images.unsplash.com/photo-1686644823172-e9b24140af3a?auto=format&amp;fit=crop&amp;w=800&amp;q=80 800w" sizes="(max-width: 650px) 90vw, (max-width: 1288px) calc(30vw - 12px), 375px">
       </div>
 
       <p class="gallery-note">
@@ -1253,7 +1323,7 @@
           <a href="#kontakt" class="btn choose-package" data-package="Oferta indywidualna">Zapytaj o indywidualną ofertę</a>
         </div>
 
-        <p class="pricing-note">Podane ceny dotyczą wskazanego zakresu usługi. Możliwość dojazdu i jego koszt ustalamy indywidualnie na podstawie miejsca wydarzenia. Podana liczba magnesów to maksymalna liczba sztuk w danym pakiecie. Szczegóły realizacji potwierdzamy przed zawarciem umowy.</p>
+        <p class="pricing-note">Podane ceny dotyczą wskazanego zakresu usługi. Dalsze wyjazdy wiążą się z dodatkową opłatą za dojazd, ustalaną indywidualnie na podstawie miejsca wydarzenia i potwierdzaną przed rezerwacją. <a class="text-link" href="#obszar-dzialania">Sprawdź obszar działania</a>. Podana liczba magnesów to maksymalna liczba sztuk w danym pakiecie. Szczegóły realizacji potwierdzamy przed zawarciem umowy.</p>
       </div>
     </section>
 
@@ -1266,7 +1336,7 @@
           alt="Uczestnicy spotkania firmowego"
           loading="lazy"
           decoding="async"
-        >
+         width="1000" height="668" srcset="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=320&amp;q=85 320w, https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=480&amp;q=85 480w, https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&amp;fit=crop&amp;w=1000&amp;q=85 1000w" sizes="(max-width: 650px) 90vw, (max-width: 900px) calc(45vw - 15px), (max-width: 1288px) calc(45vw - 30px), 553px">
 
         <div>
           <div class="eyebrow">Również dla biznesu</div>
@@ -1284,6 +1354,35 @@
           <p><strong>Zadbaj o to, żeby uczestnicy zabrali z Twojego wydarzenia coś, co wywoła uśmiech również następnego dnia.</strong></p>
           <a href="#kontakt" class="btn choose-package" data-package="Oferta indywidualna" data-event-type="Event firmowy">Poproś o ofertę dla firmy</a>
         </div>
+      </div>
+    </section>
+
+    <!-- OBSZAR DZIAŁANIA -->
+
+    <section class="section container" id="obszar-dzialania" aria-labelledby="obszar-heading">
+      <div class="section-heading">
+        <div class="eyebrow">Blisko Twojego wydarzenia</div>
+        <h2 id="obszar-heading">Limanowa i okolice — tu działamy najczęściej</h2>
+        <p>Działamy przede wszystkim na terenie powiatu limanowskiego i w okolicach. Obsługujemy również powiat nowosądecki, a dalsze wyjazdy ustalamy indywidualnie. Przyjeżdżamy ze stanowiskiem i tworzymy fotomagnesy na miejscu.</p>
+      </div>
+      <div class="area-grid">
+        <article class="area-card">
+          <span class="area-label">Limanowa i okolice</span>
+          <h3>Magnesy na wesele w Limanowej</h3>
+          <p>Organizujesz wesele w Limanowej lub innej miejscowości powiatu limanowskiego? Fotomagnesy ze zdjęciami gości mogą być zarówno atrakcją podczas przyjęcia, jak i osobistą pamiątką do zabrania do domu.</p>
+          <p>Projekt dopasujemy do uroczystości: możemy dodać imiona, datę i wybrany motyw. Porównaj <a class="text-link" href="#pakiety">pakiety według liczby magnesów i czasu obsługi</a>.</p>
+        </article>
+        <article class="area-card area-card--travel">
+          <span class="area-label">Dalsze wyjazdy po uzgodnieniu</span>
+          <h3>Twoje wydarzenie jest dalej?</h3>
+          <p>Nowy Sącz lub inna miejscowość poza najbliższą okolicą? Zapytaj o magnesy na żywo na Twoim wydarzeniu. Podaj lokalizację i datę, a sprawdzimy możliwość realizacji.</p>
+          <p>Przyjeżdżamy na wesela, uroczystości rodzinne i <a class="text-link" href="#oferta-firmowa">eventy firmowe</a>. Warunki dalszego wyjazdu uzgadniamy przed rezerwacją.</p>
+          <p class="area-travel-note"><strong>Dalszy dojazd jest dodatkowo płatny.</strong> Koszt ustalamy indywidualnie na podstawie miejsca wydarzenia i podajemy przed potwierdzeniem rezerwacji.</p>
+        </article>
+      </div>
+      <div class="area-contact">
+        <p>Podaj datę, miejscowość, nazwę obiektu i orientacyjną liczbę gości — przygotujemy ofertę z informacją o dojeździe. Na miejscu potrzebujemy przestrzeni na stanowisko i dostępu do zasilania.</p>
+        <a class="btn" href="#kontakt">Zapytaj o termin i dojazd</a>
       </div>
     </section>
 
@@ -1332,7 +1431,7 @@
 
         <details>
           <summary>Czy dojeżdżacie do innych miejscowości?</summary>
-          <p>Tak, możliwość dojazdu i ewentualny koszt transportu ustalamy indywidualnie na podstawie lokalizacji wydarzenia.</p>
+          <p>Tak. Działamy przede wszystkim w powiecie limanowskim i okolicach, a także obsługujemy powiat nowosądecki. Dalsze wyjazdy są możliwe po uzgodnieniu i wiążą się z dodatkową opłatą za dojazd. Jej wysokość ustalamy na podstawie miejsca wydarzenia i podajemy przed potwierdzeniem rezerwacji. <a href="#obszar-dzialania">Sprawdź obszar działania</a> lub podaj lokalizację w formularzu.</p>
         </details>
 
         <details>
@@ -1372,8 +1471,8 @@
             <input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">
             <input type="hidden" name="_template" value="table">
             <input type="hidden" name="_captcha" value="false">
-            <input type="hidden" name="_url" value="https://konradpustelnik.github.io/MagnesowySwiat/">
-            <input type="hidden" name="_next" value="https://konradpustelnik.github.io/MagnesowySwiat/?wyslano=1#kontakt">
+            <input type="hidden" name="_url" value="https://magnesowyswiat.pl/">
+            <input type="hidden" name="_next" value="https://magnesowyswiat.pl/?wyslano=1#kontakt">
             <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
 
             <div class="form-grid">
@@ -1491,6 +1590,7 @@
         <a href="#wyrozniki">Co nas wyróżnia</a>
         <a href="#pakiety">Pakiety</a>
         <a href="#oferta-firmowa">Dla firm</a>
+        <a href="#obszar-dzialania">Obszar działania</a>
         <a href="#o-nas">O nas</a>
         <a href="#faq">FAQ</a>
         <a href="#kontakt">Kontakt</a>
