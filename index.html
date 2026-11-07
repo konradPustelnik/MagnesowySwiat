@@ -13,16 +13,17 @@
 
   <style>
     :root {
-      --cream: #fbf8f2;
-      --paper: #fffdfa;
+      --cream: #fbf7ef;
+      --paper: #fffdf9;
       --olive: #916a30;
-      --olive-dark: #30271f;
-      --sage: #f0e9dd;
-      --gold: #bd995d;
+      --olive-dark: #33291e;
+      --sage: #f2e9da;
+      --gold: #c09a58;
+      --gold-light: #e2c481;
       --ink: #302820;
-      --muted: #71675d;
-      --line: #e7dece;
-      --shadow: 0 15px 45px rgba(54, 41, 23, .1);
+      --muted: #71634f;
+      --line: #e7d9c0;
+      --shadow: 0 15px 45px rgba(61, 44, 20, .1);
     }
 
     * { box-sizing: border-box; }
@@ -102,7 +103,7 @@
       padding: 26px 34px;
       border: 1px solid var(--line);
       border-radius: 20px;
-      background: linear-gradient(110deg, #f1e7d6, #fbf8f2 78%);
+      background: linear-gradient(110deg, #f3e7d0, var(--cream) 78%);
       text-align: left;
     }
 
@@ -157,7 +158,7 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(251, 248, 242, .96);
+      background: rgba(251, 247, 239, .96);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--line);
     }
@@ -183,7 +184,7 @@
 
     .header-wordmark img {
       display: block;
-      width: clamp(150px, 18vw, 245px);
+      width: clamp(145px, 17vw, 215px);
       height: auto;
     }
 
@@ -678,7 +679,7 @@
       padding: 12px 13px;
       border: 1px solid var(--line);
       border-radius: 3px;
-      background: #fff;
+      background: var(--paper);
       color: var(--ink);
       outline: none;
       font-size: 13px;
@@ -770,7 +771,7 @@
     }
 
     .footer-wordmark {
-      color: #e2c481;
+      color: var(--gold-light);
       font-family: 'Playfair Display', serif;
       font-size: 19px;
       font-weight: 600;
@@ -791,7 +792,7 @@
       font-size: 11px;
     }
 
-    .footer-links a:hover { color: #e2c481; }
+    .footer-links a:hover { color: var(--gold-light); }
 
     @media (max-width: 900px) {
       .occasion-grid, .pricing-grid { grid-template-columns: repeat(2, 1fr); }
@@ -908,7 +909,7 @@
   <header>
     <div class="container nav">
       <a class="header-wordmark" href="#start" aria-label="Magnesowy Świat — strona główna">
-        <img src="logo-magnesowy-swiat-wordmark.png" alt="">
+        <img src="logo-magnesowy-swiat-header.png" alt="">
       </a>
 
       <button class="menu-toggle" id="menuToggle" aria-label="Otwórz menu" aria-expanded="false">☰</button>
@@ -1287,7 +1288,7 @@
     <section class="section contact" id="kontakt">
       <div class="container">
         <div class="section-heading">
-          <div class="eyebrow" style="color:#e2c481;">Porozmawiajmy o Twoim wydarzeniu</div>
+          <div class="eyebrow" style="color:var(--gold-light);">Porozmawiajmy o Twoim wydarzeniu</div>
           <h2>Stwórzmy razem coś wyjątkowego</h2>
           <p>
             Opowiedz nam o swoim wydarzeniu. Skontaktujemy się z Tobą
