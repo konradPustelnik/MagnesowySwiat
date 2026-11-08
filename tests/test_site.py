@@ -327,7 +327,10 @@ class BrowserTests(unittest.TestCase):
         for page in PAGES:
             d.get(self.base+page)
             icons=d.find_elements(By.CSS_SELECTOR,'.site-footer .social-icon')
-            self.assertEqual(len(icons),3)
+            self.assertEqual(len(icons),4)
+            tiktok=d.find_element(By.CSS_SELECTOR,'.site-footer a[href="https://www.tiktok.com/@magnesowyswiat"]')
+            self.assertEqual(tiktok.find_element(By.TAG_NAME,'span').text,'magnesowyswiat')
+            self.assertEqual(tiktok.get_attribute('aria-label'),'TikTok: magnesowyswiat')
             for icon in icons:
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)

@@ -24,6 +24,8 @@ Na polecenie właściciela 8 listopada 2026 usunięto starą stronę `backup/`, 
 
 Publiczne adresy: `/`, `/magnesy-na-zywo/`, `/magnesy-na-zamowienie/`. Nagłówki i stopki są zapisane w każdym HTML — przy zmianie wspólnej nawigacji trzeba uaktualnić wszystkie trzy pliki.
 
+Stopki zawierają e-mail oraz profile Instagram, Facebook i [TikTok](https://www.tiktok.com/@magnesowyswiat), z małymi kolorowymi ikonami. Podpisy profili Instagram i TikTok to `magnesowyswiat`.
+
 Na stronie głównej dwa przyciski wyboru usługi znajdują się pod krótkim hasłem, przed pełnym opisem, tak aby były dostępne na pierwszym ekranie. Karty ofert mają wspólną oprawę, krótkie opisy i przyciski wyrównane na dole.
 
 Na podstronie na żywo przyciski „Zobacz pakiety” i „Zapytaj o termin” również są bezpośrednio pod H1, przed opisem. Kompaktowy nagłówek i odstępy pozwalają wyświetlić oba przyciski bez przewijania w testowanych rozmiarach ekranu.
