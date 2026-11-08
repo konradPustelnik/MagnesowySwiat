@@ -5,3 +5,4 @@
 - Przed publikacją wykonaj sprawdzenia odpowiednie do zmiany. Nie publikuj znanych błędów; zgłoś rzeczywiste blokady i ograniczenia.
 - Zachowuj identyfikację marki i działające funkcje. Nie zmieniaj archiwum `backup/`, jeśli użytkownik nie prosi o zmianę kopii.
 - Nie dodawaj fikcyjnych opinii, realizacji, danych firmowych ani potwierdzeń wysyłki. Formularze demonstracyjne nie wysyłają wiadomości ani zdjęć.
+- Właściciel wyraźnie zatwierdził 2026-11-08 przesyłanie wybranych zdjęć, danych kontaktowych, danych dostawy i zapytania przez FormSubmit na `magnesowyswiat@gmail.com`, po świadomym wysłaniu formularza przez klienta. Obejmuje to publikację tego mechanizmu; nie obejmuje samodzielnego wysyłania prywatnych plików ani niepotwierdzonych deklaracji doręczenia.

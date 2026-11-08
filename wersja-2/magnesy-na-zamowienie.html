@@ -8,8 +8,8 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" type="image/png" href="images/logo.png">
-<link rel="stylesheet" href="css/style.css?v=20261108-live-layout">
-<script src="js/script.js?v=20261108-live-form" defer>
+<link rel="stylesheet" href="css/style.css?v=20261108-confirmation">
+<script src="js/script.js?v=20261108-confirmation" defer>
 </script>
 </head>
 <body>
@@ -196,20 +196,25 @@
 <p class="eyebrow">Twoje zdjęcia. Nasza pasja.</p>
 <h2>Zamów swoje magnesy</h2>
 <p>Opisz swój pomysł. Szczegóły, cenę i zakres potwierdzimy indywidualnie przed przyjęciem zamówienia.</p>
-<div class="preview-notice">
-<strong>Wersja demonstracyjna formularza.</strong>
-<p>Przycisk przygotuje podgląd zapytania. Nie wysyła wiadomości ani zdjęć. Integracja z bezpiecznym systemem wysyłki pozostaje do wdrożenia.</p>
-</div>
 <p>Możesz napisać bezpośrednio:<br>
 <a class="text-link" href="mailto:magnesowyswiat@gmail.com">magnesowyswiat@gmail.com</a>
 </p>
 </div>
-<form data-inquiry="order">
-<p class="field-hint">Pola oznaczone * są obowiązkowe. Nie wpisuj danych wrażliwych w wersji demonstracyjnej.</p>
+<form data-inquiry="order" action="https://formsubmit.co/magnesowyswiat@gmail.com" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
+<input type="hidden" name="_subject" value="Zapytanie o magnesy ze zdjęć — Magnesowy Świat">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_url" value="https://magnesowyswiat.pl/magnesy-na-zamowienie/">
+<input type="hidden" name="_next" value="https://magnesowyswiat.pl/magnesy-na-zamowienie/?wyslano=1#zamowienie">
+<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+<div data-attachments hidden>
+</div>
+<input type="hidden" name="Zdjęcia i liczba kopii" id="photo-summary">
+<p class="field-hint">Pola oznaczone * są obowiązkowe. Wyślij zapytanie — cenę i szczegóły zamówienia potwierdzimy mailowo.</p>
 <div class="form-grid">
 <div class="field ">
 <label for="f-name">Imię i nazwisko *</label>
-<input id="f-name" name="name" required type="text" autocomplete="name">
+<input id="f-name" name="Imię i nazwisko" required type="text" autocomplete="name">
 </div>
 <div class="field ">
 <label for="f-email">Adres e-mail *</label>
@@ -217,17 +222,17 @@
 </div>
 <div class="field ">
 <label for="f-phone">Telefon</label>
-<input id="f-phone" name="phone" type="tel" autocomplete="tel">
+<input id="f-phone" name="Numer telefonu" type="tel" autocomplete="tel">
 </div>
 <div class="field ">
 <label for="f-quantity">Liczba magnesów *</label>
-<input id="f-quantity" name="quantity" required type="number" min="1" max="10000">
+<input id="f-quantity" name="Liczba magnesów" required type="number" min="1" max="10000">
 </div>
 <div class="field field--full">
 <label for="photos">Twoje zdjęcia *</label>
 <div class="upload-zone">
 <input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-describedby="photo-help">
-<p id="photo-help">JPEG, PNG lub WebP. Maksymalnie 20 zdjęć, każde do 10 MB. Podgląd działa wyłącznie w pamięci tej karty przeglądarki. Zdjęcia nie są wysyłane ani zapisywane na serwerze.</p>
+<p id="photo-help">JPEG, PNG lub WebP. Maksymalnie 20 zdjęć, łącznie do 10 MB. Przy każdym zdjęciu podaj liczbę kopii. Pliki i dane zostaną przesłane przez FormSubmit na naszą pocztę dopiero po kliknięciu przycisku wysyłki.</p>
 </div>
 <p id="photo-status" role="status">
 </p>
@@ -236,11 +241,11 @@
 </div>
 <div class="field ">
 <label for="f-caption">Opcjonalny napis lub data</label>
-<input id="f-caption" name="caption" type="text">
+<input id="f-caption" name="Napis lub data" type="text">
 </div>
 <div class="field ">
 <label for="f-delivery">Preferowany sposób dostawy</label>
-<select id="f-delivery" name="delivery">
+<select id="f-delivery" name="Sposób dostawy">
 <option value="">Wybierz opcję</option>
 <option>Do ustalenia</option>
 <option>Przesyłka na adres</option>
@@ -249,16 +254,16 @@
 </div>
 <div class="field field--full">
 <label for="f-address">Dane do dostawy</label>
-<textarea id="f-address" name="address" rows="4" maxlength="5000">
+<textarea id="f-address" name="Dane do dostawy" rows="4" maxlength="5000">
 </textarea>
 </div>
 <div class="field field--full">
 <label for="f-message">Uwagi do zamówienia</label>
-<textarea id="f-message" name="message" rows="4" maxlength="5000">
+<textarea id="f-message" name="Uwagi do zamówienia" rows="4" maxlength="5000">
 </textarea>
 </div>
 <label class="consent field--full">
-<input type="checkbox" required name="consent"> Rozumiem, że to lokalny podgląd i zapytanie nie zostanie wysłane.</label>
+<input type="checkbox" required name="consent" value="Tak"> Wyrażam zgodę na kontakt w sprawie zapytania oraz przesłanie podanych danych i wybranych zdjęć przez FormSubmit w celu jego obsługi.</label>
 <div class="field--full">
 <button class="button" type="submit">WYŚLIJ ZAPYTANIE O ZAMÓWIENIE</button>
 <p class="form-status" role="status">
@@ -326,7 +331,7 @@
 </article>
 <article>
 <h3>Najpierw potwierdzenie</h3>
-<p>Przed przyjęciem zamówienia potwierdzimy mailowo liczbę magnesów, projekt, cenę, dostawę i termin. Ten formularz demonstracyjny nie składa zamówienia.</p>
+<p>Przed przyjęciem zamówienia potwierdzimy mailowo liczbę magnesów, projekt, cenę, dostawę i termin. Wysłanie zapytania nie jest jeszcze potwierdzeniem zamówienia.</p>
 </article>
 <article>
 <h3>Kontakt w sprawie realizacji</h3>

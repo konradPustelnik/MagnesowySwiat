@@ -406,3 +406,9 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .live-offer-grid, .live-benefits, .live-business { grid-template-columns: 1fr; }
  .live-business img { height: 240px; }
 }
+
+.send-confirmation { max-width: 520px; padding: 40px 32px; text-align: center; }
+.send-confirmation h2 { margin-bottom: 20px; font-size: clamp(32px, 5vw, 42px); }
+.send-confirmation p { font-size: 14px; }
+.send-confirmation .button { margin-top: 24px; }
+.confirmation-mark { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 24px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-dark); background: var(--cream); font-size: 26px; }

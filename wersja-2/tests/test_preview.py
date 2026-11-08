@@ -1,6 +1,8 @@
 """Lokalne testy. Nie wysyłają e-maili ani zdjęć."""
 import argparse
 import base64
+from email.parser import BytesParser
+from email.policy import default
 from functools import partial
 from html.parser import HTMLParser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
@@ -20,7 +22,21 @@ BROWSER = '--browser' in __import__('sys').argv
 class CaptureHandler(SimpleHTTPRequestHandler):
     """Local-only receiver: tests must never send a real email."""
     def do_POST(self):
-        self.server.submission = parse_qs(self.rfile.read(int(self.headers['Content-Length'])).decode('utf-8'))
+        body=self.rfile.read(int(self.headers['Content-Length']))
+        self.server.uploads=[]
+        if self.headers['Content-Type'].startswith('multipart/form-data'):
+            message=BytesParser(policy=default).parsebytes(b'Content-Type: '+self.headers['Content-Type'].encode()+b'\r\nMIME-Version: 1.0\r\n\r\n'+body)
+            data={}
+            for part in message.iter_parts():
+                name=part.get_param('name',header='content-disposition')
+                content=part.get_payload(decode=True)
+                if part.get_filename():
+                    self.server.uploads.append({'field':name,'filename':part.get_filename(),'content':content})
+                else:
+                    data.setdefault(name,[]).append(content.decode('utf-8'))
+            self.server.submission=data
+        else:
+            self.server.submission=parse_qs(body.decode('utf-8'))
         self.send_response(200)
         self.send_header('Content-Type','text/html; charset=utf-8')
         self.end_headers()
@@ -169,6 +185,11 @@ class BrowserTests(unittest.TestCase):
     def test_order_preview_counts_delete_and_validation(self):
         from selenium.webdriver.common.by import By
         d=self.driver; d.get(self.base+PAGES[2])
+        form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="order"]')
+        self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
+        self.assertEqual(form.get_attribute('enctype'),'multipart/form-data')
+        self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
+        d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
         with tempfile.TemporaryDirectory() as folder:
             image=Path(folder)/'test.png'
             image.write_bytes(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII='))
@@ -177,15 +198,51 @@ class BrowserTests(unittest.TestCase):
             count=d.find_element(By.CSS_SELECTOR,'.photo-preview input')
             d.execute_script("arguments[0].value=3;arguments[0].dispatchEvent(new Event('input'))",count)
             self.assertEqual(d.find_element(By.ID,'f-quantity').get_attribute('value'),'3')
-            d.find_element(By.ID,'f-name').send_keys('Test lokalny')
-            d.find_element(By.ID,'f-email').send_keys('test@example.com')
-            d.find_element(By.NAME,'consent').click()
-            d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
-            self.assertTrue(d.find_element(By.ID,'draft-dialog').get_attribute('open'))
-            self.assertIn('test.png: 3 szt.',d.find_element(By.ID,'draft-text').get_attribute('value'))
-            d.find_element(By.CSS_SELECTOR,'#draft-dialog [data-close]').click()
             d.find_element(By.CSS_SELECTOR,'.remove-photo').click()
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),0)
+            second=Path(folder)/'second.png'; second.write_bytes(image.read_bytes())
+            d.find_element(By.ID,'photos').send_keys(str(image)+'\n'+str(second))
+            count=d.find_element(By.CSS_SELECTOR,'.photo-preview input')
+            d.execute_script("arguments[0].value=3;arguments[0].dispatchEvent(new Event('input'))",count)
+            d.find_element(By.ID,'f-name').send_keys('Test lokalny')
+            d.find_element(By.ID,'f-email').send_keys('test@example.com')
+            d.find_element(By.ID,'f-message').send_keys(':()@&%$#*($#^*!@(#&#@%&@(#$@!')
+            d.find_element(By.NAME,'consent').click()
+            d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
+            self.assertIn('__capture',d.current_url)
+            self.assertEqual(len(self.server.uploads),2)
+            self.assertEqual([item['filename'] for item in self.server.uploads],['test.png','second.png'])
+            self.assertTrue(all(item['content']==image.read_bytes() for item in self.server.uploads))
+            self.assertEqual(self.server.submission['Liczba magnesów'],['4'])
+            self.assertIn('test.png: 3 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
+            self.assertIn('second.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
+            self.assertEqual(self.server.submission['Uwagi do zamówienia'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
+    def test_order_total_attachment_limit(self):
+        from selenium.webdriver.common.by import By
+        d=self.driver; d.get(self.base+PAGES[2])
+        d.execute_script("""
+          const input=document.getElementById('photos'); const files=new DataTransfer();
+          files.items.add(new File([new Uint8Array(6000000)],'first.png',{type:'image/png'}));
+          files.items.add(new File([new Uint8Array(5000000)],'too-large.png',{type:'image/png'}));
+          input.files=files.files; input.dispatchEvent(new Event('change'));
+        """)
+        self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),1)
+        self.assertIn('10 MB',d.find_element(By.ID,'photo-status').text)
+        self.assertFalse(d.find_elements(By.CSS_SELECTOR,'[data-attachments] input'))
+    def test_return_dialog_countdown_and_manual_home(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        d=self.driver
+        for index,page in enumerate(PAGES[1:]):
+            d.get(self.base+page+'?wyslano=1')
+            dialog=d.find_element(By.CSS_SELECTOR,'.send-confirmation[open]')
+            self.assertTrue(dialog.is_displayed())
+            self.assertIn('Dziękujemy',dialog.text)
+            self.assertNotIn('wyslano=',d.current_url)
+            if index:
+                dialog.find_element(By.TAG_NAME,'button').click()
+            WebDriverWait(d,8).until(lambda browser: browser.current_url in [self.base,self.base+'index.html'])
+            self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.send-confirmation[open]'))
 
 if __name__=='__main__':
     import sys

@@ -30,7 +30,7 @@ document.querySelectorAll('[data-info]').forEach(button => {
   button.addEventListener('click', () => {
     const info = {
       social: ['Nasze profile społecznościowe', 'Prawdziwe adresy profili Instagram i Facebook należy uzupełnić przed publikacją. Nie dodajemy zastępczych linków do cudzych kont.'],
-      privacy: ['Polityka prywatności — do uzupełnienia', 'To wersja demonstracyjna, a nie gotowa polityka prywatności. Przed publikacją trzeba podać dane administratora, podstawy i cele przetwarzania, odbiorców danych, okresy przechowywania i prawa osób. Treść należy dostosować do wybranej integracji formularzy. Zapytania o termin są przesyłane do FormSubmit i na skrzynkę magnesowyswiat@gmail.com. Lokalny podgląd zdjęć w formularzu zamówień nie wysyła plików. Fonty pobierane są z Google Fonts; przed publikacją rozważ ich lokalne hostowanie.'],
+      privacy: ['Polityka prywatności — do uzupełnienia', 'To wersja demonstracyjna, a nie gotowa polityka prywatności. Przed publikacją trzeba podać dane administratora, podstawy i cele przetwarzania, odbiorców danych, okresy przechowywania i prawa osób. Treść należy dostosować do wybranej integracji formularzy. Zapytania o termin są przesyłane do FormSubmit i na skrzynkę magnesowyswiat@gmail.com. Formularz zamówienia przesyła wybrane zdjęcia i dane do FormSubmit dopiero po kliknięciu przycisku wysyłki i wyrażeniu zgody. Fonty pobierane są z Google Fonts; przed publikacją rozważ ich lokalne hostowanie.'],
       terms: ['Regulamin — do uzupełnienia', 'Przed uruchomieniem zamówień potrzebny jest regulamin z prawdziwymi danymi usługodawcy, zasadami zawierania umów, płatności, dostawy i reklamacji oraz informacjami konsumenckimi odpowiednimi dla personalizowanych produktów. Formularz demonstracyjny nie przyjmuje zamówień ani płatności.']
     }[button.dataset.info];
     document.getElementById('info-title').textContent = info[0];
@@ -59,7 +59,8 @@ if (date) {
   date.min = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
 }
 
-// Zdjęcia przechowujemy tylko w pamięci tej karty. Brak fetch, uploadu i localStorage.
+// Preview files stay in this tab until the user submits the multipart form.
+const MAX_PHOTO_BYTES = 10_000_000;
 let photos = [];
 const input = document.getElementById('photos');
 const previews = document.getElementById('photo-previews');
@@ -92,17 +93,46 @@ if (input) {
     const errors = [];
     for (const file of input.files) {
       if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) { errors.push(`${file.name}: wybierz JPEG, PNG lub WebP.`); continue; }
-      if (file.size > 10 * 1024 * 1024) { errors.push(`${file.name}: przekroczono 10 MB.`); continue; }
+      if (file.size + photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
+        errors.push(`${file.name}: łączny rozmiar zdjęć nie może przekraczać 10 MB. Usuń część zdjęć lub wybierz mniejsze pliki.`); continue;
+      }
       if (photos.length >= 20) { errors.push('Maksymalnie 20 zdjęć.'); break; }
       photos.push({ file, url: URL.createObjectURL(file), count: 1 });
     }
     input.value = '';
-    document.getElementById('photo-status').textContent = errors.join(' ') || `Wybrano zdjęć: ${photos.length}. Nie zostały wysłane.`;
+    document.getElementById('photo-status').textContent = errors.join(' ') || `Wybrano zdjęć: ${photos.length}. Łączny rozmiar: ${(photos.reduce((sum, item) => sum + item.file.size, 0) / 1_000_000).toFixed(2)} MB z 10 MB.`;
     renderPhotos(); updateQuantity();
   });
   window.addEventListener('pagehide', () => {
     photos.forEach(item => URL.revokeObjectURL(item.url)); photos = []; renderPhotos();
+    document.querySelector('[data-attachments]')?.replaceChildren();
   });
+}
+
+function showSendConfirmation() {
+  const clean = new URL(location.href);
+  clean.searchParams.delete('wyslano');
+  history.replaceState(history.state, '', clean.pathname + clean.search + clean.hash);
+  const dialog = document.createElement('dialog');
+  dialog.className = 'send-confirmation';
+  dialog.setAttribute('aria-labelledby', 'send-confirmation-title');
+  dialog.setAttribute('aria-describedby', 'send-confirmation-description');
+  dialog.innerHTML = '<div class="confirmation-mark" aria-hidden="true">✓</div><h2 id="send-confirmation-title">Dziękujemy za kontakt!</h2><p id="send-confirmation-description">Rezerwację terminu lub przyjęcie zamówienia potwierdzimy osobno.</p><p>Powrót na stronę główną za <strong id="send-countdown">5</strong> s.</p><button class="button" type="button" autofocus>Wróć teraz</button>';
+  document.body.append(dialog);
+  let seconds = 5;
+  const goHome = () => {
+    window.clearInterval(timer);
+    location.replace(document.querySelector('.brand').href);
+  };
+  const timer = window.setInterval(() => {
+    seconds -= 1;
+    dialog.querySelector('#send-countdown').textContent = seconds;
+    if (seconds <= 0) goHome();
+  }, 1000);
+  dialog.querySelector('button').addEventListener('click', goHome);
+  dialog.addEventListener('cancel', event => { event.preventDefault(); goHome(); });
+  window.addEventListener('pagehide', () => window.clearInterval(timer), { once: true });
+  dialog.showModal();
 }
 
 const liveForm = document.querySelector('form[data-inquiry="live"]');
@@ -118,36 +148,49 @@ if (liveForm) {
   });
   if (new URLSearchParams(location.search).get('wyslano') === '1') {
     liveForm.querySelector('.form-status').textContent = 'Dziękujemy za kontakt. Rezerwację terminu potwierdzimy indywidualnie.';
-    const clean = new URL(location.href);
-    clean.searchParams.delete('wyslano');
-    history.replaceState(history.state, '', clean.pathname + clean.search + clean.hash);
+    showSendConfirmation();
   }
 }
 
 document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
   form.addEventListener('submit', event => {
-    event.preventDefault();
     const status = form.querySelector('.form-status');
-    if (form.dataset.inquiry === 'order') {
-      if (!photos.length) { status.textContent = 'Dodaj przynajmniej jedno zdjęcie do lokalnego podglądu.'; input.focus(); return; }
-      if (Number(quantity.value) !== photos.reduce((sum, item) => sum + item.count, 0)) {
-        status.textContent = 'Liczba magnesów musi być równa sumie egzemplarzy przy zdjęciach.'; quantity.focus(); return;
-      }
+    if (!photos.length) {
+      event.preventDefault(); status.textContent = 'Dodaj przynajmniej jedno zdjęcie.'; input.focus(); return;
     }
-    const lines = [form.dataset.inquiry === 'order' ? 'Zapytanie o magnesy ze zdjęć' : 'Zapytanie o dostępność terminu', ''];
-    form.querySelectorAll('[name]').forEach(field => {
-      if (field.name === 'consent') return;
-      const label = form.querySelector(`label[for="${field.id}"]`);
-      if (label && field.value.trim()) lines.push(`${label.textContent.replace(' *', '')}: ${field.value.trim()}`);
-    });
-    if (photos.length) lines.push('', 'Zdjęcia (załącz ręcznie w programie pocztowym):', ...photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.`));
-    const text = lines.join('\n');
-    document.getElementById('draft-text').value = text;
-    document.getElementById('email-draft').href = `mailto:magnesowyswiat@gmail.com?subject=${encodeURIComponent(lines[0])}&body=${encodeURIComponent(text)}`;
-    document.getElementById('copy-status').textContent = '';
-    status.textContent = 'Przygotowano lokalny podgląd. Zapytanie nie zostało wysłane.';
-    document.getElementById('draft-dialog').showModal();
+    if (Number(quantity.value) !== photos.reduce((sum, item) => sum + item.count, 0)) {
+      event.preventDefault(); status.textContent = 'Liczba magnesów musi być równa sumie egzemplarzy przy zdjęciach.'; quantity.focus(); return;
+    }
+    if (photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
+      event.preventDefault(); status.textContent = 'Łączny rozmiar zdjęć nie może przekraczać 10 MB.'; input.focus(); return;
+    }
+    const attachments = form.querySelector('[data-attachments]');
+    attachments.replaceChildren();
+    try {
+      photos.forEach((item, index) => {
+        const transfer = new DataTransfer(); transfer.items.add(item.file);
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file'; fileInput.name = index === 0 ? 'attachment' : `attachment${index + 1}`;
+        fileInput.files = transfer.files;
+        attachments.append(fileInput);
+      });
+    } catch {
+      event.preventDefault(); attachments.replaceChildren();
+      status.textContent = 'Nie udało się dołączyć zdjęć. Spróbuj w aktualnej przeglądarce lub napisz na magnesowyswiat@gmail.com.'; return;
+    }
+    document.getElementById('photo-summary').value = photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.`).join('\n');
+    form.setAttribute('aria-busy', 'true');
+    status.textContent = 'Przechodzenie do wysyłki zapytania i zdjęć…';
+    form.querySelector('[type="submit"]').textContent = 'Przechodzenie do wysyłki…';
   });
+  window.addEventListener('pageshow', () => {
+    form.removeAttribute('aria-busy');
+    form.querySelector('[type="submit"]').textContent = 'WYŚLIJ ZAPYTANIE O ZAMÓWIENIE';
+  });
+  if (new URLSearchParams(location.search).get('wyslano') === '1') {
+    form.querySelector('.form-status').textContent = 'Dziękujemy za kontakt. Cenę i szczegóły zamówienia potwierdzimy mailowo.';
+    showSendConfirmation();
+  }
 });
 document.getElementById('copy-draft').addEventListener('click', async () => {
   const draft = document.getElementById('draft-text');

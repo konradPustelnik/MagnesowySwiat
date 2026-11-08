@@ -29,6 +29,7 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 - `images/` — kopie logo oraz zdjęcia inspiracyjne; oryginały pozostają nietknięte.
 - `build_preview.py` — opcjonalny generator statycznych HTML ze wspólnym nagłówkiem i stopką. Po edycji treści generatora uruchom `python wersja-2/build_preview.py`. Uwaga: nadpisuje wyłącznie trzy nowe HTML; nie uruchamiaj po ręcznych zmianach w tych HTML, jeśli chcesz je zachować.
 - `live_layout.py` — układ podstrony „Magnesy na żywo” wzorowany na backupie: oferta → jak działamy → okazje → inspiracje → wyróżniki → cennik → dla firm → o nas → FAQ → formularz. Skróty pod nagłówkiem prowadzą do odpowiednich sekcji. Inspiracje używają lokalnych zdjęć ilustracyjnych, podpisanych jako fotografie spoza realizacji marki.
+- `order_form.py` — konfiguracja formularza zamówienia: multipart POST do FormSubmit, temat wiadomości, zgoda na kontakt i przekazanie zdjęć, adres powrotu.
 - `tests/test_preview.py` — kontrola linków i opcjonalne testy przeglądarkowe.
 
 ## Co działa, a co wymaga integracji
@@ -37,15 +38,17 @@ Działają: nawigacja, menu telefonu, FAQ, powiększanie fotografii, wybór paki
 
 **Zapytanie o termin:** przywrócono normalną wysyłkę HTML POST do `https://formsubmit.co/magnesowyswiat@gmail.com`, tak jak w backupie. Formularz działa również bez JavaScript. Nie używa AJAX, nie otwiera lokalnego szkicu i nie wysyła zdjęć. Ma normalną zgodę na kontakt, `_captcha=false`, `_honey`, temat i tabelaryczny szablon wiadomości oraz adres powrotu `/magnesy-na-zywo/?wyslano=1#rezerwacja`. Aktywacja i doręczenie zależą od FormSubmit oraz skrzynki odbiorczej. Powrót z serwisu nie jest dowodem doręczenia. Szczegóły integracji: https://formsubmit.co/
 
-**Zamówienie ze zdjęć nadal przygotowuje lokalny szkic i NIE wysyła zdjęć ani zamówienia.** Przycisk poczty otwiera szkic w programie użytkownika, bez załączników. Użytkownik musi sam dodać pliki i wysłać wiadomość. Duże szkice mogą podlegać limitom programu pocztowego; alternatywą jest skopiowanie tekstu. Żaden z testów nie potwierdza doręczenia e-maila do skrzynki.
+**Zapytanie o zamówienie ze zdjęć:** formularz wysyła dane, zdjęcia i rozpiskę kopii przez zwykły HTML POST z `enctype="multipart/form-data"` do tego samego FormSubmit. JavaScript obsługuje kolejkę plików, podgląd, walidację i przygotowanie osobnych pól załączników. Nie ma AJAX ani dodatkowego uploadu przed wysłaniem. Obowiązuje maksymalnie 20 plików JPEG/PNG/WebP o łącznym rozmiarze do 10 000 000 bajtów (10 MB). Limit wynika z dokumentacji: https://formsubmit.co/documentation#file-uploads . Dane i zdjęcia są przekazywane zewnętrznemu dostawcy dopiero po świadomym wysłaniu formularza. Cena i przyjęcie zamówienia wymagają osobnego potwierdzenia. Testy nie potwierdzają doręczenia do rzeczywistej skrzynki.
 
-Zdjęcia użytkownika są przechowywane tylko w pamięci karty, przez lokalne adresy `blob:`. Brak uploadu, localStorage i zewnętrznego serwisu do zdjęć. Limit interfejsu: 20 plików JPEG/PNG/WebP, po 10 MB. Suma egzemplarzy musi odpowiadać liczbie magnesów. Zamknięcie/opuszczenie strony usuwa podglądy. Frontendowa kontrola plików nie zastępuje przyszłej walidacji na serwerze.
+Właściciel wyraźnie zatwierdził przesyłanie zdjęć i danych przez FormSubmit 2026-11-08. Po powrocie z obu formularzy (`?wyslano=1`) pojawia się okno „Dziękujemy za kontakt!” z odliczaniem 5 sekund i przyciskiem „Wróć teraz”. Następnie użytkownik wraca na stronę główną. Ekran jest potwierdzeniem powrotu z usługi, nie dowodem doręczenia e-maila. Parametr jest usuwany, aby odświeżenie nie otwierało okna ponownie.
 
-Bez JavaScript ukryty jest wyłącznie podgląd zamówienia ze zdjęć. Formularz zapytania o termin działa jako zwykły HTML POST. Kopie w folderze `wersja-2/` zawierają `noindex, nofollow`; produkcja ma własne canonical i pozwala na indeksowanie.
+Przed wysyłką zdjęcia są w pamięci karty i lokalnych adresach `blob:`; nie są zapisywane w repozytorium ani localStorage. Suma egzemplarzy musi odpowiadać liczbie magnesów. Zamknięcie/opuszczenie strony usuwa podglądy. Kontrole przeglądarkowe nie zastępują ograniczeń i polityki przetwarzania po stronie dostawcy FormSubmit.
+
+Bez JavaScript formularz zamówienia ze zdjęć jest ukryty; dostępny jest kontakt e-mail. Formularz zapytania o termin działa jako zwykły HTML POST. Kopie w folderze `wersja-2/` zawierają `noindex, nofollow`, ale ich formularze również mogą wysłać prawdziwe zapytanie. Produkcja ma własne canonical i pozwala na indeksowanie.
 
 ## Przed uruchomieniem publicznym
 
-- [ ] Bezpieczny backend wysyłki zapytań i zdjęć: limity, walidacja serwerowa, kontrola dostępu, przechowywanie i usuwanie plików, ochrona przed spamem, obsługa błędów i prawdziwe potwierdzenie przyjęcia. Nie zapisuj zdjęć klientów w GitHub.
+- [ ] Ocena docelowego dostawcy formularzy, zasad przechowywania i usuwania plików, polityki prywatności i ochrony przed spamem. W razie potrzeby zastąp FormSubmit własnym backendem. Nie zapisuj zdjęć klientów w GitHub.
 - [ ] Rzeczywisty test doręczenia: zwykła treść, polskie litery, znaki specjalne, wiadomość z plikami; sprawdzenie w docelowej skrzynce. Odpowiedź HTTP dostawcy nie daje gwarancji doręczenia.
 - [ ] Prawdziwe zdjęcia produktów 6,35 × 6,35 cm, stanowiska, personalizacji i realizacji. Obecne ilustracje są podpisane i mogą pokazywać inne formaty. Puste miejsca są celowe.
 - [ ] Ostateczne ceny zamówień 1/3/5/10/20+, płatności, dostawa i terminy. Ceny czterech pakietów na żywo pochodzą z wymagań, przed publikacją potwierdź ich aktualność i zasady rozliczenia.
@@ -69,7 +72,7 @@ Pełniejszy test produkcyjnych stron w Chrome (istniejące środowisko projektu 
 .\.venv-tests\Scripts\python.exe wersja-2/tests/test_preview.py --browser --production
 ```
 
-Na innym komputerze potrzebujesz Chrome, Pythona i Selenium (`python -m pip install selenium`). Test automatycznie uruchamia i zatrzymuje lokalny serwer. Sprawdza linki/zasoby/kotwice, H1 i alt, menu, karty, małe ikony, pakiet oraz miniatury i liczbę kopii. Test zapytania o termin sprawdza konfigurację FormSubmit, po czym kieruje POST wyłącznie do lokalnego odbiornika i porównuje pełny ciąg znaków specjalnych. Nie wysyła prawdziwych wiadomości ani zdjęć. Zrzuty trafiają do ignorowanego `tests/artifacts/`.
+Na innym komputerze potrzebujesz Chrome, Pythona i Selenium (`python -m pip install selenium`). Test automatycznie uruchamia i zatrzymuje lokalny serwer. Sprawdza linki, menu, karty, małe ikony i oba formularze. Wysyłkę kieruje wyłącznie do lokalnego odbiornika: porównuje znaki specjalne, liczbę kopii, nazwy i bajty dwóch syntetycznych załączników, a także blokadę przekroczenia 10 MB. Nie wysyła prawdziwych wiadomości ani prywatnych zdjęć. Zrzuty trafiają do ignorowanego `tests/artifacts/`.
 
 ## Pochodzenie zdjęć
 

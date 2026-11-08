@@ -1,4 +1,4 @@
-> Aktualizacja: wersja 2 jest teraz stroną główną. Usługi mają adresy `/magnesy-na-zywo/` i `/magnesy-na-zamowienie/` bez `.html`; poprzednie adresy `.html` przekierowują. Poprzednia strona i jej zasoby są w `backup/` (otwórz `backup/index.html`). Formularz zapytania o termin wysyła dane przez HTML POST do FormSubmit, jak w backupie. Formularz zamówienia ze zdjęć nadal przygotowuje lokalny szkic, bez automatycznej wysyłki zdjęć. Szczegóły opisano w `wersja-2/README.md`. Stała zgoda na publikację jest zapisana w `AGENTS.md` i `.github/copilot-instructions.md`.
+> Aktualizacja: wersja 2 jest teraz stroną główną. Usługi mają adresy `/magnesy-na-zywo/` i `/magnesy-na-zamowienie/` bez `.html`; poprzednie adresy `.html` przekierowują. Poprzednia strona i jej zasoby są w `backup/`. Oba formularze wysyłają zapytania do FormSubmit: rezerwacja przez HTML POST, zamówienie ze zdjęć przez multipart POST z załącznikami (łącznie do 10 MB). Szczegóły opisano w `wersja-2/README.md`. Stała zgoda na publikację jest zapisana w `AGENTS.md` i `.github/copilot-instructions.md`.
 
 # Magnesowy Świat
 
@@ -8,7 +8,7 @@ Statyczna strona wizytówka z podstronami usług, wspólnymi stylami CSS i JavaS
 
 - W menu „Oferta” znajduje się przed „Jak działamy”; sekcja `#oferta` na stronie głównej ma dwa kafelki ze zdjęciami.
 - `/magnesy-na-zywo/` opisuje obsługę wydarzeń i prowadzi do istniejących pakietów, FAQ i formularza kontaktowego.
-- `/magnesy-na-zamowienie/` opisuje zamówienia z własnych zdjęć. Formularz **przygotowuje treść zapytania**, nie składa płatnego zamówienia i nie wysyła automatycznie poczty. Użytkownik otwiera wiadomość we własnym programie pocztowym lub Gmailu i sam ją wysyła; zdjęcia może załączyć do e-maila. Jest to świadoma alternatywa dla niepotwierdzonych doręczeń przez FormSubmit, nie naprawa dotychczasowego dostawcy.
+- `/magnesy-na-zamowienie/` opisuje zamówienia z własnych zdjęć. Formularz wysyła zapytanie, dane i wybrane zdjęcia do FormSubmit po zgodzie użytkownika. Zachowuje podgląd, liczbę kopii i usuwanie zdjęć. Limit: 20 zdjęć, łącznie 10 MB. Cenę, zakres i przyjęcie zamówienia potwierdzamy mailowo. Testy używają wyłącznie lokalnego odbiornika i syntetycznych zdjęć; nie potwierdzają rzeczywistego doręczenia do Gmaila.
 - Tekst podstrony zamówień pochodzi od właściciela: „Magnesy ze zdjęć – Twoje wspomnienia zawsze blisko Ciebie! 🧲”, cztery kroki (wybór zdjęć, przesłanie zamówienia, produkcja, pakowanie i wysyłka) i przycisk „Zamów magnesy ze zdjęć”. Ceny i sposób dostawy są uzgadniane indywidualnie.
 - Wycena, termin i sposób przekazania gotowych magnesów wymagają indywidualnego uzgodnienia. Nie dodano nieustalonych cen, płatności ani automatycznego uploadu zdjęć.
 - `assets/site.css` zawiera przeniesione z `index.html` wspólne style, `assets/offers.css` — kafelki i układ podstron, `assets/service-pages.js` — ich menu i przygotowanie wiadomości. Istniejący formularz wydarzenia nadal korzysta z FormSubmit.
