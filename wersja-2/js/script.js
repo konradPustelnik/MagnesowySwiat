@@ -27,6 +27,9 @@ document.addEventListener('keydown', event => {
   else if (openDropdown) openDropdown.querySelector('summary').focus();
 });
 serviceDropdowns.forEach(dropdown => {
+  dropdown.addEventListener('toggle', () => {
+    if (dropdown.open) serviceDropdowns.forEach(other => { if (other !== dropdown) other.open = false; });
+  });
   dropdown.addEventListener('pointerenter', event => {
     if (event.pointerType === 'mouse' && window.innerWidth > 980) dropdown.open = true;
   });

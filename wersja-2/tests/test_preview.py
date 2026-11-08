@@ -312,6 +312,37 @@ class BrowserTests(unittest.TestCase):
         d.execute_script("const picker=document.getElementById('date-picker');picker.value='2099-11-28';picker.dispatchEvent(new Event('change'))")
         self.assertEqual(date.get_attribute('value'),'28/11/2099')
         self.assertTrue(d.find_element(By.ID,'date-picker-button').is_enabled())
+    def test_order_dropdown_and_exclusive_open_state(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.action_chains import ActionChains
+        from selenium.webdriver.support.ui import WebDriverWait
+        d=self.driver
+        try:
+            d.set_window_size(1440,1000); d.get(self.base)
+            live=d.find_element(By.CSS_SELECTOR,'[data-service="live"]')
+            order=d.find_element(By.CSS_SELECTOR,'[data-service="order"]')
+            ActionChains(d).move_to_element(live.find_element(By.TAG_NAME,'summary')).perform()
+            self.assertTrue(live.get_attribute('open'))
+            ActionChains(d).move_to_element(order.find_element(By.TAG_NAME,'summary')).perform()
+            WebDriverWait(d,3).until(lambda browser: not live.get_attribute('open'))
+            self.assertTrue(order.get_attribute('open'))
+            artifacts=Path(__file__).parent/'artifacts'; artifacts.mkdir(exist_ok=True)
+            d.save_screenshot(str(artifacts/'order-dropdown-desktop.png'))
+            order.find_element(By.CSS_SELECTOR,'a[href$="#cennik"]').click()
+            WebDriverWait(d,5).until(lambda browser: browser.current_url.endswith('#cennik'))
+            self.assertTrue(d.find_element(By.ID,'cennik').is_displayed())
+            for width in [1024,981,390,320]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width<600})
+                d.get(self.base)
+                self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
+                if width<981:
+                    d.find_element(By.CSS_SELECTOR,'.menu-toggle').click()
+                    d.find_element(By.CSS_SELECTOR,'[data-service="order"] summary').click()
+                    d.find_element(By.CSS_SELECTOR,'[data-service="order"] a[href$="#faq"]').click()
+                    WebDriverWait(d,5).until(lambda browser: browser.current_url.endswith('#faq'))
+                    self.assertEqual(d.find_element(By.CSS_SELECTOR,'.menu-toggle').get_attribute('aria-expanded'),'false')
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
 
 if __name__=='__main__':
     import sys
