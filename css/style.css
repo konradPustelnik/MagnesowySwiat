@@ -136,10 +136,12 @@ p + p { margin-top: 16px; }
 .footer-grid > div:not(.footer-brand) .footer-links { align-items: flex-start; }
 .contact-icon { display: block; flex: 0 0 18px; width: 18px; height: 18px; color: var(--gold-dark); }
 .footer-links a:hover, .footer-button:hover { color: var(--gold-dark); }
-.footer-button { display: inline; width: fit-content; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font-size: 12px; }
+.footer-button { display: inline; width: fit-content; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font: inherit; }
 .footer-links small { font-size: 9px; color: var(--muted); }
-.footer-bottom { padding: 12px 0; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 24px; font-size: 10px; color: var(--muted); }
-.footer-legal { display: flex; flex-wrap: wrap; gap: 6px 16px; }
+.footer-bottom { padding: 12px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px 24px; font-size: 12px; color: var(--muted); }
+.footer-bottom > :first-child { justify-self: start; }
+.footer-bottom > :nth-child(2) { justify-self: center; text-align: center; }
+.footer-bottom > :last-child { justify-self: end; text-align: right; }
 .hero--service { padding-top: 20px; }
 .hero--service h1 { font-size: clamp(40px, 4.3vw, 62px); }
 .step-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
@@ -318,7 +320,8 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .footer-brand { grid-column: 1 / -1; }
   .footer-brand p { max-width: 360px; }
   .footer-links { font-size: 11px; }
-  .footer-bottom { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
+  .footer-bottom { grid-template-columns: 1fr; justify-items: center; gap: 8px; text-align: center; }
+  .footer-bottom > * { justify-self: center; text-align: center; }
   .step-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .process-step .number { font-size: 40px; margin-bottom: 16px; }
   .process-step h3 { font-size: 25px; }
@@ -519,9 +522,6 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .page-home .contact-banner { padding-block: 30px; }
 .page-home .footer-links { align-items: flex-start; justify-content: flex-start; }
 .page-home .social-link { justify-content: flex-start; }
-.page-home .footer-button { align-self: center; text-align: center; }
-.page-home .footer-bottom { align-items: center; justify-content: center; flex-wrap: wrap; }
-.page-home .footer-legal { justify-content: center; }
 .page-home #o-nas .editorial { display: flex; flex-direction: column; gap: 30px; text-align: center; }
 .page-home #o-nas .editorial-copy { width: min(100%, 900px); margin-inline: auto; }
 .page-home #o-nas .editorial-copy p:not(.eyebrow) { max-width: 850px; margin-inline: auto; }
@@ -540,7 +540,6 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .footer-heading { margin-bottom: 6px; }
  .footer-links { gap: 5px; }
  .footer-bottom { padding-block: 8px; gap: 4px; }
- .footer-legal { gap: 4px 12px; }
 }
 .hero--compact { padding: 20px 0 40px; }
 .hero--compact .hero-grid { align-items: start; gap: 48px; }

@@ -349,10 +349,20 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(phone.find_element(By.CSS_SELECTOR,'svg.contact-icon').get_attribute('aria-hidden'),'true')
             self.assertEqual(contact.find_element(By.CSS_SELECTOR,'a[href^="mailto:"]').text,'magnesowyswiat@gmail.com')
             self.assertEqual(len(contact.find_elements(By.CSS_SELECTOR,'svg.contact-icon')),2)
-            self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.site-footer .footer-legal [data-info]')),2)
+            privacy=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom [data-info="privacy"]')
+            copyright=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-copyright')
+            terms=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom [data-info="terms"]')
+            self.assertFalse(d.find_elements(By.XPATH,"//*[contains(text(),'Strona stworzona i zarządzana przez KP')]"))
+            fonts=[d.execute_script('return [getComputedStyle(arguments[0]).fontFamily,getComputedStyle(arguments[0]).fontSize]',element) for element in (privacy,copyright,terms)]
+            self.assertEqual(fonts[0],fonts[1])
+            self.assertEqual(fonts[1],fonts[2])
             if d.get_window_size()['width'] > 980:
                 widths=[column.rect['width'] for column in d.find_elements(By.CSS_SELECTOR,'.site-footer .footer-grid > div')]
                 self.assertLessEqual(max(widths)-min(widths),1)
+                footer_bottom=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom').rect
+                self.assertAlmostEqual(copyright.rect['x']+copyright.rect['width']/2,footer_bottom['x']+footer_bottom['width']/2,delta=1)
+                self.assertLess(privacy.rect['x']+privacy.rect['width'],copyright.rect['x'])
+                self.assertGreater(terms.rect['x'],copyright.rect['x']+copyright.rect['width'])
             for icon in icons:
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)
@@ -361,6 +371,15 @@ class BrowserTests(unittest.TestCase):
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)
                 self.assertEqual(icon.get_attribute('fill'),'none')
+        d.set_window_size(390,844)
+        d.get(self.base+PAGES[0])
+        footer_bottom=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom')
+        self.assertEqual(len(d.execute_script('return getComputedStyle(arguments[0]).gridTemplateColumns.split(" ")',footer_bottom)),1)
+        mobile_items=d.find_elements(By.CSS_SELECTOR,'.site-footer .footer-bottom > *')
+        self.assertEqual(len(mobile_items),3)
+        self.assertLess(mobile_items[0].rect['y'],mobile_items[1].rect['y'])
+        self.assertLess(mobile_items[1].rect['y'],mobile_items[2].rect['y'])
+        d.set_window_size(1440,1000)
     def test_occasion_photos_have_consistent_crops_on_mobile_and_desktop(self):
         from selenium.webdriver.common.by import By
         d=self.driver
