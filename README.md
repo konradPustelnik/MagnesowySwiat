@@ -2,6 +2,8 @@
 
 # Magnesowy Świat
 
+Progi zamówień ze zdjęć: **5, 20, 50, 100 i 100+ sztuk**. [Analiza rynku i propozycja cen](docs/cennik-na-zamowienie.md) zawiera źródła, rekomendowane kwoty oraz dane kosztowe potrzebne do ich potwierdzenia. Propozycja nie jest jeszcze publicznym cennikiem — na stronie działa zapytanie o wycenę.
+
 Statyczna strona wizytówka z podstronami usług, wspólnymi stylami CSS i JavaScriptem, publikowana na GitHub Pages.
 
 ## Oferta i podstrony

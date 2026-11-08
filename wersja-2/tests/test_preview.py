@@ -107,6 +107,30 @@ class BrowserTests(unittest.TestCase):
                     self.assertEqual(menu.get_attribute('aria-expanded'),'true')
                     d.find_element(By.CSS_SELECTOR,'.main-nav a').click()
         d.set_window_size(1440,1000)
+    def test_quantity_choices_and_mobile_layout(self):
+        from selenium.webdriver.common.by import By
+        d = self.driver
+        d.get(self.base + PAGES[2])
+        d.execute_script('document.documentElement.style.scrollBehavior="auto"')
+        for value in ['5', '20', '50', '100', '101']:
+            link = d.find_element(By.CSS_SELECTOR, f'[data-quantity="{value}"]')
+            d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', link)
+            link.click()
+            self.assertEqual(d.find_element(By.ID, 'f-quantity').get_attribute('value'), value)
+            self.assertTrue(d.current_url.endswith('#zamowienie'))
+        try:
+            for width in [1440, 390, 320]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': 900, 'deviceScaleFactor': 1, 'mobile': width < 600})
+                self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
+                for link in d.find_elements(By.CSS_SELECTOR, '[data-quantity]'):
+                    self.assertGreaterEqual(link.rect['height'], 44)
+                d.execute_script('document.getElementById("cennik").scrollIntoView({behavior:"instant"})')
+                artifacts = Path(__file__).parent / 'artifacts'
+                artifacts.mkdir(exist_ok=True)
+                d.save_screenshot(str(artifacts / f'quantity-{width}.png'))
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
+
     def test_reservation_special_characters_and_package(self):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import Select
