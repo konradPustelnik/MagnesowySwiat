@@ -31,6 +31,7 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 - `live_layout.py` — układ podstrony „Magnesy na żywo” wzorowany na backupie: oferta → jak działamy → okazje → inspiracje → wyróżniki → cennik → dla firm → o nas → FAQ → formularz. Inspiracje używają lokalnych zdjęć ilustracyjnych, podpisanych jako fotografie spoza realizacji marki.
 - `nav_dropdown.py` — wspólne rozwijane menu pod zakładką „Magnesy na żywo”, zastępujące osobny pasek skrótów. Natywne `details/summary` obsługuje klawiaturę i dotyk także bez JS; JavaScript dodaje najechanie, zamykanie po wyborze, poza menu i klawiszem Escape.
 - `order_form.py` — konfiguracja formularza zamówienia: multipart POST do FormSubmit, temat wiadomości, zgoda na kontakt i przekazanie zdjęć, adres powrotu.
+- `date_field.py` — pole daty wydarzenia zawsze w formacie `dd/mm/rrrr`, z wyborem z kalendarza i kontrolą rzeczywistej daty, lat przestępnych oraz dat przeszłych. Do maila trafia data w tym samym formacie.
 - `tests/test_preview.py` — kontrola linków i opcjonalne testy przeglądarkowe.
 
 ## Co działa, a co wymaga integracji

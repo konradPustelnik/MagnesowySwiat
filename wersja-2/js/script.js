@@ -78,8 +78,43 @@ document.querySelectorAll('[data-quantity]').forEach(link => link.addEventListen
 }));
 const date = document.getElementById('f-date');
 if (date) {
+  const picker = document.getElementById('date-picker');
+  const button = document.getElementById('date-picker-button');
   const now = new Date();
-  date.min = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const pad = value => String(value).padStart(2, '0');
+  picker.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  function validateDate() {
+    date.setCustomValidity('');
+    if (!date.value) { picker.value = ''; return; }
+    const parts = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(date.value);
+    if (!parts) { date.setCustomValidity('Wpisz datę w formacie dd/mm/rrrr.'); picker.value = ''; return; }
+    const [, day, month, year] = parts.map(Number);
+    const chosen = new Date(year, month - 1, day);
+    if (chosen.getFullYear() !== year || chosen.getMonth() !== month - 1 || chosen.getDate() !== day) {
+      date.setCustomValidity('Podaj poprawną datę wydarzenia.'); picker.value = ''; return;
+    }
+    if (chosen < today) { date.setCustomValidity('Data wydarzenia nie może być z przeszłości.'); picker.value = ''; return; }
+    picker.value = `${year}-${pad(month)}-${pad(day)}`;
+  }
+  date.addEventListener('input', () => {
+    const digits = date.value.replace(/\D/g, '').slice(0, 8);
+    date.value = digits.slice(0, 2) + (digits.length > 2 ? '/' + digits.slice(2, 4) : '') + (digits.length > 4 ? '/' + digits.slice(4) : '');
+    validateDate();
+  });
+  date.addEventListener('change', validateDate);
+  picker.addEventListener('change', () => {
+    if (!picker.value) return;
+    const [year, month, day] = picker.value.split('-');
+    date.value = `${day}/${month}/${year}`;
+    validateDate();
+  });
+  button.disabled = false;
+  button.addEventListener('click', () => {
+    try { if (typeof picker.showPicker === 'function') picker.showPicker(); else date.focus(); }
+    catch { date.focus(); }
+  });
+  validateDate();
 }
 
 // Preview files stay in this tab until the user submits the multipart form.

@@ -121,7 +121,7 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Gold')
         for name,value in [('name','Test lokalny'),('email','test@example.com'),('city','Limanowa'),('guests','100'),('message',':()@&%$#*($#^*!@(#&#@%&@(#$@!')]:
             d.find_element(By.ID,'f-'+name).send_keys(value)
-        d.execute_script("document.getElementById('f-date').value='2099-01-01'")
+        d.find_element(By.ID,'f-date').send_keys('01012099')
         Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
         d.find_element(By.NAME,'consent').click()
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
@@ -132,6 +132,7 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(data['email'],['test@example.com'])
         self.assertEqual(data['_captcha'],['false'])
         self.assertEqual(data['_template'],['table'])
+        self.assertEqual(data['Data wydarzenia'],['01/01/2099'])
         self.assertEqual(data['_subject'],['[NA ŻYWO] Zapytanie o termin | Magnesowy Świat'])
         self.assertEqual(data['Rodzaj zapytania'],['Magnesy na żywo'])
     def test_footer_icons_stay_small_without_stylesheet(self):
@@ -283,6 +284,22 @@ class BrowserTests(unittest.TestCase):
                     self.assertEqual(d.find_element(By.CSS_SELECTOR,'.menu-toggle').get_attribute('aria-expanded'),'false')
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
+    def test_event_date_polish_format_validation_and_calendar(self):
+        from selenium.webdriver.common.by import By
+        d=self.driver; d.get(self.base+PAGES[1])
+        date=d.find_element(By.ID,'f-date')
+        self.assertEqual(date.get_attribute('placeholder'),'dd/mm/rrrr')
+        date.send_keys('28112099')
+        self.assertEqual(date.get_attribute('value'),'28/11/2099')
+        self.assertTrue(d.execute_script('return arguments[0].checkValidity()',date))
+        for value in ['31/02/2099','29/02/2100','01/01/2000']:
+            d.execute_script("arguments[0].value=arguments[1];arguments[0].dispatchEvent(new Event('change'))",date,value)
+            self.assertFalse(d.execute_script('return arguments[0].checkValidity()',date),value)
+        d.execute_script("arguments[0].value='29/02/2096';arguments[0].dispatchEvent(new Event('change'))",date)
+        self.assertTrue(d.execute_script('return arguments[0].checkValidity()',date))
+        d.execute_script("const picker=document.getElementById('date-picker');picker.value='2099-11-28';picker.dispatchEvent(new Event('change'))")
+        self.assertEqual(date.get_attribute('value'),'28/11/2099')
+        self.assertTrue(d.find_element(By.ID,'date-picker-button').is_enabled())
 
 if __name__=='__main__':
     import sys
