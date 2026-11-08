@@ -347,6 +347,46 @@ class BrowserTests(unittest.TestCase):
                     self.assertEqual(d.find_element(By.CSS_SELECTOR,'.menu-toggle').get_attribute('aria-expanded'),'false')
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
+    def test_calendar_polish_labels_selection_and_mobile(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.support.ui import Select
+        d=self.driver; d.get(self.base+PAGES[1])
+        date=d.find_element(By.ID,'f-date')
+        date.send_keys('28112099')
+        trigger=d.find_element(By.ID,'date-picker-button'); trigger.click()
+        dialog=d.find_element(By.CSS_SELECTOR,'#event-calendar[open]')
+        self.assertEqual(Select(dialog.find_element(By.CSS_SELECTOR,'.calendar-month')).first_selected_option.text,'Listopad')
+        self.assertEqual([day.text for day in dialog.find_elements(By.TAG_NAME,'th')],['Pon','Wt','Śr','Czw','Pt','Sob','Nd'])
+        selected=d.switch_to.active_element
+        self.assertEqual(selected.get_attribute('data-date'),'2099-11-28')
+        self.assertIn('listopada',selected.get_attribute('aria-label'))
+        selected.send_keys(Keys.ARROW_RIGHT)
+        d.switch_to.active_element.send_keys(Keys.ENTER)
+        self.assertEqual(date.get_attribute('value'),'29/11/2099')
+        self.assertFalse(dialog.get_attribute('open'))
+        trigger.click()
+        dialog.find_element(By.CSS_SELECTOR,'.calendar-next').click()
+        self.assertEqual(Select(dialog.find_element(By.CSS_SELECTOR,'.calendar-month')).first_selected_option.text,'Grudzień')
+        year=dialog.find_element(By.CSS_SELECTOR,'.calendar-year'); year.send_keys(Keys.CONTROL,'a'); year.send_keys('2096',Keys.TAB)
+        self.assertEqual(year.get_attribute('value'),'2096')
+        Select(dialog.find_element(By.CSS_SELECTOR,'.calendar-month')).select_by_visible_text('Luty')
+        dialog.find_element(By.CSS_SELECTOR,'[data-date="2096-02-29"]').click()
+        self.assertEqual(date.get_attribute('value'),'29/02/2096')
+        trigger.click(); year.send_keys(Keys.CONTROL,'a'); year.send_keys('2100',Keys.TAB)
+        self.assertFalse(dialog.find_elements(By.CSS_SELECTOR,'[data-date="2100-02-29"]'))
+        dialog.find_element(By.CSS_SELECTOR,'.calendar-close').click()
+        artifacts=Path(__file__).parent/'artifacts'; artifacts.mkdir(exist_ok=True)
+        try:
+            for width in [1440,390,320]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride',{'width':width,'height':900,'deviceScaleFactor':1,'mobile':width<600})
+                trigger.click()
+                self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
+                self.assertLessEqual(dialog.rect['width'],width)
+                d.save_screenshot(str(artifacts/f'calendar-polish-{width}.png'))
+                dialog.find_element(By.CSS_SELECTOR,'.calendar-close').click()
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
 
 if __name__=='__main__':
     import sys

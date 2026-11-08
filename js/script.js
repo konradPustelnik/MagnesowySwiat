@@ -91,7 +91,6 @@ if (date) {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const pad = value => String(value).padStart(2, '0');
-  picker.min = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
   function validateDate() {
     date.setCustomValidity('');
     if (!date.value) { picker.value = ''; return; }
@@ -117,12 +116,8 @@ if (date) {
     date.value = `${day}/${month}/${year}`;
     validateDate();
   });
-  button.disabled = false;
-  button.addEventListener('click', () => {
-    try { if (typeof picker.showPicker === 'function') picker.showPicker(); else date.focus(); }
-    catch { date.focus(); }
-  });
   validateDate();
+  if (typeof createPolishDatePicker === 'function') createPolishDatePicker(date, picker, button, today);
 }
 
 const postalCode = document.getElementById('f-postal-code');
