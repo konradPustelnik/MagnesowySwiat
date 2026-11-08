@@ -34,11 +34,13 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 
 Działają: nawigacja, menu telefonu, FAQ, powiększanie fotografii, wybór pakietu/ilości, walidacja, lokalne miniatury, liczba kopii każdego zdjęcia, usuwanie miniatur, podgląd i kopiowanie zapytania. Znaki specjalne pozostają w treści; szkic `mailto:` koduje je przez `encodeURIComponent`.
 
-**Formularze NIE wysyłają e-maili, zdjęć ani zamówień.** Wyraźnie informują o tym przed przyciskiem i w oknie podglądu. Przycisk poczty otwiera szkic w programie użytkownika, bez załączników. Użytkownik musi sam dodać pliki i wysłać wiadomość. Duże szkice mogą podlegać limitom programu pocztowego; alternatywą jest skopiowanie tekstu. Żaden z testów nie potwierdza doręczenia e-maila do skrzynki.
+**Zapytanie o termin:** przywrócono normalną wysyłkę HTML POST do `https://formsubmit.co/magnesowyswiat@gmail.com`, tak jak w backupie. Formularz działa również bez JavaScript. Nie używa AJAX, nie otwiera lokalnego szkicu i nie wysyła zdjęć. Ma normalną zgodę na kontakt, `_captcha=false`, `_honey`, temat i tabelaryczny szablon wiadomości oraz adres powrotu `/magnesy-na-zywo/?wyslano=1#rezerwacja`. Aktywacja i doręczenie zależą od FormSubmit oraz skrzynki odbiorczej. Powrót z serwisu nie jest dowodem doręczenia. Szczegóły integracji: https://formsubmit.co/
+
+**Zamówienie ze zdjęć nadal przygotowuje lokalny szkic i NIE wysyła zdjęć ani zamówienia.** Przycisk poczty otwiera szkic w programie użytkownika, bez załączników. Użytkownik musi sam dodać pliki i wysłać wiadomość. Duże szkice mogą podlegać limitom programu pocztowego; alternatywą jest skopiowanie tekstu. Żaden z testów nie potwierdza doręczenia e-maila do skrzynki.
 
 Zdjęcia użytkownika są przechowywane tylko w pamięci karty, przez lokalne adresy `blob:`. Brak uploadu, localStorage i zewnętrznego serwisu do zdjęć. Limit interfejsu: 20 plików JPEG/PNG/WebP, po 10 MB. Suma egzemplarzy musi odpowiadać liczbie magnesów. Zamknięcie/opuszczenie strony usuwa podglądy. Frontendowa kontrola plików nie zastępuje przyszłej walidacji na serwerze.
 
-Bez JavaScript formularze są ukryte i dostępny jest kontakt e-mail. Wszystkie strony zawierają `noindex, nofollow` na czas porównywania wersji. Nie dodano produkcyjnego canonical ani danych strukturalnych z niepotwierdzonymi informacjami.
+Bez JavaScript ukryty jest wyłącznie podgląd zamówienia ze zdjęć. Formularz zapytania o termin działa jako zwykły HTML POST. Kopie w folderze `wersja-2/` zawierają `noindex, nofollow`; produkcja ma własne canonical i pozwala na indeksowanie.
 
 ## Przed uruchomieniem publicznym
 
@@ -60,13 +62,13 @@ Szybki test bez zależności, z głównego katalogu:
 python wersja-2/tests/test_preview.py
 ```
 
-Pełniejszy test w Chrome (istniejące środowisko projektu ma Selenium):
+Pełniejszy test produkcyjnych stron w Chrome (istniejące środowisko projektu ma Selenium):
 
 ```powershell
-.\.venv-tests\Scripts\python.exe wersja-2/tests/test_preview.py --browser
+.\.venv-tests\Scripts\python.exe wersja-2/tests/test_preview.py --browser --production
 ```
 
-Na innym komputerze potrzebujesz Chrome, Pythona i Selenium (`python -m pip install selenium`). Test automatycznie uruchamia i zatrzymuje lokalny serwer. Sprawdza linki/zasoby/kotwice, H1 i alt, szerokości 1440/390/320 px, menu, pakiet, znaki specjalne w szkicu oraz miniatury i liczbę kopii. Nie wysyła wiadomości. Zrzuty trafiają do ignorowanego `tests/artifacts/`.
+Na innym komputerze potrzebujesz Chrome, Pythona i Selenium (`python -m pip install selenium`). Test automatycznie uruchamia i zatrzymuje lokalny serwer. Sprawdza linki/zasoby/kotwice, H1 i alt, menu, karty, małe ikony, pakiet oraz miniatury i liczbę kopii. Test zapytania o termin sprawdza konfigurację FormSubmit, po czym kieruje POST wyłącznie do lokalnego odbiornika i porównuje pełny ciąg znaków specjalnych. Nie wysyła prawdziwych wiadomości ani zdjęć. Zrzuty trafiają do ignorowanego `tests/artifacts/`.
 
 ## Pochodzenie zdjęć
 

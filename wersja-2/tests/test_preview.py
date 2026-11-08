@@ -8,7 +8,7 @@ from pathlib import Path
 import tempfile
 from threading import Thread
 import unittest
-from urllib.parse import unquote, urlsplit
+from urllib.parse import unquote, urlsplit, parse_qs
 
 ROOT = Path(__file__).resolve().parents[1]
 PRODUCTION = '--production' in __import__('sys').argv
@@ -16,6 +16,15 @@ if PRODUCTION: ROOT = ROOT.parent
 PAGES = ['index.html', 'magnesy-na-zywo.html', 'magnesy-na-zamowienie.html']
 if PRODUCTION: PAGES = ['index.html', 'magnesy-na-zywo/index.html', 'magnesy-na-zamowienie/index.html']
 BROWSER = '--browser' in __import__('sys').argv
+
+class CaptureHandler(SimpleHTTPRequestHandler):
+    """Local-only receiver: tests must never send a real email."""
+    def do_POST(self):
+        self.server.submission = parse_qs(self.rfile.read(int(self.headers['Content-Length'])).decode('utf-8'))
+        self.send_response(200)
+        self.send_header('Content-Type','text/html; charset=utf-8')
+        self.end_headers()
+        self.wfile.write(b'<!doctype html><title>Local test</title><p>Captured locally. No email sent.</p>')
 
 class Parser(HTMLParser):
     def __init__(self):
@@ -53,7 +62,7 @@ class BrowserTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         from selenium import webdriver
-        handler=partial(SimpleHTTPRequestHandler,directory=str(ROOT if PRODUCTION else ROOT.parent))
+        handler=partial(CaptureHandler,directory=str(ROOT if PRODUCTION else ROOT.parent))
         cls.server=ThreadingHTTPServer(('127.0.0.1',0),handler)
         Thread(target=cls.server.serve_forever,daemon=True).start()
         cls.base=f'http://127.0.0.1:{cls.server.server_port}/'+('' if PRODUCTION else 'wersja-2/')
@@ -86,6 +95,12 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import Select
         d=self.driver; d.get(self.base+PAGES[1])
+        form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="live"]')
+        self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
+        self.assertEqual(form.get_attribute('method'),'post')
+        self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
+        # Redirect only this local test to our receiver, never to FormSubmit.
+        d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
         d.find_element(By.CSS_SELECTOR,'[data-package="Gold"]').click()
         self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Gold')
         for name,value in [('name','Test lokalny'),('email','test@example.com'),('city','Limanowa'),('guests','100'),('message',':()@&%$#*($#^*!@(#&#@%&@(#$@!')]:
@@ -94,9 +109,13 @@ class BrowserTests(unittest.TestCase):
         Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
         d.find_element(By.NAME,'consent').click()
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
-        self.assertTrue(d.find_element(By.ID,'draft-dialog').get_attribute('open'))
-        self.assertIn(':()@&%$#*($#^*!@(#&#@%&@(#$@!',d.find_element(By.ID,'draft-text').get_attribute('value'))
-        self.assertIn('%26',d.find_element(By.ID,'email-draft').get_attribute('href'))
+        self.assertIn('__capture',d.current_url)
+        data=self.server.submission
+        self.assertEqual(data['Wiadomość'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
+        self.assertEqual(data['Wybrany pakiet'],['Gold'])
+        self.assertEqual(data['email'],['test@example.com'])
+        self.assertEqual(data['_captcha'],['false'])
+        self.assertEqual(data['_template'],['table'])
     def test_footer_icons_stay_small_without_stylesheet(self):
         from selenium.webdriver.common.by import By
         d=self.driver

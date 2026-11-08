@@ -38,7 +38,7 @@ document.querySelectorAll('[data-info]').forEach(button => {
   button.addEventListener('click', () => {
     const info = {
       social: ['Nasze profile społecznościowe', 'Prawdziwe adresy profili Instagram i Facebook należy uzupełnić przed publikacją. Nie dodajemy zastępczych linków do cudzych kont.'],
-      privacy: ['Polityka prywatności — do uzupełnienia', 'To wersja demonstracyjna, a nie gotowa polityka prywatności. Przed publikacją trzeba podać dane administratora, podstawy i cele przetwarzania, odbiorców danych, okresy przechowywania i prawa osób. Treść należy dostosować do wybranej integracji formularzy. Lokalny podgląd zdjęć nie wysyła plików. Fonty pobierane są z Google Fonts; przed publikacją rozważ ich lokalne hostowanie.'],
+      privacy: ['Polityka prywatności — do uzupełnienia', 'To wersja demonstracyjna, a nie gotowa polityka prywatności. Przed publikacją trzeba podać dane administratora, podstawy i cele przetwarzania, odbiorców danych, okresy przechowywania i prawa osób. Treść należy dostosować do wybranej integracji formularzy. Zapytania o termin są przesyłane do FormSubmit i na skrzynkę magnesowyswiat@gmail.com. Lokalny podgląd zdjęć w formularzu zamówień nie wysyła plików. Fonty pobierane są z Google Fonts; przed publikacją rozważ ich lokalne hostowanie.'],
       terms: ['Regulamin — do uzupełnienia', 'Przed uruchomieniem zamówień potrzebny jest regulamin z prawdziwymi danymi usługodawcy, zasadami zawierania umów, płatności, dostawy i reklamacji oraz informacjami konsumenckimi odpowiednimi dla personalizowanych produktów. Formularz demonstracyjny nie przyjmuje zamówień ani płatności.']
     }[button.dataset.info];
     document.getElementById('info-title').textContent = info[0];
@@ -113,7 +113,26 @@ if (input) {
   });
 }
 
-document.querySelectorAll('form[data-inquiry]').forEach(form => {
+const liveForm = document.querySelector('form[data-inquiry="live"]');
+if (liveForm) {
+  liveForm.addEventListener('submit', () => {
+    liveForm.setAttribute('aria-busy', 'true');
+    liveForm.querySelector('.form-status').textContent = 'Przechodzenie do wysyłki…';
+    liveForm.querySelector('[type="submit"]').textContent = 'Przechodzenie do wysyłki…';
+  });
+  window.addEventListener('pageshow', () => {
+    liveForm.removeAttribute('aria-busy');
+    liveForm.querySelector('[type="submit"]').textContent = 'ZAPYTAJ O DOSTĘPNOŚĆ TERMINU';
+  });
+  if (new URLSearchParams(location.search).get('wyslano') === '1') {
+    liveForm.querySelector('.form-status').textContent = 'Dziękujemy za kontakt. Rezerwację terminu potwierdzimy indywidualnie.';
+    const clean = new URL(location.href);
+    clean.searchParams.delete('wyslano');
+    history.replaceState(history.state, '', clean.pathname + clean.search + clean.hash);
+  }
+}
+
+document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
   form.addEventListener('submit', event => {
     event.preventDefault();
     const status = form.querySelector('.form-status');
