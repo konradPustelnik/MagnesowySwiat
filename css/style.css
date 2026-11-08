@@ -127,16 +127,18 @@ p + p { margin-top: 16px; }
 .contact-banner .button { min-height: 60px; padding: 18px 24px; color: var(--ink); background: #d4bf96; border-color: #d4bf96; font-size: 12px; line-height: 1.5; text-align: center; }
 .contact-banner .button--outline { color: var(--ink); background: var(--paper); border-color: var(--paper); }
 .contact-banner .button:hover { color: var(--ink); background: var(--white); border-color: var(--white); }
-.site-footer { padding-top: 64px; background: var(--white); }
-.footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 46px; padding-bottom: 44px; }
-.footer-brand img { width: 225px; height: auto; margin-bottom: 22px; }
-.footer-brand p { max-width: 300px; font-size: 12px; }
-.footer-heading { display: block; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; margin-bottom: 18px; }
-.footer-links { display: flex; flex-direction: column; gap: 10px; font-size: 12px; }
+.site-footer { padding-top: 36px; background: var(--white); }
+.site-footer > .wrap { width: min(1040px, calc(100% - 64px)); }
+.footer-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; padding-bottom: 28px; }
+.footer-grid > div { min-width: 0; }
+.footer-brand img { width: 200px; height: auto; margin-bottom: 12px; }
+.footer-brand p { max-width: 250px; font-size: 12px; line-height: 1.6; }
+.footer-heading { display: block; font-size: 10px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
+.footer-links { display: flex; flex-direction: column; gap: 7px; font-size: 12px; line-height: 1.6; }
 .footer-links a:hover, .footer-button:hover { color: var(--gold-dark); }
 .footer-button { display: inline; width: fit-content; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font-size: 12px; }
 .footer-links small { font-size: 9px; color: var(--muted); }
-.footer-bottom { padding: 20px 0; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 10px; color: var(--muted); }
+.footer-bottom { padding: 14px 0; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 10px; color: var(--muted); }
 .breadcrumb { font-size: 10px; padding-top: 24px; color: var(--muted); }
 .breadcrumb a { text-decoration: underline; text-underline-offset: 4px; }
 .hero--service { padding-top: 20px; }
@@ -272,7 +274,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .area { grid-template-columns: 1fr 1.3fr; gap: 32px; }
   .contact-banner .wrap { flex-direction: column; align-items: start; }
   .contact-banner .actions { flex-direction: row; }
-  .footer-grid { grid-template-columns: 1.4fr 1fr; gap: 36px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
   .step-grid, .occasion-grid, .pricing-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
   .quantity-grid { grid-template-columns: repeat(3, 1fr); }
   .form-layout { grid-template-columns: 1fr; gap: 32px; }
@@ -362,7 +364,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 }
 
 /* Footer contact icons inherit the brand palette. */
-.social-link { display: inline-flex; align-items: center; gap: 9px; width: fit-content; min-height: 32px; color: var(--gold-dark); transition: color .2s ease; }
+.social-link { display: inline-flex; align-items: center; gap: 9px; width: fit-content; min-height: 26px; color: var(--muted); transition: color .2s ease; }
 .social-icon { display: inline-block; width: 18px; height: 18px; min-width: 18px; max-width: 18px; flex: 0 0 18px; vertical-align: middle; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
 .social-link span { overflow-wrap: anywhere; }
 
@@ -412,3 +414,5 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .send-confirmation p { font-size: 14px; }
 .send-confirmation .button { margin-top: 24px; }
 .confirmation-mark { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 24px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-dark); background: var(--cream); font-size: 26px; }
+
+@media (max-width: 680px) { .site-footer > .wrap { width: calc(100% - 40px); } .footer-grid { column-gap: 20px; } }
