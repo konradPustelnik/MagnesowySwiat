@@ -112,19 +112,19 @@ p + p { margin-top: 16px; }
 .area h2 { font-size: 42px; }
 .area p { max-width: 650px; font-size: 15px; }
 .area .icon { margin-bottom: 16px; color: var(--gold-dark); }
-.contact-banner { background: var(--ink); color: var(--paper); padding-block: 70px; }
-.contact-banner .wrap { display: flex; gap: 40px; justify-content: space-between; align-items: center; }
+.contact-banner { background: var(--ink); color: var(--paper); padding-block: 38px; }
+.contact-banner .wrap { display: flex; gap: 24px; justify-content: space-between; align-items: center; }
 .contact-banner h2 { max-width: 650px; font-size: clamp(36px, 4vw, 54px); }
 .contact-banner .eyebrow { color: #d4bf96; }
 .contact-banner p { color: #ddd5c6; margin-top: 14px; font-size: 13px; }
 .contact-banner .actions { margin: 0; flex-shrink: 0; flex-direction: column; align-items: stretch; }
 .contact-banner#kontakt .actions { width: min(100%, 360px); }
-.contact-banner .button { min-height: 60px; padding: 18px 24px; color: var(--ink); background: #d4bf96; border-color: #d4bf96; font-size: 12px; line-height: 1.5; text-align: center; }
+.contact-banner .button { min-height: 50px; padding: 12px 24px; color: var(--ink); background: #d4bf96; border-color: #d4bf96; font-size: 12px; line-height: 1.5; text-align: center; }
 .contact-banner .button--outline { color: var(--ink); background: var(--paper); border-color: var(--paper); }
 .contact-banner .button:hover { color: var(--ink); background: var(--white); border-color: var(--white); }
-.site-footer { padding-top: 36px; background: var(--white); }
+.site-footer { padding-top: 24px; background: var(--white); }
 .site-footer > .wrap { width: min(1040px, calc(100% - 64px)); }
-.footer-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: 24px; padding-bottom: 28px; }
+.footer-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; padding-bottom: 20px; }
 .footer-grid > div { min-width: 0; }
 .footer-brand img { width: 200px; height: auto; margin-bottom: 12px; }
 .footer-brand p { max-width: 250px; font-size: 12px; line-height: 1.6; }
@@ -133,7 +133,8 @@ p + p { margin-top: 16px; }
 .footer-links a:hover, .footer-button:hover { color: var(--gold-dark); }
 .footer-button { display: inline; width: fit-content; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font-size: 12px; }
 .footer-links small { font-size: 9px; color: var(--muted); }
-.footer-bottom { padding: 14px 0; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: space-between; gap: 24px; font-size: 10px; color: var(--muted); }
+.footer-bottom { padding: 12px 0; border-top: 1px solid var(--line); display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 24px; font-size: 10px; color: var(--muted); }
+.footer-legal { display: flex; flex-wrap: wrap; gap: 6px 16px; }
 .hero--service { padding-top: 20px; }
 .hero--service h1 { font-size: clamp(40px, 4.3vw, 62px); }
 .step-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
@@ -306,13 +307,13 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .area { grid-template-columns: 1fr; gap: 20px; }
   .area h2 { font-size: 36px; }
   .area p { font-size: 13px; }
-  .contact-banner { padding-block: 52px; }
+  .contact-banner { padding-block: 32px; }
   .contact-banner .actions { flex-direction: column; width: 100%; }
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 30px 20px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
   .footer-brand { grid-column: 1 / -1; }
   .footer-brand p { max-width: 360px; }
   .footer-links { font-size: 11px; }
-  .footer-bottom { flex-direction: column; align-items: start; gap: 6px; }
+  .footer-bottom { flex-direction: column; align-items: center; gap: 8px; text-align: center; }
   .step-grid { grid-template-columns: 1fr 1fr; gap: 28px 20px; }
   .process-step .number { font-size: 40px; margin-bottom: 16px; }
   .process-step h3 { font-size: 25px; }
@@ -403,7 +404,6 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .footer-grid > div:nth-child(3) { grid-column: 1 / -1; grid-row: 3; }
  .footer-grid > div:nth-child(4) { grid-column: 2; grid-row: 2; }
  .footer-grid > div:nth-child(3) .footer-links { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
- .footer-grid .social-link[href^="mailto:"] { flex-basis: 100%; }
 }
 
 /* Service anchors live under their main navigation tab. Native details works without JS. */
@@ -509,10 +509,12 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .page-home .footer-brand p { margin-inline: auto; }
 .page-home .offer-content .button { align-self: center; }
 .page-home .contact-banner .wrap { align-items: center; justify-content: center; }
+.page-home .contact-banner { padding-block: 30px; }
 .page-home .footer-links { align-items: center; justify-content: center; }
 .page-home .social-link { justify-content: center; }
 .page-home .footer-button { align-self: center; text-align: center; }
 .page-home .footer-bottom { align-items: center; justify-content: center; flex-wrap: wrap; }
+.page-home .footer-legal { justify-content: center; }
 .page-home #o-nas .editorial { display: flex; flex-direction: column; gap: 30px; text-align: center; }
 .page-home #o-nas .editorial-copy { width: min(100%, 900px); margin-inline: auto; }
 .page-home #o-nas .editorial-copy p:not(.eyebrow) { max-width: 850px; margin-inline: auto; }
@@ -523,6 +525,15 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .hero--home .actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
  .hero--home .actions .button { padding: 12px 10px; font-size: 10px; letter-spacing: .04em; }
  .hero-story p { font-size: 13px; }
+ .contact-banner .wrap { gap: 18px; }
+ .page-home .contact-banner { padding-block: 20px; }
+ .site-footer { padding-top: 14px; }
+ .footer-grid { row-gap: 12px; padding-bottom: 12px; }
+ .footer-brand img { width: 180px; margin-bottom: 6px; }
+ .footer-heading { margin-bottom: 6px; }
+ .footer-links { gap: 5px; }
+ .footer-bottom { padding-block: 8px; gap: 4px; }
+ .footer-legal { gap: 4px 12px; }
 }
 .hero--compact { padding: 20px 0 40px; }
 .hero--compact .hero-grid { align-items: start; gap: 48px; }
