@@ -107,6 +107,24 @@ class BrowserTests(unittest.TestCase):
                     self.assertEqual(menu.get_attribute('aria-expanded'),'true')
                     d.find_element(By.CSS_SELECTOR,'.main-nav a').click()
         d.set_window_size(1440,1000)
+    def test_service_name_navigates_instead_of_toggling(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.action_chains import ActionChains
+        from selenium.webdriver.support.ui import WebDriverWait
+        d = self.driver
+        d.set_window_size(1440, 1000)
+        d.get(self.base + PAGES[2])
+        link = d.find_element(By.CSS_SELECTOR, '[data-service="live"] .nav-service-link')
+        target = link.get_attribute('href')
+        ActionChains(d).move_to_element(link).perform()
+        self.assertTrue(d.find_element(By.CSS_SELECTOR, '[data-service="live"]').get_attribute('open'))
+        link.click()
+        WebDriverWait(d, 5).until(lambda browser: browser.current_url.rstrip('/') == target.replace('index.html', '').rstrip('/'))
+        link = d.find_element(By.CSS_SELECTOR, '[data-service="order"] .nav-service-link')
+        target = link.get_attribute('href')
+        link.send_keys('\ue007')
+        WebDriverWait(d, 5).until(lambda browser: browser.current_url.rstrip('/') == target.replace('index.html', '').rstrip('/'))
+
     def test_quantity_choices_and_mobile_layout(self):
         from selenium.webdriver.common.by import By
         d = self.driver
@@ -316,7 +334,7 @@ class BrowserTests(unittest.TestCase):
                 self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
                 if width<981:
                     d.find_element(By.CSS_SELECTOR,'.menu-toggle').click()
-                    d.find_element(By.CSS_SELECTOR,'.nav-dropdown summary').click()
+                    d.find_element(By.CSS_SELECTOR,'.nav-dropdown .nav-chevron').click()
                     self.assertTrue(d.find_element(By.CSS_SELECTOR,'.nav-dropdown').get_attribute('open'))
                     if width==390: d.save_screenshot(str(artifacts/'service-dropdown-mobile.png'))
                     d.find_element(By.CSS_SELECTOR,'.nav-dropdown a[href$="#pakiety"]').click()
@@ -365,7 +383,7 @@ class BrowserTests(unittest.TestCase):
                 self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
                 if width<981:
                     d.find_element(By.CSS_SELECTOR,'.menu-toggle').click()
-                    d.find_element(By.CSS_SELECTOR,'[data-service="order"] summary').click()
+                    d.find_element(By.CSS_SELECTOR,'[data-service="order"] .nav-chevron').click()
                     d.find_element(By.CSS_SELECTOR,'[data-service="order"] a[href$="#faq"]').click()
                     WebDriverWait(d,5).until(lambda browser: browser.current_url.endswith('#faq'))
                     self.assertEqual(d.find_element(By.CSS_SELECTOR,'.menu-toggle').get_attribute('aria-expanded'),'false')
