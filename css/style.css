@@ -83,9 +83,9 @@ p + p { margin-top: 16px; }
 .offer-content p:last-of-type { margin-bottom: 24px; }
 .offer-content .button { margin-top: auto; align-self: flex-start; min-width: 220px; }
 .section.home-offers { padding-top: 32px; }
-.home-offers .section-heading { max-width: 760px; }
+.home-offers .section-heading { max-width: 760px; margin-inline: auto; text-align: center; }
 .home-offers .section-heading h2 { font-size: clamp(32px, 3.4vw, 46px); }
-.home-offers .section-heading > p:last-child { max-width: 680px; font-size: 14px; }
+.home-offers .section-heading > p:last-child { max-width: 680px; margin-inline: auto; font-size: 14px; }
 .benefit-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; }
 .benefit { border-top: 1px solid var(--line); padding-top: 26px; }
 .benefit .icon { color: var(--gold-dark); margin-bottom: 22px; width: 28px; height: 28px; }
