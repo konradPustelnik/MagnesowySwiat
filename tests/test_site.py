@@ -158,6 +158,7 @@ class BrowserTests(unittest.TestCase):
         pages = [
             ('home', '', '.hero--home', [(path, '') for path in home_destinations]),
             ('live', 'magnesy-na-zywo/', '.hero--live', [('/magnesy-na-zywo/', 'pakiety'), ('/magnesy-na-zywo/', 'rezerwacja')]),
+            ('order', 'magnesy-na-zamowienie/', '.hero--order', [('/magnesy-na-zamowienie/', 'zamowienie')]),
         ]
         viewports = [(1440, 900), (1366, 768), (1024, 768), (768, 1024), (390, 844), (360, 740), (320, 640)]
         try:
@@ -176,7 +177,7 @@ class BrowserTests(unittest.TestCase):
                         ''')
                         self.assertEqual(d.execute_script('return [innerWidth, innerHeight, scrollY]'), [width, height, 0])
                         choices = d.find_elements(By.CSS_SELECTOR, selector + ' .actions a')
-                        self.assertEqual(len(choices), 2)
+                        self.assertEqual(len(choices), len(destinations))
                         header_bottom = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().bottom')
                         for choice, destination in zip(choices, destinations):
                             self.assertTrue(choice.is_displayed())
