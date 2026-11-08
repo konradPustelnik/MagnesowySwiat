@@ -1,6 +1,6 @@
 # Testy strony Magnesowy Świat
 
-Aktualny zestaw to `tests/test_site.py`: **18 testów — 3 statyczne i 15 przeglądarkowych**. Sprawdza pliki produkcyjne: stronę główną, `/magnesy-na-zywo/` i `/magnesy-na-zamowienie/`. Zastępuje testy dawnej wersji strony.
+Aktualny zestaw to `tests/test_site.py`: **19 testów — 3 statyczne i 16 przeglądarkowych**. Sprawdza pliki produkcyjne: stronę główną, `/magnesy-na-zywo/` i `/magnesy-na-zamowienie/`. Zastępuje testy dawnej wersji strony.
 
 ## Jak uruchomić
 
@@ -9,7 +9,7 @@ W Windows kliknij dwukrotnie `test-strony.cmd`. Uruchomi pełny zestaw w niewido
 Z terminala w katalogu projektu:
 
 ```powershell
-# Wszystkie 18 testów, w tym obsługa strony w Chrome:
+# Wszystkie 19 testów, w tym obsługa strony w Chrome:
 .\test-strony.cmd
 
 # Ten sam pełny zestaw, bez zatrzymywania terminala po wyniku:
@@ -55,6 +55,7 @@ Przy `--static` / bez `--browser` 15 scenariuszy przeglądarkowych ma status `sk
 | 16 | `BrowserTests.test_event_date_polish_format_validation_and_calendar` | Maskę `dd/mm/rrrr`, poprawną datę, nieistniejące daty lutowe i datę przeszłą, lata przestępne oraz synchronizację z wartością kalendarza. |
 | 17 | `BrowserTests.test_order_dropdown_and_exclusive_open_state` | Menu zamówień: otwarcie po najechaniu, zamknięcie poprzedniego menu, przejście do cennika i FAQ, mobilną strzałkę, zamknięcie menu po wyborze i brak przepełnienia. |
 | 18 | `BrowserTests.test_calendar_polish_labels_selection_and_mobile` | Polskie miesiące i dni tygodnia od poniedziałku, polskie etykiety dostępności dat, wybór strzałką i Enter, zmianę miesiąca i roku, 29 lutego w roku przestępnym i brak tej daty w 2100 oraz dopasowanie okna do 1440, 390 i 320 px. |
+| 19 | `BrowserTests.test_home_service_choices_fit_first_viewport` | Oba przyciski wyboru usługi na pierwszym ekranie, poniżej nagłówka i bez przewijania: 1440 × 900, 1366 × 768, 1024 × 768, 768 × 1024, 390 × 844, 360 × 740 i 320 × 640. Sprawdza ich wysokość co najmniej 44 px, cele linków, odnośniki obu kart ofert i brak poziomego przepełnienia. Czeka na fonty; zapisuje zrzuty sekcji głównej i kart. |
 
 ## Co oznacza zaliczony test formularza
 

@@ -24,6 +24,8 @@ Na polecenie właściciela 8 listopada 2026 usunięto starą stronę `backup/`, 
 
 Publiczne adresy: `/`, `/magnesy-na-zywo/`, `/magnesy-na-zamowienie/`. Nagłówki i stopki są zapisane w każdym HTML — przy zmianie wspólnej nawigacji trzeba uaktualnić wszystkie trzy pliki.
 
+Na stronie głównej dwa przyciski wyboru usługi znajdują się pod krótkim hasłem, przed pełnym opisem, tak aby były dostępne na pierwszym ekranie. Karty ofert mają wspólną oprawę, krótkie opisy i przyciski wyrównane na dole.
+
 ## Uruchomienie lokalnie
 
 W terminalu w katalogu projektu:
@@ -57,7 +59,7 @@ python tests/test_site.py
 .\.venv-tests\Scripts\python.exe tests/test_site.py --browser
 ```
 
-Zestaw zawiera **18 testów: 3 statyczne i 15 w Chrome**. Testy statyczne nie wymagają Selenium. W trybie bez `--browser` testy przeglądarkowe mają wynik `skipped` — to oczekiwane. Powodzenie kończy się `OK` i kodem wyjścia 0; `FAIL`/`ERROR` oznacza problem do sprawdzenia.
+Zestaw zawiera **19 testów: 3 statyczne i 16 w Chrome**. Testy statyczne nie wymagają Selenium. W trybie bez `--browser` testy przeglądarkowe mają wynik `skipped` — to oczekiwane. Powodzenie kończy się `OK` i kodem wyjścia 0; `FAIL`/`ERROR` oznacza problem do sprawdzenia.
 
 | Obszar | Co faktycznie sprawdzamy |
 | --- | --- |
@@ -68,6 +70,7 @@ Zestaw zawiera **18 testów: 3 statyczne i 15 w Chrome**. Testy statyczne nie wy
 | Formularz ze zdjęciami | Dodawanie/usuwanie podglądów, liczba kopii, adres i kod pocztowy, paragon/faktura, limit 10 MB, zawartość multipart i bajty dwóch syntetycznych zdjęć. |
 | Kalendarz | Polskie nazwy, format dd/mm/rrrr, daty niepoprawne i przeszłe, lata przestępne oraz klawiatura. |
 | Wygląd i responsywność | Brak poziomego przewijania w sprawdzanych widokach, małe ikony, kadrowanie zdjęć i sekcje 320/390/1440 px. |
+| Pierwszy ekran | Widoczność obu przycisków wyboru usługi bez przewijania w siedmiu rozmiarach, od 320 × 640 do 1440 × 900, oraz poprawne linki kart ofert. |
 | Powrót po wysyłce | Symulowany powrót `?wyslano=1`, okno podziękowania, odliczanie i przycisk powrotu. |
 
 Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów trafiają do ignorowanego `tests/artifacts/`; można je usunąć i odtworzyć kolejnym uruchomieniem.
