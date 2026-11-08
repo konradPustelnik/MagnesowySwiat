@@ -123,13 +123,18 @@ p + p { margin-top: 16px; }
 .contact-banner .button--outline { color: var(--ink); background: var(--paper); border-color: var(--paper); }
 .contact-banner .button:hover { color: var(--ink); background: var(--white); border-color: var(--white); }
 .site-footer { padding-top: 24px; background: var(--white); }
-.site-footer > .wrap { width: min(1040px, calc(100% - 64px)); }
-.footer-grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, .9fr) minmax(0, 1.2fr) minmax(0, 1fr); gap: 20px; padding-bottom: 20px; }
+.site-footer > .wrap { width: min(1440px, calc(100% - 96px)); }
+.footer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: start; gap: clamp(24px, 3vw, 48px); padding-bottom: 20px; }
 .footer-grid > div { min-width: 0; }
+.footer-grid > div:not(.footer-brand) { text-align: left; }
 .footer-brand img { width: 200px; height: auto; margin-bottom: 12px; }
 .footer-brand p { max-width: 250px; font-size: 12px; line-height: 1.6; }
 .footer-heading { display: block; font-size: 10px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
 .footer-links { display: flex; flex-direction: column; gap: 7px; font-size: 12px; line-height: 1.6; }
+.footer-contact-link { display: inline-flex; align-items: center; gap: 9px; min-height: 26px; }
+.footer-contact-link span { overflow-wrap: anywhere; }
+.footer-grid > div:not(.footer-brand) .footer-links { align-items: flex-start; }
+.contact-icon { display: block; flex: 0 0 18px; width: 18px; height: 18px; color: var(--gold-dark); }
 .footer-links a:hover, .footer-button:hover { color: var(--gold-dark); }
 .footer-button { display: inline; width: fit-content; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font-size: 12px; }
 .footer-links small { font-size: 9px; color: var(--muted); }
@@ -266,7 +271,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .area { grid-template-columns: 1fr 1.3fr; gap: 32px; }
   .contact-banner .wrap { flex-direction: column; align-items: start; }
   .contact-banner .actions { flex-direction: row; }
-  .footer-grid { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .step-grid, .occasion-grid, .pricing-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
   .quantity-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .form-layout { grid-template-columns: 1fr; gap: 32px; }
@@ -401,9 +406,11 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 @media (max-width: 680px) { .site-footer > .wrap { width: calc(100% - 40px); } .footer-grid { column-gap: 20px; } }
 
 @media (max-width: 680px) {
- .footer-grid > div:nth-child(3) { grid-column: 1 / -1; grid-row: 3; }
- .footer-grid > div:nth-child(4) { grid-column: 2; grid-row: 2; }
- .footer-grid > div:nth-child(3) .footer-links { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
+ .footer-grid > div:first-child { grid-column: 1 / -1; grid-row: 1; }
+ .footer-grid > div:nth-child(2) { grid-column: 1; grid-row: 2; }
+ .footer-grid > div:nth-child(3) { grid-column: 2; grid-row: 2; }
+ .footer-grid > div:nth-child(4) { grid-column: 1 / -1; grid-row: 3; }
+ .footer-grid > div:nth-child(3) .footer-links { flex-direction: column; align-items: flex-start; gap: 5px; }
 }
 
 /* Service anchors live under their main navigation tab. Native details works without JS. */
@@ -510,8 +517,8 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .page-home .offer-content .button { align-self: center; }
 .page-home .contact-banner .wrap { align-items: center; justify-content: center; }
 .page-home .contact-banner { padding-block: 30px; }
-.page-home .footer-links { align-items: center; justify-content: center; }
-.page-home .social-link { justify-content: center; }
+.page-home .footer-links { align-items: flex-start; justify-content: flex-start; }
+.page-home .social-link { justify-content: flex-start; }
 .page-home .footer-button { align-self: center; text-align: center; }
 .page-home .footer-bottom { align-items: center; justify-content: center; flex-wrap: wrap; }
 .page-home .footer-legal { justify-content: center; }

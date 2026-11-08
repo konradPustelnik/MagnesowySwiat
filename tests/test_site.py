@@ -344,9 +344,15 @@ class BrowserTests(unittest.TestCase):
             find_us=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-grid > div:nth-child(3)')
             self.assertEqual(find_us.find_elements(By.CSS_SELECTOR,'a[href^="mailto:"]'),[])
             contact=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-grid > div:nth-child(4)')
-            self.assertEqual(contact.find_element(By.CSS_SELECTOR,'a[href^="tel:"]').text,'Telefon: 505 606 707')
+            phone=contact.find_element(By.CSS_SELECTOR,'a[href^="tel:"]')
+            self.assertEqual(phone.text,'505 606 707')
+            self.assertEqual(phone.find_element(By.CSS_SELECTOR,'svg.contact-icon').get_attribute('aria-hidden'),'true')
             self.assertEqual(contact.find_element(By.CSS_SELECTOR,'a[href^="mailto:"]').text,'magnesowyswiat@gmail.com')
+            self.assertEqual(len(contact.find_elements(By.CSS_SELECTOR,'svg.contact-icon')),2)
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.site-footer .footer-legal [data-info]')),2)
+            if d.get_window_size()['width'] > 980:
+                widths=[column.rect['width'] for column in d.find_elements(By.CSS_SELECTOR,'.site-footer .footer-grid > div')]
+                self.assertLessEqual(max(widths)-min(widths),1)
             for icon in icons:
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)
