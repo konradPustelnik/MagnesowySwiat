@@ -112,6 +112,32 @@ class BrowserTests(unittest.TestCase):
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)
                 self.assertEqual(icon.get_attribute('fill'),'none')
+    def test_occasion_photos_have_consistent_crops_on_mobile_and_desktop(self):
+        from selenium.webdriver.common.by import By
+        d=self.driver
+        try:
+            for width in [1440,390,320]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width<600})
+                d.get(self.base+PAGES[1])
+                cards=d.find_elements(By.CSS_SELECTOR,'.occasion-grid article')
+                photos=d.find_elements(By.CSS_SELECTOR,'.occasion-grid img')
+                self.assertEqual(len(photos),4)
+                self.assertEqual(len({photo.rect['height'] for photo in photos}),1)
+                for photo in photos:
+                    self.assertLessEqual(photo.rect['height'],240)
+                    self.assertEqual(photo.value_of_css_property('object-fit'),'cover')
+                if width<600:
+                    self.assertEqual(len({card.rect['x'] for card in cards}),1)
+                else:
+                    self.assertEqual(len({card.rect['y'] for card in cards}),1)
+                self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
+                artifacts=Path(__file__).parent/'artifacts'; artifacts.mkdir(exist_ok=True)
+                d.execute_script("document.querySelector('.occasion-grid').scrollIntoView({behavior:'instant',block:'center'})")
+                from selenium.webdriver.support.ui import WebDriverWait
+                WebDriverWait(d,10).until(lambda browser: browser.execute_script("return [...document.querySelectorAll('.occasion-grid img')].every(img => img.complete && img.naturalWidth > 0)"))
+                d.save_screenshot(str(artifacts/f'occasions-{width}.png'))
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
     @unittest.skipUnless(PRODUCTION, 'Dotyczy produkcyjnych adresów')
     def test_home_url_hides_index_and_preserves_contact_anchor(self):
         from selenium.webdriver.common.by import By
