@@ -10,7 +10,7 @@
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" type="image/png" href="../images/logo.png">
 <link rel="stylesheet" href="../css/style.css?v=20261108-date">
-<script src="../js/script.js?v=20261108-date" defer>
+<script src="../js/script.js?v=20261108-delivery" defer>
 </script>
 </head>
 <body>
@@ -254,11 +254,13 @@
 <option>Odbiór — do uzgodnienia</option>
 </select>
 </div>
-<div class="field field--full">
-<label for="f-address">Dane do dostawy</label>
-<textarea id="f-address" name="Dane do dostawy" rows="4" maxlength="5000">
-</textarea>
-</div>
+<fieldset class="field--full"><legend>Dane do dostawy</legend><div class="form-grid">
+<div class="field"><label for="f-delivery-town">Miejscowość</label><input id="f-delivery-town" name="Miejscowość dostawy" type="text" autocomplete="shipping address-level2" maxlength="150"></div>
+<div class="field"><label for="f-delivery-street">Ulica</label><input id="f-delivery-street" name="Ulica" type="text" autocomplete="shipping address-line1" maxlength="150"></div>
+<div class="field"><label for="f-delivery-house">Numer domu / lokalu</label><input id="f-delivery-house" name="Numer domu/lokalu" type="text" maxlength="30" placeholder="np. 12A/3"></div>
+<div class="field"><label for="f-postal-code">Kod pocztowy</label><input id="f-postal-code" name="Kod pocztowy" type="text" inputmode="numeric" autocomplete="shipping postal-code" placeholder="00-000" pattern="[0-9]{2}-[0-9]{3}" maxlength="6" title="Wpisz kod pocztowy w formacie 00-000"></div>
+<div class="field"><label for="f-post-office">Poczta (nazwa miejscowości)</label><input id="f-post-office" name="Poczta" type="text" maxlength="150" placeholder="np. Limanowa"></div>
+</div></fieldset>
 <div class="field field--full">
 <label for="f-message">Uwagi do zamówienia</label>
 <textarea id="f-message" name="Uwagi do zamówienia" rows="4" maxlength="5000">
