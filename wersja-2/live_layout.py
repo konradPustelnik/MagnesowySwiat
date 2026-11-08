@@ -2,6 +2,15 @@
 import re
 from html import escape
 
+LAUNCH_PROMO_ACTIVE = True
+
+LAUNCH_OFFER = '''<aside class="launch-offer" aria-label="Promocja na pierwsze zlecenia"><strong class="launch-discount">−20%</strong><div><p class="eyebrow">Na dobry początek</p><p class="launch-title">20% zniżki dla pierwszych 3 zleceń</p><p class="launch-description">Na magnesy na żywo. Dostępność rabatu potwierdzimy przy rezerwacji.</p><a class="text-link" href="#rezerwacja">Zapytaj o promocję →</a></div></aside>'''
+
+def add_launch_offer(pricing):
+    if not LAUNCH_PROMO_ACTIVE:
+        return pricing
+    return re.sub(r'(<div class="section-heading">.*?</div>)',lambda match:'<div class="pricing-intro">'+match[1]+LAUNCH_OFFER+'</div>',pricing,count=1,flags=re.S)
+
 def section(id, eyebrow, title, content, soft=False):
     return f'<section id="{id}" class="section {"section--soft" if soft else ""}"><div class="wrap"><div class="section-heading"><p class="eyebrow">{eyebrow}</p><h2>{title}</h2></div>{content}</div></section>'
 
@@ -17,6 +26,7 @@ def arrange_live_sections(markup, image_prefix='images/', home='index.html'):
     process=identify(find('Od spotkania do pamiątki'),'jak-dzialamy')
     occasions=identify(find('occasion-grid'),'okazje')
     pricing=identify(find('pricing-grid'),'pakiety').replace('Wybierz pakiet dla siebie','Nasze pakiety')
+    pricing=add_launch_offer(pricing)
     faq=identify(find('class="faq"'),'faq')
     form=find('data-inquiry="live"')
     offer=section('oferta','Magnesy na Twoim wydarzeniu','Zdjęcia, emocje i pamiątki na miejscu.', '''<p class="live-intro">Fotografujemy gości i podczas uroczystości zamieniamy zdjęcia w personalizowane magnesy. Przyjeżdżamy ze sprzętem i materiałami, a uczestnicy zabierają gotowe pamiątki ze sobą.</p><div class="live-offer-grid"><article><h3>Obsługa na żywo</h3><p>Wesela, urodziny, jubileusze i wydarzenia firmowe — wspólnie dopasujemy zakres do okazji.</p></article><article><h3>Magnesy 6,35 × 6,35 cm</h3><p>Kwadratowe fotomagnesy z miejscem na ulubiony kadr i indywidualną personalizację.</p></article><article><h3>Pakiet dla Ciebie</h3><p>Wybierz liczbę magnesów i czas obsługi. Szczegóły i koszt dojazdu potwierdzimy przed umową.</p></article></div><div class="actions"><a class="button" href="#pakiety">Zobacz cennik i pakiety</a><a class="button button--outline" href="#rezerwacja">Zapytaj o termin</a></div>''')
