@@ -107,6 +107,32 @@ class BrowserTests(unittest.TestCase):
                     self.assertEqual(menu.get_attribute('aria-expanded'),'true')
                     d.find_element(By.CSS_SELECTOR,'.main-nav a').click()
         d.set_window_size(1440,1000)
+    def test_pdf_offer_and_responsive_sections(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
+        d = self.driver
+        try:
+            for width in [1440, 390, 320]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': 1000, 'deviceScaleFactor': 1, 'mobile': width < 600})
+                for page, selectors in [(PAGES[0], ['.hero--home', '.offers-grid']), (PAGES[1], ['#jak-dzialamy', '#okazje', '#pakiety', '#rezerwacja'])]:
+                    d.get(self.base + page)
+                    d.execute_script('document.documentElement.style.scrollBehavior="auto"')
+                    if page == PAGES[1]:
+                        self.assertFalse(d.find_elements(By.ID, 'galeria'))
+                        self.assertEqual(len(d.find_elements(By.CSS_SELECTOR, '#jak-dzialamy .process-step')), 3)
+                        self.assertIn('30 km', d.find_element(By.CSS_SELECTOR, '.live-package-extras').text)
+                        self.assertIn('10 zł/szt.', d.find_element(By.CSS_SELECTOR, '.live-package-extras').text)
+                    for selector in selectors:
+                        element = d.find_element(By.CSS_SELECTOR, selector)
+                        d.execute_script('arguments[0].scrollIntoView({behavior:"instant"})', element)
+                        WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return [...arguments[0].querySelectorAll("img")].every(i => i.complete && i.naturalWidth > 0)', element))
+                        self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
+                        artifacts = Path(__file__).parent / 'artifacts'
+                        artifacts.mkdir(exist_ok=True)
+                        d.save_screenshot(str(artifacts / f'pdf-{selector.strip(".#")}-{width}.png'))
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
+
     def test_service_name_navigates_instead_of_toggling(self):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.action_chains import ActionChains
@@ -204,12 +230,14 @@ class BrowserTests(unittest.TestCase):
                 self.assertEqual(len(photos),4)
                 self.assertEqual(len({photo.rect['height'] for photo in photos}),1)
                 for photo in photos:
-                    self.assertLessEqual(photo.rect['height'],240)
+                    # The PDF requests two large cards per row, with 16:9 photos.
+                    self.assertAlmostEqual(photo.rect['width'] / photo.rect['height'], 16 / 9, delta=.03)
                     self.assertEqual(photo.value_of_css_property('object-fit'),'cover')
                 if width<600:
                     self.assertEqual(len({card.rect['x'] for card in cards}),1)
                 else:
-                    self.assertEqual(len({card.rect['y'] for card in cards}),1)
+                    self.assertEqual(len({card.rect['x'] for card in cards}),2)
+                    self.assertEqual(len({card.rect['y'] for card in cards}),2)
                 self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
                 artifacts=Path(__file__).parent/'artifacts'; artifacts.mkdir(exist_ok=True)
                 d.execute_script("document.querySelector('.occasion-grid').scrollIntoView({behavior:'instant',block:'center'})")

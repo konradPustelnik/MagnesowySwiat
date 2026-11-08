@@ -506,3 +506,42 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .nav-dropdown > summary { padding-right: 16px; min-height: 48px; }
  .main-nav .nav-service-link { flex: 1; }
 }
+
+/* Copy and imagery from the owner's November PDF. */
+.hero-copy p.hero-locations { font-size: 13px; letter-spacing: .06em; color: var(--gold-dark); margin-top: 16px; margin-bottom: 22px; }
+.hero--home .hero-image > img { height: auto; aspect-ratio: 1627 / 916; object-fit: contain; }
+.offer { display: flex; flex-direction: column; }
+.offer-content { display: flex; flex: 1; flex-direction: column; }
+.offer-content .button { margin-top: auto; align-self: flex-start; }
+.offer-content p:last-of-type { margin-bottom: 24px; }
+.offer-photo img { aspect-ratio: 1; height: auto; object-fit: cover; }
+.live-process-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; }
+.live-closing { margin-top: 32px; text-align: center; font-family: var(--serif); font-size: 26px; color: var(--gold-dark); }
+.live-occasions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; }
+.live-occasions .occasion-card img { height: auto; aspect-ratio: 16 / 9; }
+.live-occasions .occasion-card-content { padding: 28px; }
+.live-occasions .occasion-card h3 { font-size: clamp(26px, 3vw, 34px); }
+.live-occasions .occasion-card p { font-size: 14px; }
+.live-occasions .occasion-card p + p { margin-top: 12px; }
+.other-occasions { margin-top: 28px; padding: 28px; border-left: 2px solid var(--gold); background: var(--paper); }
+.other-occasions h3 { font-size: 28px; margin-bottom: 14px; }
+.other-occasions p { font-size: 14px; }
+.live-package-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin-top: 32px; }
+.live-package-extras article { padding: 28px; background: var(--paper); border: 1px solid var(--line); }
+.live-package-extras h3, .live-custom-offer h3 { font-size: 30px; margin-bottom: 16px; }
+.live-package-extras p, .live-custom-offer p { font-size: 14px; }
+.live-custom-offer { display: flex; justify-content: space-between; align-items: center; gap: 32px; margin-top: 28px; padding: 30px; border: 1px solid var(--gold); }
+.live-custom-offer > div { max-width: 650px; }
+.live-custom-offer .button { flex-shrink: 0; max-width: 100%; }
+.live-contact-links { list-style: none; padding: 0; font-size: 13px; overflow-wrap: anywhere; }
+.live-contact-links li + li { margin-top: 12px; }
+@media (max-width: 980px) {
+ .live-process-grid { gap: 24px; }
+ .live-custom-offer { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 680px) {
+ .live-process-grid, .live-occasions, .live-package-extras { grid-template-columns: 1fr; }
+ .live-occasions .occasion-card-content, .live-package-extras article, .other-occasions { padding: 22px; }
+ .live-custom-offer { padding: 22px; }
+ .live-custom-offer .button { width: 100%; white-space: normal; }
+}

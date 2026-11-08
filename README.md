@@ -2,6 +2,8 @@
 
 # Magnesowy Świat
 
+Aktualizacja według `MAGNESY-NA-ŻYWO.pdf` (8 listopada 2026): nowe treści i ilustracje strony głównej, trzy kroki obsługi, duże kafelki okazji, rozszerzone pakiety/FAQ/kontakt oraz usunięta galeria inspiracji na żywo. **Dojazd do 30 km od Limanowej w cenie pakietu na żywo; dodatkowe magnesy 10 zł/szt.** Szczegóły wdrożenia i uwagi do utrzymania: [zmiany z PDF](docs/zmiany-pdf-2026-11-08.md).
+
 Progi zamówień ze zdjęć: **5, 20, 50, 100 i 100+ sztuk**. [Analiza rynku i propozycja cen](docs/cennik-na-zamowienie.md) zawiera źródła, rekomendowane kwoty oraz dane kosztowe potrzebne do ich potwierdzenia. Propozycja nie jest jeszcze publicznym cennikiem — na stronie działa zapytanie o wycenę.
 
 Statyczna strona wizytówka z podstronami usług, wspólnymi stylami CSS i JavaScriptem, publikowana na GitHub Pages.

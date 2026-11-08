@@ -2,6 +2,8 @@
 
 # Magnesowy Świat — wersja 2 (lokalny podgląd)
 
+Aktualne treści strony głównej i oferty na żywo pochodzą z PDF właściciela i modułów `home_pdf.py` / `live_pdf.py`. Galeria inspiracji na żywo została wyłączona wraz z odnośnikami w menu. Dojazd do 30 km od Limanowej jest w cenie pakietu na żywo, dodatkowy magnes kosztuje 10 zł/szt. Szczegóły: [wdrożenie PDF](../docs/zmiany-pdf-2026-11-08.md). Opis pierwotnego układu niżej ma charakter historyczny.
+
 Nowa, niezależna wersja. Żaden plik dotychczasowej strony ani konfiguracji GitHub Pages nie został zmieniony. Nie wykonano publikacji. Wszystkie nowe pliki są w `wersja-2/`.
 
 ## Jak otworzyć
