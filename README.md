@@ -28,6 +28,8 @@ Stopki zawierają e-mail oraz profile Instagram, Facebook i [TikTok](https://www
 
 Na stronie głównej H1 jest pogrubiony, a dwa przyciski wyboru usługi znajdują się na końcu pełnego opisu i mają jednakową szerokość. Na małych ekranach opis może wymagać przewinięcia. Karty ofert mają wspólną oprawę, krótkie opisy i przyciski wyrównane na dole.
 
+Cały tekst strony głównej jest wyśrodkowany — również opisy kart, „O nas”, zasięg, kontakt i stopka. Reguły są ograniczone do klasy `page-home`, aby nie zmieniać układu podstron usług.
+
 Na podstronie na żywo przyciski „Zobacz pakiety” i „Zapytaj o termin” również są bezpośrednio pod H1, przed opisem. Kompaktowy nagłówek i odstępy pozwalają wyświetlić oba przyciski bez przewijania w testowanych rozmiarach ekranu.
 
 Podstrona zamówień korzysta z tego samego kompaktowego układu: przycisk „Zamów magnesy” jest pod H1 i pozostaje widoczny na pierwszym ekranie.
