@@ -97,6 +97,21 @@ class BrowserTests(unittest.TestCase):
         self.assertTrue(d.find_element(By.ID,'draft-dialog').get_attribute('open'))
         self.assertIn(':()@&%$#*($#^*!@(#&#@%&@(#$@!',d.find_element(By.ID,'draft-text').get_attribute('value'))
         self.assertIn('%26',d.find_element(By.ID,'email-draft').get_attribute('href'))
+    def test_footer_icons_stay_small_without_stylesheet(self):
+        from selenium.webdriver.common.by import By
+        d=self.driver
+        for page in PAGES:
+            d.get(self.base+page)
+            icons=d.find_elements(By.CSS_SELECTOR,'.site-footer .social-icon')
+            self.assertEqual(len(icons),3)
+            for icon in icons:
+                self.assertEqual(icon.rect['width'],18)
+                self.assertEqual(icon.rect['height'],18)
+            d.execute_script("document.querySelector('link[rel=stylesheet]').disabled=true")
+            for icon in icons:
+                self.assertEqual(icon.rect['width'],18)
+                self.assertEqual(icon.rect['height'],18)
+                self.assertEqual(icon.get_attribute('fill'),'none')
     def test_order_preview_counts_delete_and_validation(self):
         from selenium.webdriver.common.by import By
         d=self.driver; d.get(self.base+PAGES[2])
