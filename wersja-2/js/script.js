@@ -192,9 +192,3 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     showSendConfirmation();
   }
 });
-document.getElementById('copy-draft').addEventListener('click', async () => {
-  const draft = document.getElementById('draft-text');
-  const status = document.getElementById('copy-status');
-  try { await navigator.clipboard.writeText(draft.value); status.textContent = 'Skopiowano treść. Wiadomość nie została wysłana.'; }
-  catch { draft.focus(); draft.select(); status.textContent = 'Treść zaznaczona — skopiuj ją skrótem Ctrl+C lub z menu urządzenia.'; }
-});

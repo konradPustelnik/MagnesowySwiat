@@ -22,10 +22,10 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 ## Pliki
 
 - `index.html` — nowa strona główna, wybór usług, o nas, obszar działania i kontakt.
-- `magnesy-na-zywo.html` — przebieg obsługi, okazje, cztery pakiety, FAQ, podgląd zapytania.
+- `magnesy-na-zywo.html` — przebieg obsługi, okazje, cztery pakiety, FAQ, formularz zapytania.
 - `magnesy-na-zamowienie.html` — produkt, zamawianie, ilościowy cennik bez wymyślonych cen, podgląd zdjęć i zapytania.
 - `css/style.css` — wspólny wygląd, responsywność i ograniczenie animacji.
-- `js/script.js` — menu, dialogi, wybór pakietu, zdjęcia i szkic wiadomości.
+- `js/script.js` — menu, dialogi, wybór pakietu, zdjęcia, przygotowanie załączników i okno podziękowania.
 - `images/` — kopie logo oraz zdjęcia inspiracyjne; oryginały pozostają nietknięte.
 - `build_preview.py` — opcjonalny generator statycznych HTML ze wspólnym nagłówkiem i stopką. Po edycji treści generatora uruchom `python wersja-2/build_preview.py`. Uwaga: nadpisuje wyłącznie trzy nowe HTML; nie uruchamiaj po ręcznych zmianach w tych HTML, jeśli chcesz je zachować.
 - `live_layout.py` — układ podstrony „Magnesy na żywo” wzorowany na backupie: oferta → jak działamy → okazje → inspiracje → wyróżniki → cennik → dla firm → o nas → FAQ → formularz. Skróty pod nagłówkiem prowadzą do odpowiednich sekcji. Inspiracje używają lokalnych zdjęć ilustracyjnych, podpisanych jako fotografie spoza realizacji marki.
@@ -34,7 +34,7 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 
 ## Co działa, a co wymaga integracji
 
-Działają: nawigacja, menu telefonu, FAQ, powiększanie fotografii, wybór pakietu/ilości, walidacja, lokalne miniatury, liczba kopii każdego zdjęcia, usuwanie miniatur, podgląd i kopiowanie zapytania. Znaki specjalne pozostają w treści; szkic `mailto:` koduje je przez `encodeURIComponent`.
+Działają: nawigacja, menu telefonu, FAQ, powiększanie fotografii, wybór pakietu/ilości, walidacja, miniatury, liczba kopii każdego zdjęcia, usuwanie miniatur i bezpośrednia wysyłka formularzy. Usunięto dawny dialog „Podgląd zapytania” i kopiowanie szkicu. Znaki specjalne i załączniki są przekazywane przez natywny POST.
 
 **Zapytanie o termin:** przywrócono normalną wysyłkę HTML POST do `https://formsubmit.co/magnesowyswiat@gmail.com`, tak jak w backupie. Formularz działa również bez JavaScript. Nie używa AJAX, nie otwiera lokalnego szkicu i nie wysyła zdjęć. Ma normalną zgodę na kontakt, `_captcha=false`, `_honey`, temat i tabelaryczny szablon wiadomości oraz adres powrotu `/magnesy-na-zywo/?wyslano=1#rezerwacja`. Aktywacja i doręczenie zależą od FormSubmit oraz skrzynki odbiorczej. Powrót z serwisu nie jest dowodem doręczenia. Szczegóły integracji: https://formsubmit.co/
 

@@ -186,6 +186,7 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.common.by import By
         d=self.driver; d.get(self.base+PAGES[2])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="order"]')
+        self.assertFalse(d.find_elements(By.ID,'draft-dialog'))
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('enctype'),'multipart/form-data')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
