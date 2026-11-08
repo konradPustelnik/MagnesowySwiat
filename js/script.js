@@ -1,5 +1,10 @@
 'use strict';
 
+// Keep old index.html bookmarks working while showing the directory URL.
+if (['http:', 'https:'].includes(location.protocol) && location.pathname.endsWith('/index.html')) {
+  history.replaceState(history.state, '', location.pathname.slice(0, -10) + location.search + location.hash);
+}
+
 const menu = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
 function closeMenu() {

@@ -112,6 +112,15 @@ class BrowserTests(unittest.TestCase):
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)
                 self.assertEqual(icon.get_attribute('fill'),'none')
+    @unittest.skipUnless(PRODUCTION, 'Dotyczy produkcyjnych adresów')
+    def test_home_url_hides_index_and_preserves_contact_anchor(self):
+        from selenium.webdriver.common.by import By
+        d=self.driver
+        d.get(self.base+'index.html?preview=1#kontakt')
+        self.assertEqual(d.current_url,self.base+'?preview=1#kontakt')
+        for link in d.find_elements(By.CSS_SELECTOR,'.main-nav a'):
+            self.assertNotIn('index.html',link.get_attribute('href'))
+        self.assertTrue(d.find_element(By.ID,'kontakt').is_displayed())
     def test_order_preview_counts_delete_and_validation(self):
         from selenium.webdriver.common.by import By
         d=self.driver; d.get(self.base+PAGES[2])
