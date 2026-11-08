@@ -7,11 +7,13 @@ if (['http:', 'https:'].includes(location.protocol) && location.pathname.endsWit
 
 const menu = document.querySelector('.menu-toggle');
 const nav = document.querySelector('.main-nav');
+const serviceDropdowns = [...document.querySelectorAll('.nav-dropdown')];
 function closeMenu() {
   menu.setAttribute('aria-expanded', 'false');
   menu.setAttribute('aria-label', 'Otwórz menu');
   nav.classList.remove('is-open');
   document.body.classList.remove('menu-open');
+  serviceDropdowns.forEach(dropdown => { dropdown.open = false; });
 }
 menu.addEventListener('click', () => {
   const open = menu.getAttribute('aria-expanded') !== 'true';
@@ -21,7 +23,25 @@ menu.addEventListener('click', () => {
   document.body.classList.toggle('menu-open', open);
 });
 nav.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
-document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
+document.addEventListener('keydown', event => {
+  if (event.key !== 'Escape') return;
+  const openDropdown = serviceDropdowns.find(dropdown => dropdown.open);
+  const mobileMenuOpen = menu.getAttribute('aria-expanded') === 'true';
+  closeMenu();
+  if (mobileMenuOpen) menu.focus();
+  else if (openDropdown) openDropdown.querySelector('summary').focus();
+});
+serviceDropdowns.forEach(dropdown => {
+  dropdown.addEventListener('pointerenter', event => {
+    if (event.pointerType === 'mouse' && window.innerWidth > 980) dropdown.open = true;
+  });
+  dropdown.addEventListener('pointerleave', () => {
+    if (window.innerWidth > 980 && !dropdown.matches(':focus-within')) dropdown.open = false;
+  });
+});
+document.addEventListener('click', event => {
+  if (!event.target.closest('.nav-dropdown')) serviceDropdowns.forEach(dropdown => { dropdown.open = false; });
+});
 window.matchMedia('(min-width: 981px)').addEventListener('change', closeMenu);
 const normalizePath = path => path.replace(/index\.html$/, '').replace(/\/$/, '');
 nav.querySelectorAll('a').forEach(link => {

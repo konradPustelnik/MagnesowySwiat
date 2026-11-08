@@ -28,7 +28,8 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 - `js/script.js` — menu, dialogi, wybór pakietu, zdjęcia, przygotowanie załączników i okno podziękowania.
 - `images/` — kopie logo oraz zdjęcia inspiracyjne; oryginały pozostają nietknięte.
 - `build_preview.py` — opcjonalny generator statycznych HTML ze wspólnym nagłówkiem i stopką. Po edycji treści generatora uruchom `python wersja-2/build_preview.py`. Uwaga: nadpisuje wyłącznie trzy nowe HTML; nie uruchamiaj po ręcznych zmianach w tych HTML, jeśli chcesz je zachować.
-- `live_layout.py` — układ podstrony „Magnesy na żywo” wzorowany na backupie: oferta → jak działamy → okazje → inspiracje → wyróżniki → cennik → dla firm → o nas → FAQ → formularz. Skróty pod nagłówkiem prowadzą do odpowiednich sekcji. Inspiracje używają lokalnych zdjęć ilustracyjnych, podpisanych jako fotografie spoza realizacji marki.
+- `live_layout.py` — układ podstrony „Magnesy na żywo” wzorowany na backupie: oferta → jak działamy → okazje → inspiracje → wyróżniki → cennik → dla firm → o nas → FAQ → formularz. Inspiracje używają lokalnych zdjęć ilustracyjnych, podpisanych jako fotografie spoza realizacji marki.
+- `nav_dropdown.py` — wspólne rozwijane menu pod zakładką „Magnesy na żywo”, zastępujące osobny pasek skrótów. Natywne `details/summary` obsługuje klawiaturę i dotyk także bez JS; JavaScript dodaje najechanie, zamykanie po wyborze, poza menu i klawiszem Escape.
 - `order_form.py` — konfiguracja formularza zamówienia: multipart POST do FormSubmit, temat wiadomości, zgoda na kontakt i przekazanie zdjęć, adres powrotu.
 - `tests/test_preview.py` — kontrola linków i opcjonalne testy przeglądarkowe.
 

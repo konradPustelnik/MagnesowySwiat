@@ -248,6 +248,41 @@ class BrowserTests(unittest.TestCase):
                 dialog.find_element(By.TAG_NAME,'button').click()
             WebDriverWait(d,8).until(lambda browser: browser.current_url in [self.base,self.base+'index.html'])
             self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.send-confirmation[open]'))
+    def test_live_dropdown_desktop_keyboard_and_mobile(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.common.action_chains import ActionChains
+        from selenium.webdriver.support.ui import WebDriverWait
+        d=self.driver
+        try:
+            d.set_window_size(1440,1000); d.get(self.base)
+            summary=d.find_element(By.CSS_SELECTOR,'.nav-dropdown summary')
+            ActionChains(d).move_to_element(summary).perform()
+            self.assertTrue(d.find_element(By.CSS_SELECTOR,'.nav-dropdown').get_attribute('open'))
+            summary.send_keys(Keys.ESCAPE)
+            self.assertFalse(d.find_element(By.CSS_SELECTOR,'.nav-dropdown').get_attribute('open'))
+            self.assertEqual(d.switch_to.active_element,summary)
+            summary.send_keys(Keys.ENTER)
+            self.assertTrue(d.find_element(By.CSS_SELECTOR,'.nav-dropdown').get_attribute('open'))
+            artifacts=Path(__file__).parent/'artifacts'; artifacts.mkdir(exist_ok=True)
+            d.save_screenshot(str(artifacts/'service-dropdown-desktop.png'))
+            d.find_element(By.CSS_SELECTOR,'.nav-dropdown a[href$="#pakiety"]').click()
+            WebDriverWait(d,5).until(lambda browser: browser.current_url.endswith('#pakiety'))
+            self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.live-section-nav'))
+            for width in [1024,981,390,320]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride',{'width':width,'height':1000,'deviceScaleFactor':1,'mobile':width<600})
+                d.get(self.base)
+                self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
+                if width<981:
+                    d.find_element(By.CSS_SELECTOR,'.menu-toggle').click()
+                    d.find_element(By.CSS_SELECTOR,'.nav-dropdown summary').click()
+                    self.assertTrue(d.find_element(By.CSS_SELECTOR,'.nav-dropdown').get_attribute('open'))
+                    if width==390: d.save_screenshot(str(artifacts/'service-dropdown-mobile.png'))
+                    d.find_element(By.CSS_SELECTOR,'.nav-dropdown a[href$="#pakiety"]').click()
+                    WebDriverWait(d,5).until(lambda browser: browser.current_url.endswith('#pakiety'))
+                    self.assertEqual(d.find_element(By.CSS_SELECTOR,'.menu-toggle').get_attribute('aria-expanded'),'false')
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
 
 if __name__=='__main__':
     import sys
