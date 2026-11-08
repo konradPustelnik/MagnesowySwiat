@@ -82,6 +82,7 @@ p + p { margin-top: 16px; }
 .offer p + p { margin-top: 10px; }
 .offer-content p:last-of-type { margin-bottom: 24px; }
 .offer-content .button { margin-top: auto; align-self: flex-start; min-width: 220px; }
+.section.home-offers { padding-top: 32px; }
 .home-offers .section-heading { max-width: 760px; }
 .home-offers .section-heading h2 { font-size: clamp(32px, 3.4vw, 46px); }
 .home-offers .section-heading > p:last-child { max-width: 680px; font-size: 14px; }
@@ -285,6 +286,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .section { padding-block: 56px; }
   .section-heading { margin-bottom: 30px; }
   .offers-grid { grid-template-columns: 1fr; gap: 24px; }
+  .section.home-offers { padding-top: 28px; }
   .offer-content { padding: 22px; }
   .offer-content .button { width: 100%; min-width: 0; }
   .benefit-grid { gap: 28px 20px; }
@@ -480,7 +482,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 }
 
 /* Copy and imagery from the owner's November PDF. */
-.hero--home { padding: 20px 0 40px; }
+.hero--home { padding: 20px 0; }
 .hero--home .hero-grid { gap: 48px; }
 .hero--home .hero-copy { padding: 0; }
 .hero--home .hero-copy h1 { font-size: clamp(40px, 4.2vw, 62px); font-weight: 700; line-height: 1.05; margin-bottom: 14px; }
