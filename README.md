@@ -1,170 +1,102 @@
-> Aktualizacja: wersja 2 jest teraz stroną główną. Usługi mają adresy `/magnesy-na-zywo/` i `/magnesy-na-zamowienie/` bez `.html`; poprzednie adresy `.html` przekierowują. Poprzednia strona i jej zasoby są w `backup/`. Oba formularze wysyłają zapytania do FormSubmit: rezerwacja przez HTML POST, zamówienie ze zdjęć przez multipart POST z załącznikami (łącznie do 10 MB). Szczegóły opisano w `wersja-2/README.md`. Stała zgoda na publikację jest zapisana w `AGENTS.md` i `.github/copilot-instructions.md`.
-
 # Magnesowy Świat
 
-Aktualizacja według `MAGNESY-NA-ŻYWO.pdf` (8 listopada 2026): nowe treści i ilustracje strony głównej, trzy kroki obsługi, duże kafelki okazji, rozszerzone pakiety/FAQ/kontakt oraz usunięta galeria inspiracji na żywo. **Dojazd do 30 km od Limanowej w cenie pakietu na żywo; dodatkowe magnesy 10 zł/szt.** Szczegóły wdrożenia i uwagi do utrzymania: [zmiany z PDF](docs/zmiany-pdf-2026-11-08.md).
+Strona firmy tworzącej personalizowane magnesy fotograficzne na wydarzeniach i na zamówienie. HTML, CSS i JavaScript, bez frameworka aplikacji i bez etapu budowania.
 
-Progi zamówień ze zdjęć: **5, 20, 50, 100 i 100+ sztuk**. [Analiza rynku i propozycja cen](docs/cennik-na-zamowienie.md) zawiera źródła, rekomendowane kwoty oraz dane kosztowe potrzebne do ich potwierdzenia. Propozycja nie jest jeszcze publicznym cennikiem — na stronie działa zapytanie o wycenę.
+**Produkcja:** [magnesowyswiat.pl](https://magnesowyswiat.pl/). Hosting: GitHub Pages z gałęzi `main`, katalog główny repozytorium. Domena jest zapisana w `CNAME`; publikacja kodu odbywa się przez commit i push zgodnie z `AGENTS.md`.
 
-Statyczna strona wizytówka z podstronami usług, wspólnymi stylami CSS i JavaScriptem, publikowana na GitHub Pages.
+## Jedna aktualna wersja
 
-## Oferta i podstrony
+Na polecenie właściciela 8 listopada 2026 usunięto starą stronę `backup/`, podwójną wersję `wersja-2/`, nieużywane zasoby i testy poprzedniej architektury. Kod produkcyjny jest teraz jedynym źródłem strony. Nie trzeba niczego generować ani kopiować między wersjami.
 
-- W menu „Oferta” znajduje się przed „Jak działamy”; sekcja `#oferta` na stronie głównej ma dwa kafelki ze zdjęciami.
-- `/magnesy-na-zywo/` opisuje obsługę wydarzeń i prowadzi do istniejących pakietów, FAQ i formularza kontaktowego.
-- `/magnesy-na-zamowienie/` opisuje zamówienia z własnych zdjęć. Formularz wysyła zapytanie, dane i wybrane zdjęcia do FormSubmit po zgodzie użytkownika. Zachowuje podgląd, liczbę kopii i usuwanie zdjęć. Limit: 20 zdjęć, łącznie 10 MB. Cenę, zakres i przyjęcie zamówienia potwierdzamy mailowo. Testy używają wyłącznie lokalnego odbiornika i syntetycznych zdjęć; nie potwierdzają rzeczywistego doręczenia do Gmaila.
-- Tekst podstrony zamówień pochodzi od właściciela: „Magnesy ze zdjęć – Twoje wspomnienia zawsze blisko Ciebie! 🧲”, cztery kroki (wybór zdjęć, przesłanie zamówienia, produkcja, pakowanie i wysyłka) i przycisk „Zamów magnesy ze zdjęć”. Ceny i sposób dostawy są uzgadniane indywidualnie.
-- Wycena, termin i sposób przekazania gotowych magnesów wymagają indywidualnego uzgodnienia. Nie dodano nieustalonych cen, płatności ani automatycznego uploadu zdjęć.
-- `assets/site.css` zawiera przeniesione z `index.html` wspólne style, `assets/offers.css` — kafelki i układ podstron, `assets/service-pages.js` — ich menu i przygotowanie wiadomości. Istniejący formularz wydarzenia nadal korzysta z FormSubmit.
-- Oba nowe adresy mają własne title, opis i canonical oraz są w `sitemap.xml`. Oferta ma prosty układ dużego zdjęcia, tytułu i krótkiego opisu zgodnie ze wzorem właściciela. Grafiki kafelków i nagłówków podstron to lokalne wizualizacje AI z `assets/images/`, oznaczone jako nieprzedstawiające własnych realizacji. Ich końcowe prompty i warianty opisano w [docs/grafiki-oferty.md](docs/grafiki-oferty.md). Pozostałe zdjęcia Unsplash zachowano.
+| Plik / katalog | Przeznaczenie |
+| --- | --- |
+| `index.html` | Strona główna, wybór usług, o nas, zasięg i kontakt. |
+| `magnesy-na-zywo/index.html` | Oferta wydarzeń, okazje, pakiety, FAQ i formularz rezerwacyjny. |
+| `magnesy-na-zamowienie/index.html` | Magnesy ze zdjęć, wycena, zdjęcia i formularz zamówienia. |
+| `css/style.css` | Wspólny wygląd i responsywność. |
+| `js/script.js` | Menu, formularze, podgląd zdjęć, walidacja i okno po powrocie z wysyłki. |
+| `js/calendar-pl.js` | Kalendarz po polsku, z obsługą klawiatury. |
+| `images/` | Używane logo, fotografie i wizualizacje. |
+| `magnesy-na-zywo.html`, `magnesy-na-zamowienie.html` | Przekierowania dawnych adresów na katalogowe; zachowują parametry i fragmenty URL. |
+| `tests/test_site.py` | Jeden aktualny zestaw testów dla produkcyjnych plików. |
+| `test-strony.cmd` | Proste uruchamianie testów na Windows. |
+| `robots.txt`, `sitemap.xml` | Dostęp robotów i mapa trzech stron. |
 
-Test podstron i treści zapytania (bez wysyłki): `.\.venv-tests\Scripts\python.exe tests/test_offers.py`. Sprawdza linki, zasoby, nawigację, szerokości 360/768/1440 px, walidację i zachowanie znaków specjalnych w linkach pocztowych. Wymaga środowiska Selenium instalowanego przez istniejący `test-mail.cmd`.
-
-Najnowszy tekst głównej sekcji został podany bezpośrednio przez właściciela: nagłówek H1 „Wyjątkowe magnesy na każdą okazję” oraz wstęp „✨ Tworzone z myślą o Twoich wspomnieniach.” z informacją o magnesach na żywo i indywidualnych zamówieniach ze zdjęć. Wcześniejsze cofnięcie lokalnej sekcji i opisów poniżej jest zapisem historii; osobna sekcja zasięgu nadal pozostaje usunięta.
-
-**Aktualizacja wyglądu i treści:** na prośbę właściciela cofnięto promowanie Limanowej w nagłówku i metadanych oraz usunięto sekcję lokalnego zasięgu wraz z jej odnośnikami. Przywrócono poprzedni ogólny tekst wstępu i informacje o dojeździe. Zachowano poprawki techniczne domeny, favicon, format magnesów 6,35 × 6,35 cm, brązowe tło i okno potwierdzenia formularza. Audyt i propozycje lokalnego SEO poniżej oraz w osobnym dokumencie są zapisem wcześniejszych prac, nie opisem obecnej treści strony.
-
-## Strona internetowa
-
-**Docelowy adres strony:** [https://magnesowyswiat.pl/](https://magnesowyswiat.pl/)
-
-Hosting: GitHub Pages, repozytorium `konradpustelnik/MagnesowySwiat`. Stary adres `konradpustelnik.github.io/MagnesowySwiat/` przekierowuje na domenę ustawioną w GitHub Pages. Domena wymaga prawidłowego DNS i aktywnego HTTPS. Audyt i poprawki SEO: [docs/seo-audyt-i-plan.md](docs/seo-audyt-i-plan.md). Właściciel zatwierdził publikację tej partii 7 listopada 2026 i ponownie udzielił zgody na publikowanie kolejnych sprawdzonych zmian bez pytania.
-
-Strona jest opublikowana bezpłatnie w GitHub Pages. Repozytorium z jej kodem jest publiczne, więc każdy może je przeglądać, ale zmiany wprowadzać mogą tylko właściciel i osoby z uprawnieniami do zapisu.
-
-## Status audytu, ryzyka i pozostałe prace
-
-Stan ustaleń: **7 listopada 2026**. Przygotowane poprawki SEO, zasięgu i favicon zostały zatwierdzone do publikacji. Poniższe problemy domeny pochodzą z pomiaru podczas audytu — nie są deklaracją jej aktualnego stanu. Stan konkretnego wdrożenia należy sprawdzić w GitHub Pages i na publicznej stronie.
-
-**Poczta nie ma potwierdzonego działania od formularza do skrzynki.** FormSubmit wyświetlił ekran przyjęcia testowego zgłoszenia, ale właściciel zgłosił, że wiadomość nie dotarła. Nie traktujemy tego jako udanego testu doręczenia. Dotychczasowy test przeglądarkowy bez `--confirm-delivery` sprawdza tylko odpowiedź usługi; nie odczytuje skrzynki. Przyczyna niedoręczenia nie została ustalona.
-
-Właściciel zauważył możliwy związek niedoręczeń z wypełnieniem „Dodatkowych informacji” i podał przykład `rabacik ?`. To hipoteza do sprawdzenia, a nie ustalona przyczyna. Test lokalny sprawdza zachowanie pustej wiadomości, dokładnego przykładu `rabacik ?` oraz tekstu z polskimi znakami i nowym wierszem w `FormData`, poprawność walidacji i puste pole `_honey`. Nie sprawdza filtrów FormSubmit ani Gmaila. Następny krok: porównać dwa zgłoszenia różniące się tylko wiadomością i potwierdzić oba odbiory w skrzynce; nie uznawać samych ekranów sukcesu za dowód.
-
-| Priorytet | Ryzyko / ustalenie | Co jeszcze trzeba zrobić | Warunek zamknięcia |
-| --- | --- | --- | --- |
-| P0 | Niedoręczone zgłoszenia mogą oznaczać utratę zapytań klientów, mimo ekranu sukcesu FormSubmit. | Sprawdzić aktywację odbiorcy, spam, wszystkie wiadomości i filtry skrzynki. Przeprowadzić jeden kontrolowany test z unikalnym kodem i rzeczywistym adresem kontaktowym. Jeśli nadal nie dociera, zgłosić problem dostawcy; rozważyć inny mechanizm wysyłki z możliwością sprawdzenia statusu doręczenia. | Nowa wiadomość z kodem faktycznie odebrana w skrzynce; możliwość odpowiedzi na adres klienta sprawdzona. Sam HTTP 200 lub `provider_accepted: true` nie wystarcza. |
-| P0 | W audycie domena prowadziła do strony startowej OVH, a HTTPS nie odpowiadał. Użytkownicy i roboty mogli otrzymywać niewłaściwą stronę. | Poprawić DNS i ustawienia GitHub Pages, uruchomić certyfikat HTTPS; sprawdzić domenę główną, www, HTTP oraz stary adres GitHub Pages. Nie zmieniać przy tym rekordów pocztowych bez potrzeby. | Wszystkie warianty prowadzą do `https://magnesowyswiat.pl/`, gdzie serwowana jest strona firmy, bez błędu certyfikatu. |
-| P1 | Sam zapis kodu w repozytorium nie potwierdza zakończenia wdrożenia; canonical sam nie naprawi domeny. | Publikacja jest zatwierdzona. Sprawdzić zakończenie GitHub Pages, publiczną zawartość, docelowy adres oraz powrót z formularza. | Kod z poprawkami jest dostępny pod działającą domeną HTTPS. |
-| P1 | Stan indeksowania w Google jest nieznany. | Po wdrożeniu sprawdzić canonical, robots, sitemap, nagłówki HTTP i brak `noindex`; zweryfikować domenę w Search Console, zgłosić sitemap i sprawdzić URL Inspection. | Google ma dostęp do właściwej treści; raport indeksowania został sprawdzony. Nie gwarantuje to pozycji ani natychmiastowej indeksacji. |
-| P1 | Dane lokalne muszą odpowiadać rzeczywistej ofercie. Głównie powiat limanowski i okolice; potwierdzono także powiat nowosądecki oraz dodatkową opłatę za dalsze wyjazdy. Miasto Nowy Sącz jest osobną jednostką. | Potwierdzić obsługę samego miasta Nowy Sącz i doprecyzować sposób wyceny dojazdu. Każdą lokalizację i koszt potwierdzać przed rezerwacją; nie deklarować nieustalonego bezpłatnego promienia ani stawki kilometrowej. | Właściciel zatwierdził obszary i warunki; treść oraz JSON-LD są z nimi zgodne. |
-| P2 | JSON-LD przeszedł testy lokalne, ale nie zewnętrzną walidację Google. | Sprawdzić Organization w Rich Results Test i cały graf w Schema Markup Validator. Nie uzupełniać brakujących danych fikcyjnym adresem, telefonem, ocenami lub godzinami. | Brak błędów składni i zgodność danych z widoczną treścią. Nie każdy typ schema daje rozszerzony wynik w Google. |
-| P2 | Lokalne wyniki mobilne nie potwierdzają szybkości na telefonach klientów. Logotypy PNG ważą łącznie około 637 KB; fonty i zdjęcia zależą od usług zewnętrznych. | Uruchomić PageSpeed Insights po naprawie domeny, sprawdzić LCP/CLS/INP i realne urządzenie; rozważyć kompresję logotypów, a własne zdjęcia optymalizować przed dodaniem. | Wyniki produkcyjne i konkretne problemy są zapisane; brak regresji menu, pakietów i formularza. |
-| P2 | Powielone strony miast i zdjęcia stockowe przedstawiane jako portfolio obniżałyby wiarygodność treści. | Przygotować odrębne podstrony usług z użytecznymi informacjami; strony miast dopiero z rzeczywistą treścią lokalną. Pozyskać własne fotografie z prawem publikacji. | Każda podstrona wnosi inną wartość, ma własny canonical i jest uwzględniona w sitemap dopiero po utworzeniu. |
-
-**Przygotowane lokalnie:** title i meta description, H1 opisujący usługę, sekcja obszaru obsługi, canonical, Open Graph, `robots.txt`, `sitemap.xml`, Organization/Service JSON-LD, wymiary i warianty rozmiarów obrazów oraz spójne adresy formularza. Zachowano złotą identyfikację, pakiety i mechanizm formularza.
-
-**Sprawdzone lokalnie:** 4 testy kontraktów SEO oraz test przeglądarkowy przy 360, 390, 768 i 1440 px; brak przewijania poziomego, działanie menu i wyboru pakietów. Lokalna walidacja formularza również przeszła. To nie jest potwierdzenie dostarczenia poczty ani indeksowania strony. Szczegóły: [pełny audyt i plan](docs/seo-audyt-i-plan.md).
-
-Kolejność dalszej pracy:
-
-1. Wyjaśnić niedoręczanie poczty i potwierdzić odbiór kontrolnego zgłoszenia.
-2. Naprawić domenę/HTTPS i doprecyzować sposób indywidualnej wyceny dojazdu.
-3. Opublikować zatwierdzone poprawki i sprawdzić wynik wdrożenia GitHub Pages.
-4. Sprawdzić SEO, mobilność i pełną ścieżkę formularza na produkcji; zgłosić sitemap w Search Console.
-5. Rozwinąć podstrony `/magnesy-na-wesele/`, `/fotomagnesy-na-eventy/`, `/obszar-dzialania/`. Osobne strony Limanowej i Nowego Sącza pozostają propozycją warunkową, bez powielania tekstu.
-
-**Zasięg i dojazd — aktualizacja od właściciela:** działamy przede wszystkim w powiecie limanowskim i okolicach; wcześniej potwierdzono także obsługę powiatu nowosądeckiego. Dalsze wyjazdy są możliwe po uzgodnieniu, za dodatkową opłatą za dojazd. W lokalnej wersji strony informacja jest wyróżniona w sekcji obszaru działania oraz powtórzona przy pakietach i w FAQ. Koszt ma być podany przed potwierdzeniem rezerwacji. Nie ustalono stałej stawki za kilometr, limitu kilometrów ani granicy bezpłatnego dojazdu — nie należy ich dopisywać bez potwierdzenia.
-
-Plik `logo-magnesowy-swiat.png` zawiera pełne logo używane w sekcji „Jak działamy”. Zostaw go w folderze projektu obok `index.html`.
-
-To samo kwadratowe logo jest ustawione jako favicon (ikona karty przeglądarki) i ikona skrótu na urządzeniach Apple. Po publikacji przeglądarka może przez pewien czas wyświetlać poprzednią ikonę z pamięci podręcznej; sprawdź nową kartę prywatną. Zmiana favicon nie usuwa komunikatu „Not secure” — wymaga on działającego HTTPS domeny.
-
-Po powrocie z FormSubmit pod adres z `?wyslano=1#kontakt` strona pokazuje okno podziękowania i po 5 sekundach wraca do początku, odświeżając stronę i formularz. Przycisk „Wróć teraz” pozwala wrócić wcześniej. Okno informuje o przekazaniu zapytania do wysłania, nie o potwierdzonym doręczeniu. Jest wyświetlane po powrocie z usługi, a nie przy samym kliknięciu „Wyślij”; jeśli FormSubmit zatrzyma użytkownika na własnym ekranie, okno naszej strony nie zostanie jeszcze pokazane.
+Publiczne adresy: `/`, `/magnesy-na-zywo/`, `/magnesy-na-zamowienie/`. Nagłówki i stopki są zapisane w każdym HTML — przy zmianie wspólnej nawigacji trzeba uaktualnić wszystkie trzy pliki.
 
 ## Uruchomienie lokalnie
 
-1. Zainstaluj Pythona, jeśli nie masz go na komputerze.
-2. Otwórz folder projektu w VS Code i wybierz **Terminal → New Terminal**.
-3. W terminalu, będąc w folderze projektu, uruchom:
-
-   ```powershell
-   py -m http.server 8000
-   ```
-
-   Jeśli polecenie `py` nie działa, spróbuj:
-
-   ```powershell
-   python -m http.server 8000
-   ```
-
-4. Otwórz w przeglądarce adres **http://localhost:8000/**.
-5. Zostaw terminal otwarty, gdy korzystasz ze strony. Zatrzymaj serwer skrótem **Ctrl+C**.
-
-Jeśli port 8000 jest zajęty, uruchom serwer na innym porcie, np. `py -m http.server 8001`, a następnie odwiedź **http://localhost:8001/**.
-
-Formularz wysyła zapytania na `magnesowyswiat@gmail.com` standardową metodą HTML POST do FormSubmit. Nie korzysta z AJAX ani Fetch, więc wysyłka nie zależy od dostępu CORS do API. Pole `_url` wskazuje publiczny adres strony; `_next` zawiera pełny adres powrotu. Obrazkowa CAPTCHA jest wyłączona przez `_captcha=false`; pozostaje ukryte pole antyspamowe `_honey`. Formularz działa również bez JavaScript.
-
-Przed korzystaniem z formularza trzeba potwierdzić adres odbiorczy w wiadomości aktywacyjnej od FormSubmit. Akceptacja zgłoszenia przez API nie potwierdza doręczenia do skrzynki. Po publikacji wyślij próbne zapytanie z własnym adresem kontaktowym, sprawdź skrzynkę odbiorczą i spam oraz przetestuj odpowiedź na wiadomość. W razie wiadomości aktywacyjnej zatwierdź ją i ponów test. Wysłanie zapytania nie rezerwuje terminu.
-
-Nie otwieraj pliku `index.html` bezpośrednio przez `file://` do testowania wysyłki — korzystaj z lokalnego serwera HTTP opisanego powyżej.
-
-## Test formularza i wysyłki (Selenium + unittest)
-
-Wymagania: Windows, Python 3.10+ i Google Chrome. Otwórz terminal w folderze projektu. Pierwsze uruchomienie pobierze Selenium i odpowiedni sterownik Chrome; potrzebuje internetu. Nie wymaga Node.js ani hasła do poczty.
-
-**Prawdziwa wysyłka z lokalnego serwera, niezależna od DNS i domeny:**
+W terminalu w katalogu projektu:
 
 ```powershell
-.\test-mail.cmd --local-live --confirm-delivery
+python -m http.server 8000 --bind 127.0.0.1
 ```
 
-Ten tryb sam uruchamia lokalny serwer HTTP, otwiera lokalny `index.html` i wysyła jedno prawdziwe zgłoszenie do FormSubmit. Wyłącznie w pamięci przeglądarki testowej zmienia adres powrotu `_next` na lokalny, żeby nie trafić na niedziałającą domenę. Nie zmienia plików strony ani odbiorcy. Sprawdza rzeczywistą wysyłkę lokalnego kodu; nie potwierdza poprawności domeny i powrotu na stronę produkcyjną. Bez `--confirm-delivery` sprawdza przyjęcie zgłoszenia, bez potwierdzenia odbioru.
+Otwórz [localhost:8000](http://localhost:8000/). Zatrzymanie: `Ctrl+C`. Jeśli `python` nie działa, użyj `py`.
 
-**Pełny test z potwierdzeniem odbioru:**
+## Testy — najprościej
+
+Potrzebne są Python i Google Chrome. Dwuklik w **`test-strony.cmd`** uruchamia pełny zestaw i pozostawia widoczny wynik. Przy pierwszym uruchomieniu skrypt tworzy `.venv-tests` oraz instaluje Selenium z `tests/requirements.txt`, jeśli go brakuje.
+
+Z terminala:
 
 ```powershell
-.\test-mail.cmd --live --confirm-delivery
+.\test-strony.cmd --browser
 ```
 
-Test otwiera Chrome w tle, wypełnia formularz na publicznej stronie i wysyła **jedno prawdziwe zgłoszenie** do `magnesowyswiat@gmail.com`. Wiadomość jest oznaczona jako test, zawiera unikalny kod `MS-TEST-…` i nie dotyczy rezerwacji. Test nie ponawia wysyłki automatycznie. Po potwierdzeniu odpowiedzi usługi otwórz swoją skrzynkę, znajdź nową wiadomość (również w spamie) i przepisz kod z jej treści do terminala. Brak kodu oznacza niepotwierdzone doręczenie i nieudany pełny test. Nigdy nie wpisuj hasła do poczty w terminalu.
-
-Pozostałe tryby:
+Szybkie kontrole HTML, linków i SEO, bez uruchamiania Chrome:
 
 ```powershell
-# Lokalna walidacja i konfiguracja formularza — bez wysyłania poczty:
-.\test-mail.cmd
-
-# Jedna prawdziwa wysyłka — tylko potwierdzenie obsługi przez FormSubmit:
-.\test-mail.cmd --live
-
-# Po podłączeniu własnej domeny można wskazać adres strony:
-.\test-mail.cmd --live --confirm-delivery --url https://www.magnesowyswiat.pl/
+.\test-strony.cmd --static
 ```
 
-Tryb lokalny blokuje połączenia z FormSubmit w przeglądarce. Sprawdza wymagane pola, błędny e-mail, datę z przeszłości, konfigurację odbiorcy i odnośniki wewnętrzne. W trybie `--live` test korzysta z opublikowanego kodu, więc najpierw trzeba wdrożyć zmiany, które chcesz sprawdzić.
-
-Raport JSON i zrzuty przeglądarki są zapisywane w `test-results/`. `provider_accepted: true` oznacza ekran FormSubmit „The form was submitted successfully” lub powrót po obsłudze zgłoszenia; dopiero `delivery: confirmed_by_owner` oznacza ręcznie potwierdzony odbiór wiadomości z kodem. Raporty, środowisko `.venv-tests/` i zrzuty nie trafiają do Git. Test zakończony powodzeniem potwierdza działanie w chwili uruchomienia, nie gwarantuje przyszłej dostępności usług pocztowych.
-
-**Jak czytać wynik:** `tests_passed: true` oznacza przejście testów wybranego trybu, a nie automatycznie sprawną pocztę. W trybie lokalnym test wysyłki jest pomijany. `delivery: not_checked` oznacza brak potwierdzenia doręczenia, również gdy test usługi zakończył się `OK`. Raport `report.json` jest zastępowany przy kolejnym uruchomieniu; przed następną próbą zachowaj kopię raportu i kodu zgłoszenia, jeśli chcesz porównywać wyniki. Nie przepisuj kodu z terminala jako dowodu odbioru — ma pochodzić z nowej wiadomości w skrzynce.
-
-Aktualizacja testów: każde uruchomienie zapisuje również osobny raport z datą w nazwie, więc wcześniejsze raporty JSON nie są już tracone. Pole `end_to_end_passed` jest prawdziwe tylko po ręcznym potwierdzeniu kodu z odebranej wiadomości. Tryb live bez potwierdzenia odbioru kończy się kodem **2 (wynik niepełny)**, nawet jeśli techniczne scenariusze unittest pokazały `OK`. Kod 1 oznacza błąd, a 0 — zaliczenie wybranego trybu (w lokalnym nadal bez wysyłki).
-
-Regresja znaków specjalnych: lokalny test wysyła prawdziwy POST do kontrolowanego serwera testowego i porównuje odebraną treść znak po znaku, w tym `:()@&%$#*($#^*!@(#&#@%&@(#$@!`. Nie usuwa ani nie podmienia znaków. Na serwerze produkcyjnym zgłoszenie z tym ciągiem zostało przyjęte przez FormSubmit (kod testu `MS-TEST-1D9FE5A5C1A0`), ale właściciel potwierdził, że wiadomość **nie dotarła**. Test doręczenia jest więc niezaliczony. Przesłanie znaków przez formularz jest poprawne; bez logów dostawcy i poczty nie ustalono, na którym etapie po przyjęciu zgłoszenia wiadomość została zatrzymana. Nie należy zmieniać kodowania ani usuwać znaków jako pozornej naprawy.
-
-Pełne powtórzenie testu dokładnego ciągu (wysyła jedną wiadomość; kod jest w temacie, aby nie zmieniać treści badanego pola):
+Bezpośrednio, gdy środowisko jest już gotowe:
 
 ```powershell
-.\test-mail.cmd --live --special-characters --confirm-delivery
+python tests/test_site.py
+.\.venv-tests\Scripts\python.exe tests/test_site.py --browser
 ```
 
-Przy błędzie aktywacji zatwierdź wiadomość „Activate Form” w skrzynce. Przy innym błędzie sprawdź zrzut w `test-results/` — nie zakładaj, że HTTP 200 lub sam parametr `wyslano=1` potwierdza dostarczenie e-maila.
+Zestaw zawiera **18 testów: 3 statyczne i 15 w Chrome**. Testy statyczne nie wymagają Selenium. W trybie bez `--browser` testy przeglądarkowe mają wynik `skipped` — to oczekiwane. Powodzenie kończy się `OK` i kodem wyjścia 0; `FAIL`/`ERROR` oznacza problem do sprawdzenia.
 
-## Testy SEO — bez publikacji i wysyłania e-maili
+| Obszar | Co faktycznie sprawdzamy |
+| --- | --- |
+| Struktura i linki | Trzy strony, pojedyncze H1, unikalne ID, opisy alt, lokalne zasoby i kotwice. |
+| Podstawy SEO i stare adresy | Canonical, title, meta description, indeksowalność, CNAME, robots, sitemap i przekierowania. |
+| Menu | Najechanie, kliknięcie nazwy, strzałki na telefonie, Escape/Enter, fokus i przejścia do sekcji. |
+| Formularz na żywo | Wybór pakietu, poprawne dane, data, temat wiadomości oraz zachowanie znaków specjalnych w rzeczywistym lokalnym POST. |
+| Formularz ze zdjęciami | Dodawanie/usuwanie podglądów, liczba kopii, adres i kod pocztowy, paragon/faktura, limit 10 MB, zawartość multipart i bajty dwóch syntetycznych zdjęć. |
+| Kalendarz | Polskie nazwy, format dd/mm/rrrr, daty niepoprawne i przeszłe, lata przestępne oraz klawiatura. |
+| Wygląd i responsywność | Brak poziomego przewijania w sprawdzanych widokach, małe ikony, kadrowanie zdjęć i sekcje 320/390/1440 px. |
+| Powrót po wysyłce | Symulowany powrót `?wyslano=1`, okno podziękowania, odliczanie i przycisk powrotu. |
 
-Sekcja „Jak działamy” ma zwarty nagłówek i mniejsze odstępy; na telefonie numery są obok opisów. Całość po kliknięciu w nawigację sprawdzono w jednym ekranie przy 1366×768, 1280×600, 1210×580, 768×900, 390×844 i 360×740 px. Przy innych rozmiarach lub powiększeniu tekstu treść nadal może wymagać przewijania — nie jest obcinana. Test tej sekcji (bez wysyłki poczty): `.\.venv-tests\Scripts\python.exe tests/test_process_layout.py`. Zrzuty zapisują się w `test-results/process-*.png`.
+Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów trafiają do ignorowanego `tests/artifacts/`; można je usunąć i odtworzyć kolejnym uruchomieniem.
 
-Podstawowe testy wymagają wyłącznie Pythona:
+**Testy nie wysyłają prawdziwych e-maili.** Uruchamiają lokalny serwer, przechwytują dane formularzy lokalnie i blokują połączenia przeglądarki z FormSubmit. Testują mechanizm strony, ale nie potwierdzają doręczenia do Gmaila, działania DNS/HTTPS produkcji, indeksowania w Google ani zachowania we wszystkich przeglądarkach. Pierwsze uruchomienie Selenium może potrzebować internetu do pobrania sterownika; strona używa także Google Fonts.
 
-```powershell
-python tests/test_seo.py
-```
+## Formularze i prawdziwy test poczty
 
-Test przeglądarkowy sprawdza również układ przy 360, 390, 768 i 1440 px, mobilne menu oraz wybór pakietów. Jeżeli nie masz jeszcze środowiska testowego, uruchom najpierw `.\test-mail.cmd` — zainstaluje zależności i wykona test lokalny bez wysyłki.
+- Oba formularze wysyłają do `https://formsubmit.co/magnesowyswiat@gmail.com` zwykłym HTML POST; brak AJAX.
+- Zapytanie na żywo ma temat `[NA ŻYWO]`, a zamówienie ze zdjęć `[NA ZAMÓWIENIE]`. `_captcha=false` wyłącza obrazkowe zadania; pozostaje pole `_honey`.
+- Formularz zdjęciowy używa `multipart/form-data`: maksymalnie 20 plików JPEG/PNG/WebP, łącznie **10 000 000 bajtów (10 MB)**. Zdjęcia pozostają w pamięci karty do świadomego wysłania i nie trafiają do GitHuba ani localStorage.
+- Suma kopii zdjęć musi zgadzać się z liczbą magnesów. Do maila trafiają również wybrany dokument zakupu i dane dostawy.
+- Bez JavaScript działa formularz na żywo; przy zamówieniach zdjęciowych pozostaje bezpośredni kontakt e-mail.
+- Po powrocie z FormSubmit okno podziękowania odlicza 5 sekund i prowadzi na stronę główną. Nie jest dowodem odbioru wiadomości ani przyjęcia rezerwacji.
 
-```powershell
-.\.venv-tests\Scripts\python.exe tests/test_seo.py --browser
-```
+Żeby sprawdzić rzeczywiste doręczenie, otwórz publiczną podstronę i wyślij kontrolowane zapytanie z własnymi danymi kontaktowymi oraz unikalnym oznaczeniem, np. `MS-TEST-data-godzina`. Sprawdź odbiór, spam, zgodność treści i możliwość odpowiedzi. Formularz zdjęciowy sprawdź osobno, używając niesensytywnego zdjęcia testowego. Sam ekran sukcesu dostawcy lub HTTP 200 nie dowodzi doręczenia. Aktualizacje kodu nie są automatycznym testem skrzynki.
 
-Raport: `test-results/seo-browser.json`, zrzuty: `test-results/seo-*.png`. Są to lokalne pomiary Chrome, bez symulacji sieci komórkowej; nie zastępują danych terenowych Core Web Vitals ani potwierdzenia indeksowania w Search Console. Testy sprawdzają canonical, sitemap, robots, hierarchię nagłówków, obrazy, zakres faktów JSON-LD i konfigurację formularza. Nie wysyłają zgłoszenia do FormSubmit.
+## Ustalenia oferty i pozostałe prace
 
-Jeśli test zgłasza brak `contactForm` i stronę „Site en construction”, domena kieruje na stronę startową hostingu zamiast na stronę projektu. Najpierw trzeba poprawić publikację lub DNS. Test kończy się wtedy błędem przed wysłaniem wiadomości.
+Treści pochodzą z PDF właściciela. Dojazd do 30 km od Limanowej jest w cenie pakietu na żywo; dalszy transport ustalamy indywidualnie. Dodatkowy magnes poza limitem pakietu: 10 zł/szt. Zachowano promocję 20% na pierwsze trzy zlecenia — dostępność potwierdzana przy rezerwacji. Po wykorzystaniu promocji usuń panel `.launch-offer` z podstrony na żywo.
+
+Progi zamówień ze zdjęć: 5, 20, 50, 100 i 100+ sztuk. [Analiza cen](docs/cennik-na-zamowienie.md) zawiera propozycję, która nie jest jeszcze publicznym cennikiem.
+
+Do uzupełnienia pozostają:
+
+- Finalna polityka prywatności, regulamin i prawdziwe dane usługodawcy. Obecne okna informacyjne nie są gotowymi dokumentami prawnymi.
+- Zatwierdzone ceny zamówień na podstawie realnych kosztów oraz warunki płatności i realizacji.
+- Własne fotografie produktów i stanowiska; obecne materiały ilustracyjne są podpisane.
+- Potwierdzenie rzeczywistego doręczania obu formularzy po stronie skrzynki, okresowa kontrola aktywacji i filtrów FormSubmit.
+- Pomiary wydajności produkcji i kontrola indeksowania w Search Console; rozważenie lokalnego hostowania fontów.
+
+Dokumentacja: [zmiany z PDF](docs/zmiany-pdf-2026-11-08.md), [źródła grafik](docs/grafiki.md), [historyczny audyt SEO](docs/seo-audyt-i-plan.md). Audyt opisuje wcześniejszy stan i nie jest aktualnym raportem dostępności domeny.

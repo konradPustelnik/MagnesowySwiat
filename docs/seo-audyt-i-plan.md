@@ -1,5 +1,7 @@
 # Audyt i plan lokalnego SEO — Magnesowy Świat
 
+> Aktualny opis projektu i otwartych prac jest w [README](../README.md). Po zmianach z PDF właściciela znów występują informacje o Limanowej, Nowym Sączu i Krakowie; dojazd do 30 km od Limanowej jest w cenie pakietu na żywo. Poniższy audyt zachowano jako dokument historyczny. Dawne skrypty testowe zastąpił jeden zestaw opisany w [testy.md](testy.md).
+
 **Dokument historyczny:** właściciel następnie zlecił cofnięcie lokalnej promocji Limanowej. Usunięto sekcję zasięgu i jej odnośniki oraz lokalne frazy w metadanych/H1 i areaServed. Poniższe opisy i wyniki dotyczą wcześniejszej wersji. Zachowano niezwiązane poprawki techniczne i późniejsze funkcje strony.
 
 Data: 7 listopada 2026. Stan wyjściowy kodu: commit `0915756`.

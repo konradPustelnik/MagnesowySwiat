@@ -18,9 +18,9 @@
 
 ## Utrzymanie
 
-`wersja-2/home_pdf.py` oraz `wersja-2/live_pdf.py` zawierają nowe treści. `build_preview.py` nakłada je na istniejący szablon; dla podstrony na żywo kolejność to `apply_live_pdf(arrange_live_sections(live))`. Funkcję nakładającą zmiany należy wywołać raz, ponieważ usuwa poprzednią galerię i zastępuje sekcje.
+Po późniejszym sprzątaniu na prośbę właściciela usunięto `backup/`, kopię `wersja-2/` i jej generator. Treści PDF pozostają bezpośrednio w produkcyjnych `index.html` i `magnesy-na-zywo/index.html`; wspólny wygląd jest w `css/style.css`. Nie trzeba niczego generować ani synchronizować z podglądem.
 
-Generator nadal zapisuje wyłącznie podgląd `wersja-2/`. Zmieniając produkcję, przenosić odpowiedni `<main>` z dostosowaniem ścieżek; zachować produkcyjne canonical, indeksowanie i adresy katalogowe. Aktualizacje menu dotyczą również `nav_dropdown.py`. Archiwum `backup/` pozostaje nietknięte.
+Przy zmianie menu lub stopki aktualizować wszystkie trzy produkcyjne HTML. Zachować canonical, indeksowanie, adresy katalogowe i identyfikatory formularzy. Źródła obrazów opisuje [grafiki.md](grafiki.md), testy — [testy.md](testy.md).
 
 ## Weryfikacja
 

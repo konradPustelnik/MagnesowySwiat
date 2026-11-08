@@ -1,3 +1,4 @@
 .venv-tests/
 test-results/
 __pycache__/
+tests/artifacts/

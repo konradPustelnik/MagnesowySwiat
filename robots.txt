@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /backup/
-Disallow: /wersja-2/
 
 Sitemap: https://magnesowyswiat.pl/sitemap.xml

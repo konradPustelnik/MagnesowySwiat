@@ -1,5 +1,4 @@
 """Lokalne testy. Nie wysyłają e-maili ani zdjęć."""
-import argparse
 import base64
 from email.parser import BytesParser
 from email.policy import default
@@ -10,18 +9,29 @@ from pathlib import Path
 import tempfile
 from threading import Thread
 import unittest
+import xml.etree.ElementTree as ET
 from urllib.parse import unquote, urlsplit, parse_qs
 
 ROOT = Path(__file__).resolve().parents[1]
-PRODUCTION = '--production' in __import__('sys').argv
-if PRODUCTION: ROOT = ROOT.parent
-PAGES = ['index.html', 'magnesy-na-zywo.html', 'magnesy-na-zamowienie.html']
-if PRODUCTION: PAGES = ['index.html', 'magnesy-na-zywo/index.html', 'magnesy-na-zamowienie/index.html']
+PAGES = ['index.html', 'magnesy-na-zywo/index.html', 'magnesy-na-zamowienie/index.html']
+CANONICAL = 'https://magnesowyswiat.pl/'
 BROWSER = '--browser' in __import__('sys').argv
 
 class CaptureHandler(SimpleHTTPRequestHandler):
     """Local-only receiver: tests must never send a real email."""
+    def log_message(self, *args):
+        pass
+
+    def handle(self):
+        try:
+            super().handle()
+        except (BrokenPipeError, ConnectionResetError):
+            pass  # Chrome may close speculative local connections.
+
     def do_POST(self):
+        if urlsplit(self.path).path != '/__capture':
+            self.send_error(404)
+            return
         body=self.rfile.read(int(self.headers['Content-Length']))
         self.server.uploads=[]
         if self.headers['Content-Type'].startswith('multipart/form-data'):
@@ -44,9 +54,10 @@ class CaptureHandler(SimpleHTTPRequestHandler):
 
 class Parser(HTMLParser):
     def __init__(self):
-        super().__init__(); self.ids=[]; self.links=[]; self.assets=[]; self.h1=0; self.images=[]
+        super().__init__(); self.ids=[]; self.links=[]; self.assets=[]; self.h1=0; self.images=[]; self.tags=[]
     def handle_starttag(self, tag, attrs):
         attrs=dict(attrs)
+        self.tags.append((tag, attrs))
         if 'id' in attrs: self.ids.append(attrs['id'])
         if tag=='a': self.links.append(attrs.get('href',''))
         if tag in ['img','script']: self.assets.append(attrs.get('src',''))
@@ -55,6 +66,51 @@ class Parser(HTMLParser):
         if tag=='img': self.images.append(attrs)
 
 class StaticTests(unittest.TestCase):
+    def test_canonical_indexability_and_sitemap(self):
+        expected = [CANONICAL + ('' if page == 'index.html' else page.removesuffix('index.html')) for page in PAGES]
+        for page, canonical in zip(PAGES, expected):
+            with self.subTest(page=page):
+                source = (ROOT / page).read_text(encoding='utf-8')
+                parser = Parser(); parser.feed(source)
+                self.assertEqual([attrs.get('href') for tag, attrs in parser.tags if tag == 'link' and attrs.get('rel') == 'canonical'], [canonical])
+                robots = [attrs.get('content', '').lower() for tag, attrs in parser.tags if tag == 'meta' and attrs.get('name', '').lower() == 'robots']
+                self.assertFalse(any('noindex' in value or 'none' in value.split(',') for value in robots), page)
+                self.assertEqual([attrs.get('lang') for tag, attrs in parser.tags if tag == 'html'], ['pl'])
+                descriptions = [attrs.get('content', '').strip() for tag, attrs in parser.tags if tag == 'meta' and attrs.get('name') == 'description']
+                self.assertEqual(len(descriptions), 1)
+                self.assertTrue(descriptions[0], page)
+                self.assertIn('<title>', source.lower())
+        self.assertEqual((ROOT / 'CNAME').read_text(encoding='utf-8').strip(), urlsplit(CANONICAL).hostname)
+        robots_source = (ROOT / 'robots.txt').read_text(encoding='utf-8')
+        directives = [line.split('#', 1)[0].strip() for line in robots_source.splitlines()]
+        self.assertIn('Sitemap: ' + CANONICAL + 'sitemap.xml', directives)
+        blocked = [line.split(':', 1)[1].strip() for line in directives if line.lower().startswith('disallow:')]
+        for canonical in expected:
+            path = urlsplit(canonical).path
+            self.assertFalse(any(prefix and (prefix == '/' or path.startswith(prefix)) for prefix in blocked), canonical)
+        urls = ET.parse(ROOT / 'sitemap.xml').findall('.//{http://www.sitemaps.org/schemas/sitemap/0.9}loc')
+        self.assertEqual([node.text for node in urls], expected)
+        for url in expected:
+            target = ROOT / urlsplit(url).path.lstrip('/') / 'index.html'
+            self.assertTrue(target.is_file(), url)
+
+    def test_legacy_redirects_preserve_destination_and_fragment(self):
+        for slug in ['magnesy-na-zywo', 'magnesy-na-zamowienie']:
+            with self.subTest(slug=slug):
+                source = (ROOT / (slug + '.html')).read_text(encoding='utf-8')
+                parser = Parser(); parser.feed(source)
+                canonical = CANONICAL + slug + '/'
+                self.assertEqual([attrs.get('href') for tag, attrs in parser.tags if tag == 'link' and attrs.get('rel') == 'canonical'], [canonical])
+                fallback = [attrs.get('content', '') for tag, attrs in parser.tags if tag == 'meta' and attrs.get('http-equiv', '').lower() == 'refresh']
+                self.assertEqual(len(fallback), 1)
+                self.assertEqual(fallback[0].split('url=', 1)[-1].strip(), slug + '/')
+                self.assertIn(slug + '/', parser.links)
+                # Runtime behavior is also checked in the browser URL test.
+                self.assertIn('location.replace', source)
+                self.assertIn('location.search', source)
+                self.assertIn('location.hash', source)
+                self.assertTrue((ROOT / slug / 'index.html').is_file())
+
     def test_links_assets_and_structure(self):
         parsed={}
         for name in PAGES:
@@ -78,14 +134,16 @@ class BrowserTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         from selenium import webdriver
-        handler=partial(CaptureHandler,directory=str(ROOT if PRODUCTION else ROOT.parent))
+        handler=partial(CaptureHandler,directory=str(ROOT))
         cls.server=ThreadingHTTPServer(('127.0.0.1',0),handler)
         Thread(target=cls.server.serve_forever,daemon=True).start()
-        cls.base=f'http://127.0.0.1:{cls.server.server_port}/'+('' if PRODUCTION else 'wersja-2/')
+        cls.base=f'http://127.0.0.1:{cls.server.server_port}/'
         options=webdriver.ChromeOptions()
         options.add_argument('--headless=new'); options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1440,1000')
         cls.driver=webdriver.Chrome(options=options)
+        cls.driver.execute_cdp_cmd('Network.enable', {})
+        cls.driver.execute_cdp_cmd('Network.setBlockedURLs', {'urls': ['*formsubmit.co*']})
         cls.driver.execute_cdp_cmd('Emulation.setEmulatedMedia', {'features':[{'name':'prefers-reduced-motion','value':'reduce'}]})
     @classmethod
     def tearDownClass(cls):
@@ -246,15 +304,20 @@ class BrowserTests(unittest.TestCase):
                 d.save_screenshot(str(artifacts/f'occasions-{width}.png'))
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride',{})
-    @unittest.skipUnless(PRODUCTION, 'Dotyczy produkcyjnych adresów')
     def test_home_url_hides_index_and_preserves_contact_anchor(self):
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
         d=self.driver
         d.get(self.base+'index.html?preview=1#kontakt')
         self.assertEqual(d.current_url,self.base+'?preview=1#kontakt')
         for link in d.find_elements(By.CSS_SELECTOR,'.main-nav a'):
             self.assertNotIn('index.html',link.get_attribute('href'))
         self.assertTrue(d.find_element(By.ID,'kontakt').is_displayed())
+        for slug, anchor in [('magnesy-na-zywo', 'rezerwacja'), ('magnesy-na-zamowienie', 'zamowienie')]:
+            d.get(self.base + slug + '.html?source=test#' + anchor)
+            expected = self.base + slug + '/?source=test#' + anchor
+            WebDriverWait(d, 5).until(lambda browser: browser.current_url == expected)
+            self.assertTrue(d.find_element(By.ID, anchor).is_displayed())
     def test_order_preview_counts_delete_and_validation(self):
         from selenium.webdriver.common.by import By
         d=self.driver; d.get(self.base+PAGES[2])
@@ -460,4 +523,4 @@ class BrowserTests(unittest.TestCase):
 
 if __name__=='__main__':
     import sys
-    unittest.main(argv=[sys.argv[0]]+[arg for arg in sys.argv[1:] if arg not in ['--browser','--production']])
+    unittest.main(argv=[sys.argv[0]]+[arg for arg in sys.argv[1:] if arg not in ['--browser']])
