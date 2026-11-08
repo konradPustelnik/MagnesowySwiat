@@ -179,6 +179,13 @@ class BrowserTests(unittest.TestCase):
                         choices = d.find_elements(By.CSS_SELECTOR, selector + ' .actions a')
                         self.assertEqual(len(choices), len(destinations))
                         header_bottom = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().bottom')
+                        if name == 'home':
+                            story = d.find_element(By.CSS_SELECTOR, '.hero--home .hero-story')
+                            story_bottom = d.execute_script('return arguments[0].getBoundingClientRect().bottom', story)
+                            widths = [d.execute_script('return arguments[0].getBoundingClientRect().width', choice) for choice in choices]
+                            self.assertAlmostEqual(widths[0], widths[1], delta=1)
+                            h1_weight = d.execute_script('return getComputedStyle(document.querySelector(".hero--home h1")).fontWeight')
+                            self.assertGreaterEqual(int(h1_weight), 600)
                         for choice, destination in zip(choices, destinations):
                             self.assertTrue(choice.is_displayed())
                             url = urlsplit(choice.get_attribute('href'))
@@ -186,7 +193,10 @@ class BrowserTests(unittest.TestCase):
                             rect = d.execute_script('const r = arguments[0].getBoundingClientRect(); return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height}', choice)
                             self.assertGreaterEqual(rect['height'], 44, destination)
                             self.assertGreaterEqual(rect['top'], header_bottom - 1, destination)
-                            self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
+                            if name == 'home':
+                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Homepage actions must follow the complete hero description')
+                            if name != 'home' or width >= 981:
+                                self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
                             self.assertGreaterEqual(rect['left'], 0, destination)
                             self.assertLessEqual(rect['right'], width, destination)
                         self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)

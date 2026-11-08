@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Manrope:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Manrope:wght@400;500;600;700&display=swap');
 
 :root {
   --white: #fff;
@@ -483,10 +483,11 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .hero--home { padding: 20px 0 40px; }
 .hero--home .hero-grid { gap: 48px; }
 .hero--home .hero-copy { padding: 0; }
-.hero--home .hero-copy h1 { font-size: clamp(40px, 4.2vw, 62px); line-height: 1.05; margin-bottom: 14px; }
+.hero--home .hero-copy h1 { font-size: clamp(40px, 4.2vw, 62px); font-weight: 700; line-height: 1.05; margin-bottom: 14px; }
 .hero--home .hero-copy p.hero-locations { font-size: 12px; letter-spacing: .06em; color: var(--gold-dark); margin: 0 0 14px; }
 .hero--home .hero-copy p.hero-lead { font-size: 17px; margin: 0; }
-.hero--home .actions { margin-top: 20px; }
+.hero--home .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 540px; gap: 12px; margin-top: 22px; }
+.hero--home .actions .button { width: 100%; padding-inline: 10px; }
 .hero-story { margin-top: 22px; }
 .hero-story p { font-size: 14px; line-height: 1.65; }
 .hero-story p + p { margin-top: 10px; }
