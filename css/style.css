@@ -123,6 +123,10 @@ p + p { margin-top: 16px; }
 .contact-banner .eyebrow { color: #d4bf96; }
 .contact-banner p { color: #ddd5c6; margin-top: 14px; font-size: 13px; }
 .contact-banner .actions { margin: 0; flex-shrink: 0; flex-direction: column; align-items: stretch; }
+.contact-banner#kontakt .actions { width: min(100%, 360px); }
+.contact-banner .button { min-height: 60px; padding: 18px 24px; color: var(--ink); background: #d4bf96; border-color: #d4bf96; font-size: 12px; line-height: 1.5; text-align: center; }
+.contact-banner .button--outline { color: var(--ink); background: var(--paper); border-color: var(--paper); }
+.contact-banner .button:hover { color: var(--ink); background: var(--white); border-color: var(--white); }
 .site-footer { padding-top: 64px; background: var(--white); }
 .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 46px; padding-bottom: 44px; }
 .footer-brand img { width: 225px; height: auto; margin-bottom: 22px; }
