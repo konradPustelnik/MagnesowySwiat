@@ -12,7 +12,7 @@ Wyodrębnione z przekazanego `MAGNESY-NA-ŻYWO.pdf`, bez generowania nowych obra
 | `pdf-na-zywo.jpg` | strona 2 PDF | Karta usługi oraz nagłówek oferty na żywo. |
 | `pdf-na-zamowienie.jpg` | strona 3 PDF | Karta magnesów na zamówienie. |
 
-Są podpisane jako wizualizacje oferty; nie przypisujemy im wykonanej realizacji. PDF pozostaje poza publicznym repozytorium.
+Na prośbę właściciela usunięto widoczne podpisy „Wizualizacja oferty”. Pochodzenie ilustracji pozostaje opisane tutaj i w tekstach alternatywnych; nie przypisujemy im wykonanej realizacji. PDF pozostaje poza publicznym repozytorium.
 
 ## Fotografie inspiracyjne
 

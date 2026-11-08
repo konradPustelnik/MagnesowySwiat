@@ -5,7 +5,7 @@
 ## Wprowadzone zmiany
 
 - Strona główna: treść otwarcia i miasta Limanowa, Nowy Sącz, Kraków; zachowano jedno H1 „Wyjątkowe magnesy na każdą okazję”, miasta są osobną mniejszą linią. Z dwóch alternatywnych zakończeń wybrano „Bo najpiękniejsze wspomnienia warto mieć zawsze blisko siebie”.
-- Trzy ilustracje wyodrębniono bezpośrednio ze stron 1–3 PDF jako JPEG, po około 150–171 KB. Pokazują ofertę, a nie potwierdzone realizacje, dlatego mają podpisy „Wizualizacja oferty”. Oryginalny PDF nie jest publikowany w repozytorium.
+- Trzy ilustracje wyodrębniono bezpośrednio ze stron 1–3 PDF jako JPEG, po około 150–171 KB. Pokazują ofertę, a nie potwierdzone realizacje. Dodane pierwotnie podpisy „Wizualizacja oferty” usunięto później na prośbę właściciela; pochodzenie zachowano w opisach alternatywnych i dokumentacji grafik. Oryginalny PDF nie jest publikowany w repozytorium.
 - Karty dwóch usług zawierają opisy i przyciski prowadzące na właściwe podstrony.
 - Na żywo: trzy kroki, cztery duże karty okazji (dwie kolumny na komputerze, jedna na telefonie), inne okazje, rozbudowane korzyści oraz zachowany format 6,35 × 6,35 cm.
 - Pakiety: opisy i przyciski zgodne z PDF; ceny 1190/1490/2390/3290 zł, limity 100/150/250/350 sztuk i czas 3/4/5/6 godzin pozostają bez zmian. Zachowano ustaloną wcześniej promocję 20% na pierwsze trzy zlecenia.

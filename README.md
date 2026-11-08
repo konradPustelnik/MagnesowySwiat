@@ -104,7 +104,7 @@ Do uzupełnienia pozostają:
 
 - Finalna polityka prywatności, regulamin i prawdziwe dane usługodawcy. Obecne okna informacyjne nie są gotowymi dokumentami prawnymi.
 - Zatwierdzone ceny zamówień na podstawie realnych kosztów oraz warunki płatności i realizacji.
-- Własne fotografie produktów i stanowiska; obecne materiały ilustracyjne są podpisane.
+- Własne fotografie produktów i stanowiska; pochodzenie obecnych materiałów ilustracyjnych opisano w dokumentacji grafik.
 - Potwierdzenie rzeczywistego doręczania obu formularzy po stronie skrzynki, okresowa kontrola aktywacji i filtrów FormSubmit.
 - Pomiary wydajności produkcji i kontrola indeksowania w Search Console; rozważenie lokalnego hostowania fontów.
 
