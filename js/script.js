@@ -18,9 +18,12 @@ menu.addEventListener('click', () => {
 nav.addEventListener('click', event => { if (event.target.closest('a')) closeMenu(); });
 document.addEventListener('keydown', event => { if (event.key === 'Escape') closeMenu(); });
 window.matchMedia('(min-width: 981px)').addEventListener('change', closeMenu);
-const current = location.pathname.split('/').pop() || 'index.html';
+const normalizePath = path => path.replace(/index\.html$/, '').replace(/\/$/, '');
 nav.querySelectorAll('a').forEach(link => {
-  if (link.getAttribute('href') === current) link.setAttribute('aria-current', 'page');
+  const url = new URL(link.href);
+  if (!url.hash && !link.classList.contains('nav-cta') && normalizePath(url.pathname) === normalizePath(location.pathname)) {
+    link.setAttribute('aria-current', 'page');
+  }
 });
 
 document.querySelectorAll('[data-close]').forEach(button => {

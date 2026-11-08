@@ -1,5 +1,7 @@
 # Project Instructions
 
+- The owner reaffirmed on 2026-11-08: always commit and publish requested, completed, verified changes to `origin/main` without asking again. See root `AGENTS.md`. This is standing authorization for subsequent requested changes, not just a single push.
+
 - Always respond to the user in English, even when the user writes in another language.
 - Treat this as a real public-facing website: inspect the relevant code before changing it, keep the design and content coherent, and consider usability, accessibility, responsiveness, and the complete user journey.
 - Make focused, complete changes that fit the existing site. Avoid unrelated edits, preserve existing behavior unless a change is needed, and update directly related documentation.

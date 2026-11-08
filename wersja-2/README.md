@@ -1,4 +1,4 @@
-> Po zatwierdzeniu przez użytkownika skopiowano tę wersję do katalogu głównego. Stara wersja jest w `../backup/`. Adresy produkcyjne: `/`, `/magnesy-na-zywo.html`, `/magnesy-na-zamowienie.html`. Kopia w tym folderze pozostaje podglądem z noindex. Poniżej dokumentacja utworzenia wersji 2 i ograniczeń.
+> Po zatwierdzeniu przez użytkownika skopiowano tę wersję do katalogu głównego. Stara wersja jest w `../backup/`. Adresy produkcyjne: `/`, `/magnesy-na-zywo/`, `/magnesy-na-zamowienie/`. Stare adresy `.html` przekierowują. Kopia w tym folderze pozostaje podglądem z noindex i własnymi plikami `.html`. Poniżej dokumentacja utworzenia wersji 2 i ograniczeń. Test produkcyjnych adresów: dodaj `--production` do polecenia testów.
 
 # Magnesowy Świat — wersja 2 (lokalny podgląd)
 

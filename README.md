@@ -1,4 +1,4 @@
-> Aktualizacja: wersja 2 jest teraz stroną główną. Poprzednia strona i jej zasoby są w `backup/` (otwórz `backup/index.html`). Formularze nowej strony przygotowują lokalny szkic, nie wysyłają e-maili ani zdjęć. Braki integracji, cen i danych opisano w `wersja-2/README.md`.
+> Aktualizacja: wersja 2 jest teraz stroną główną. Usługi mają adresy `/magnesy-na-zywo/` i `/magnesy-na-zamowienie/` bez `.html`; poprzednie adresy `.html` przekierowują. Poprzednia strona i jej zasoby są w `backup/` (otwórz `backup/index.html`). Formularze nowej strony przygotowują lokalny szkic, nie wysyłają e-maili ani zdjęć. Braki integracji, cen i danych opisano w `wersja-2/README.md`. Stała zgoda na publikację jest zapisana w `AGENTS.md` i `.github/copilot-instructions.md`.
 
 # Magnesowy Świat
 

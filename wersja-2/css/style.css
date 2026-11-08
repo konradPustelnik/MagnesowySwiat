@@ -361,3 +361,8 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
 }
+
+/* Footer contact icons inherit the brand palette. */
+.social-link { display: inline-flex; align-items: center; gap: 9px; width: fit-content; }
+.social-icon { width: 19px; height: 19px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.social-link span { overflow-wrap: anywhere; }

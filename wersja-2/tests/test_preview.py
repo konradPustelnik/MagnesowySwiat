@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 PRODUCTION = '--production' in __import__('sys').argv
 if PRODUCTION: ROOT = ROOT.parent
 PAGES = ['index.html', 'magnesy-na-zywo.html', 'magnesy-na-zamowienie.html']
+if PRODUCTION: PAGES = ['index.html', 'magnesy-na-zywo/index.html', 'magnesy-na-zamowienie/index.html']
 BROWSER = '--browser' in __import__('sys').argv
 
 class Parser(HTMLParser):
@@ -40,7 +41,10 @@ class StaticTests(unittest.TestCase):
             for href in parser.links+parser.assets:
                 url=urlsplit(href)
                 if url.scheme or not href: continue
-                target=unquote(url.path) or name
+                target=(Path(name).parent/unquote(url.path)).as_posix() if url.path else name
+                resolved=(ROOT/target).resolve()
+                if resolved.is_dir(): resolved=resolved/'index.html'
+                target=resolved.relative_to(ROOT).as_posix()
                 self.assertTrue((ROOT/target).is_file(),f'{name}: {href}')
                 if url.fragment: self.assertIn(url.fragment,parsed[target].ids,f'{name}: {href}')
 
