@@ -28,6 +28,7 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 - `js/script.js` — menu, dialogi, wybór pakietu, zdjęcia i szkic wiadomości.
 - `images/` — kopie logo oraz zdjęcia inspiracyjne; oryginały pozostają nietknięte.
 - `build_preview.py` — opcjonalny generator statycznych HTML ze wspólnym nagłówkiem i stopką. Po edycji treści generatora uruchom `python wersja-2/build_preview.py`. Uwaga: nadpisuje wyłącznie trzy nowe HTML; nie uruchamiaj po ręcznych zmianach w tych HTML, jeśli chcesz je zachować.
+- `live_layout.py` — układ podstrony „Magnesy na żywo” wzorowany na backupie: oferta → jak działamy → okazje → inspiracje → wyróżniki → cennik → dla firm → o nas → FAQ → formularz. Skróty pod nagłówkiem prowadzą do odpowiednich sekcji. Inspiracje używają lokalnych zdjęć ilustracyjnych, podpisanych jako fotografie spoza realizacji marki.
 - `tests/test_preview.py` — kontrola linków i opcjonalne testy przeglądarkowe.
 
 ## Co działa, a co wymaga integracji
