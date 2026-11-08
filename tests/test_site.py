@@ -154,49 +154,56 @@ class BrowserTests(unittest.TestCase):
         d = self.driver
         artifacts = Path(__file__).parent / 'artifacts'
         artifacts.mkdir(exist_ok=True)
-        destinations = ['/magnesy-na-zywo/', '/magnesy-na-zamowienie/']
+        home_destinations = ['/magnesy-na-zywo/', '/magnesy-na-zamowienie/']
+        pages = [
+            ('home', '', '.hero--home', [(path, '') for path in home_destinations]),
+            ('live', 'magnesy-na-zywo/', '.hero--live', [('/magnesy-na-zywo/', 'pakiety'), ('/magnesy-na-zywo/', 'rezerwacja')]),
+        ]
         viewports = [(1440, 900), (1366, 768), (1024, 768), (768, 1024), (390, 844), (360, 740), (320, 640)]
         try:
             for width, height in viewports:
-                with self.subTest(viewport=f'{width}x{height}'):
-                    d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
-                    d.get(self.base)
-                    d.execute_async_script('''
-                        const done = arguments[arguments.length - 1];
-                        document.fonts.ready.then(() => {
-                            document.documentElement.style.scrollBehavior = 'auto';
-                            window.scrollTo({top: 0, left: 0, behavior: 'instant'});
-                            requestAnimationFrame(() => requestAnimationFrame(done));
-                        });
-                    ''')
-                    self.assertEqual(d.execute_script('return [innerWidth, innerHeight, scrollY]'), [width, height, 0])
-                    choices = d.find_elements(By.CSS_SELECTOR, '.hero--home .actions a')
-                    self.assertEqual(len(choices), 2)
-                    header_bottom = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().bottom')
-                    for choice, destination in zip(choices, destinations):
-                        self.assertTrue(choice.is_displayed())
-                        self.assertEqual(urlsplit(choice.get_attribute('href')).path, destination)
-                        rect = d.execute_script('const r = arguments[0].getBoundingClientRect(); return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height}', choice)
-                        self.assertGreaterEqual(rect['height'], 44, destination)
-                        self.assertGreaterEqual(rect['top'], header_bottom - 1, destination)
-                        self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
-                        self.assertGreaterEqual(rect['left'], 0, destination)
-                        self.assertLessEqual(rect['right'], width, destination)
-                    self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
-                    d.save_screenshot(str(artifacts / f'home-compact-{width}x{height}.png'))
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
+                for name, path, selector, destinations in pages:
+                    with self.subTest(page=name, viewport=f'{width}x{height}'):
+                        d.get(self.base + path)
+                        d.execute_async_script('''
+                            const done = arguments[arguments.length - 1];
+                            document.fonts.ready.then(() => {
+                                document.documentElement.style.scrollBehavior = 'auto';
+                                window.scrollTo({top: 0, left: 0, behavior: 'instant'});
+                                requestAnimationFrame(() => requestAnimationFrame(done));
+                            });
+                        ''')
+                        self.assertEqual(d.execute_script('return [innerWidth, innerHeight, scrollY]'), [width, height, 0])
+                        choices = d.find_elements(By.CSS_SELECTOR, selector + ' .actions a')
+                        self.assertEqual(len(choices), 2)
+                        header_bottom = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().bottom')
+                        for choice, destination in zip(choices, destinations):
+                            self.assertTrue(choice.is_displayed())
+                            url = urlsplit(choice.get_attribute('href'))
+                            self.assertEqual((url.path, url.fragment), destination)
+                            rect = d.execute_script('const r = arguments[0].getBoundingClientRect(); return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height}', choice)
+                            self.assertGreaterEqual(rect['height'], 44, destination)
+                            self.assertGreaterEqual(rect['top'], header_bottom - 1, destination)
+                            self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
+                            self.assertGreaterEqual(rect['left'], 0, destination)
+                            self.assertLessEqual(rect['right'], width, destination)
+                        self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
+                        d.save_screenshot(str(artifacts / f'{name}-compact-{width}x{height}.png'))
 
-                    offers = d.find_element(By.CSS_SELECTOR, '.offers-grid')
-                    cards = offers.find_elements(By.CSS_SELECTOR, '.offer')
-                    self.assertEqual(len(cards), 2)
-                    for card, destination in zip(cards, destinations):
-                        links = card.find_elements(By.TAG_NAME, 'a')
-                        self.assertGreaterEqual(len(links), 1)
-                        self.assertTrue(all(urlsplit(link.get_attribute('href')).path == destination for link in links))
-                    if width in [1440, 390]:
-                        d.execute_script('arguments[0].scrollIntoView({behavior:"instant",block:"start"})', offers)
-                        WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return [...arguments[0].querySelectorAll("img")].every(i => i.complete && i.naturalWidth > 0)', offers))
-                        d.execute_async_script('const done=arguments[arguments.length-1]; requestAnimationFrame(()=>requestAnimationFrame(done))')
-                        d.save_screenshot(str(artifacts / f'home-offers-{width}.png'))
+                        if name == 'home':
+                            offers = d.find_element(By.CSS_SELECTOR, '.offers-grid')
+                            cards = offers.find_elements(By.CSS_SELECTOR, '.offer')
+                            self.assertEqual(len(cards), 2)
+                            for card, destination in zip(cards, home_destinations):
+                                links = card.find_elements(By.TAG_NAME, 'a')
+                                self.assertGreaterEqual(len(links), 1)
+                                self.assertTrue(all(urlsplit(link.get_attribute('href')).path == destination for link in links))
+                            if width in [1440, 390]:
+                                d.execute_script('arguments[0].scrollIntoView({behavior:"instant",block:"start"})', offers)
+                                WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return [...arguments[0].querySelectorAll("img")].every(i => i.complete && i.naturalWidth > 0)', offers))
+                                d.execute_async_script('const done=arguments[arguments.length-1]; requestAnimationFrame(()=>requestAnimationFrame(done))')
+                                d.save_screenshot(str(artifacts / f'home-offers-{width}.png'))
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 

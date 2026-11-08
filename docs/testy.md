@@ -55,7 +55,7 @@ Przy `--static` / bez `--browser` 15 scenariuszy przeglądarkowych ma status `sk
 | 16 | `BrowserTests.test_event_date_polish_format_validation_and_calendar` | Maskę `dd/mm/rrrr`, poprawną datę, nieistniejące daty lutowe i datę przeszłą, lata przestępne oraz synchronizację z wartością kalendarza. |
 | 17 | `BrowserTests.test_order_dropdown_and_exclusive_open_state` | Menu zamówień: otwarcie po najechaniu, zamknięcie poprzedniego menu, przejście do cennika i FAQ, mobilną strzałkę, zamknięcie menu po wyborze i brak przepełnienia. |
 | 18 | `BrowserTests.test_calendar_polish_labels_selection_and_mobile` | Polskie miesiące i dni tygodnia od poniedziałku, polskie etykiety dostępności dat, wybór strzałką i Enter, zmianę miesiąca i roku, 29 lutego w roku przestępnym i brak tej daty w 2100 oraz dopasowanie okna do 1440, 390 i 320 px. |
-| 19 | `BrowserTests.test_home_service_choices_fit_first_viewport` | Oba przyciski wyboru usługi na pierwszym ekranie, poniżej nagłówka i bez przewijania: 1440 × 900, 1366 × 768, 1024 × 768, 768 × 1024, 390 × 844, 360 × 740 i 320 × 640. Sprawdza ich wysokość co najmniej 44 px, cele linków, odnośniki obu kart ofert i brak poziomego przepełnienia. Czeka na fonty; zapisuje zrzuty sekcji głównej i kart. |
+| 19 | `BrowserTests.test_home_service_choices_fit_first_viewport` | Dwa przyciski na pierwszym ekranie strony głównej i oferty na żywo („Zobacz pakiety”, „Zapytaj o termin”), poniżej nagłówka i bez przewijania: 1440 × 900, 1366 × 768, 1024 × 768, 768 × 1024, 390 × 844, 360 × 740 i 320 × 640. Sprawdza ich wysokość co najmniej 44 px, cele linków, odnośniki obu kart ofert na stronie głównej i brak poziomego przepełnienia. Czeka na fonty; zapisuje zrzuty obu nagłówków i kart. |
 
 ## Co oznacza zaliczony test formularza
 
