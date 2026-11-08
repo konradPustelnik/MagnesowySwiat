@@ -164,11 +164,6 @@ p + p { margin-top: 16px; }
 .price-card li + li { margin-top: 8px; }
 .price-card p { font-size: 12px; margin-bottom: 24px; flex: 1; }
 .price-card .button { width: 100%; padding-inline: 10px; }
-.included { margin-top: 52px; display: grid; grid-template-columns: .8fr 1.8fr; gap: 50px; }
-.included h3 { font-size: 36px; }
-.check-list { list-style: none; display: grid; grid-template-columns: 1fr 1fr; gap: 20px 30px; padding: 0; margin: 0; }
-.check-list li { display: flex; align-items: start; gap: 12px; font-size: 12px; }
-.check-list .icon { color: var(--gold-dark); width: 18px; height: 18px; flex-shrink: 0; margin-top: 2px; }
 .faq { max-width: 900px; margin: auto; }
 .faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; }
@@ -280,7 +275,6 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .footer-grid { grid-template-columns: 1.4fr 1fr; gap: 36px; }
   .step-grid, .occasion-grid, .pricing-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
   .quantity-grid { grid-template-columns: repeat(3, 1fr); }
-  .included { gap: 30px; grid-template-columns: 1fr; }
   .form-layout { grid-template-columns: 1fr; gap: 32px; }
   .form-intro { position: static; max-width: 650px; }
 }
@@ -346,7 +340,6 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .price-card ul { display: flex; gap: 24px; flex-wrap: wrap; }
   .price-card li + li { margin-top: 0; }
   .price-card .button { width: fit-content; min-width: 170px; }
-  .check-list { grid-template-columns: 1fr; gap: 14px; }
   .faq details { padding-block: 18px; }
   .faq summary { font-size: 12px; }
   .faq details p { font-size: 12px; }
@@ -374,3 +367,15 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .social-link span { overflow-wrap: anywhere; }
 
 .hero-copy p.hero-lead { font-size: 18px; line-height: 1.5; color: var(--gold-dark); }
+
+/* Shared inclusions belong with the package pricing, as in the original site. */
+.package-includes { margin-top: 42px; padding: 35px 38px; background: var(--paper); border: 1px solid var(--line); }
+.package-includes h3 { text-align: center; font-size: clamp(24px, 3vw, 30px); margin: 0 0 26px; }
+.inclusions-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px 30px; list-style: none; padding: 0; margin: 0; }
+.inclusions-grid li { display: flex; align-items: flex-start; gap: 11px; font-size: 13px; line-height: 1.55; }
+.inclusion-icon { flex: 0 0 auto; color: var(--gold-dark); font-size: 16px; line-height: 1.35; }
+@media (max-width: 980px) { .inclusions-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 680px) {
+  .package-includes { margin-top: 30px; padding: 28px 22px; }
+  .inclusions-grid { grid-template-columns: 1fr; gap: 18px; }
+}
