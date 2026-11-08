@@ -353,6 +353,9 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(len(offer_links),len(social_links))
             for offer_link,social_link in zip(offer_links,social_links):
                 self.assertAlmostEqual(offer_link.rect['y'],social_link.rect['y'],delta=1)
+                offer_font=d.execute_script('return [getComputedStyle(arguments[0]).fontFamily,getComputedStyle(arguments[0]).fontSize,getComputedStyle(arguments[0]).fontWeight]',offer_link)
+                social_font=d.execute_script('return [getComputedStyle(arguments[0]).fontFamily,getComputedStyle(arguments[0]).fontSize,getComputedStyle(arguments[0]).fontWeight]',social_link.find_element(By.TAG_NAME,'span'))
+                self.assertEqual(offer_font,social_font)
             contact=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-grid > div:nth-child(4)')
             contact_heading=contact.find_element(By.CSS_SELECTOR,'.footer-heading')
             self.assertAlmostEqual(contact_heading.rect['x']+contact_heading.rect['width']/2,contact.rect['x']+contact.rect['width']/2,delta=1)

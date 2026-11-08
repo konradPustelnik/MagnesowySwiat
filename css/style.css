@@ -131,7 +131,7 @@ p + p { margin-top: 16px; }
 .footer-brand p { max-width: 250px; font-size: 12px; line-height: 1.6; }
 .footer-heading { display: block; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
 .footer-links { display: flex; flex-direction: column; gap: 7px; font-size: 12px; line-height: 1.6; }
-.footer-links > a { display: flex; align-items: center; min-height: 26px; text-align: center; }
+.footer-links > a { display: flex; align-items: center; min-height: 26px; text-align: center; font: inherit; }
 .footer-contact-link { display: inline-flex; align-items: center; gap: 9px; min-height: 26px; }
 .footer-contact-link span { overflow-wrap: anywhere; }
 .footer-grid > div:not(.footer-brand) .footer-links { align-items: center; }
