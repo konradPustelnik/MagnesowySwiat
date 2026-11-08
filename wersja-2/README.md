@@ -34,6 +34,7 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 - `order_form.py` — konfiguracja formularza zamówienia: multipart POST do FormSubmit, temat wiadomości, zgoda na kontakt i przekazanie zdjęć, adres powrotu.
 - `order_faq.py` — FAQ zamówień, w tym pakowanie, dostawa głównie do Paczkomatów InPost i reklamacje. Wyłączenie 14-dniowego odstąpienia dla produktów indywidualnych nie wyłącza reklamacji. Źródła sprawdzone 2026-11-08: [wyjątki od odstąpienia — UOKiK](https://prawakonsumenta.uokik.gov.pl/prawo-odstapienia-od-umowy/wylaczenia-prawa-do-odstapienia/), [reklamacje — UOKiK](https://prawakonsumenta.uokik.gov.pl/reklamacja/).
 - Dane do dostawy są osobnymi polami: miejscowość, ulica, numer domu/lokalu, kod pocztowy `00-000` i poczta. Trafiają do oddzielnych wierszy wiadomości. Pozostają opcjonalne na etapie zapytania (dostawę można dopiero ustalić).
+- W formularzu zamówienia „Dokument zakupu” pozwala wybrać paragon (domyślnie) lub fakturę imienną. Wybór jest pojedynczy i trafia do maila.
 - `date_field.py` — pole daty wydarzenia zawsze w formacie `dd/mm/rrrr`, z wyborem z kalendarza i kontrolą rzeczywistej daty, lat przestępnych oraz dat przeszłych. Do maila trafia data w tym samym formacie.
 - `tests/test_preview.py` — kontrola linków i opcjonalne testy przeglądarkowe.
 

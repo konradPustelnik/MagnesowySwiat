@@ -462,3 +462,9 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .main-nav { gap: 14px; }
  .nav-dropdown > summary { font-size: 10px; gap: 5px; }
 }
+
+.purchase-document { margin-bottom: 0; }
+.purchase-document legend { padding-bottom: 12px; font-family: var(--sans); font-size: 13px; font-weight: 600; }
+.document-options { display: flex; flex-wrap: wrap; gap: 12px 24px; }
+.document-option { display: inline-flex; align-items: center; gap: 9px; font-size: 13px; cursor: pointer; }
+.document-option input { width: 17px; height: 17px; margin: 0; accent-color: var(--gold-dark); }

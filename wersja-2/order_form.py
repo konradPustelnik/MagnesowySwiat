@@ -1,6 +1,11 @@
 """Native multipart order inquiry using the same provider as reservations."""
 import re
 
+PURCHASE_DOCUMENT = '''<fieldset class="field--full purchase-document"><legend>Dokument zakupu</legend><div class="document-options"><label class="document-option"><input id="document-receipt" type="radio" name="Dokument zakupu" value="Paragon" checked><span>Paragon</span></label><label class="document-option"><input id="document-invoice" type="radio" name="Dokument zakupu" value="Faktura imienna"><span>Faktura imienna</span></label></div></fieldset>'''
+
+def add_purchase_document(markup):
+    return re.sub(r'(<div class="field field--full">\s*<label for="f-message">)',lambda match:PURCHASE_DOCUMENT+match[1],markup,count=1)
+
 DELIVERY_FIELDS = '''<fieldset class="field--full"><legend>Dane do dostawy</legend><div class="form-grid">
 <div class="field"><label for="f-delivery-town">Miejscowość</label><input id="f-delivery-town" name="Miejscowość dostawy" type="text" autocomplete="shipping address-level2" maxlength="150"></div>
 <div class="field"><label for="f-delivery-street">Ulica</label><input id="f-delivery-street" name="Ulica" type="text" autocomplete="shipping address-line1" maxlength="150"></div>
@@ -30,4 +35,4 @@ def enable_order_form(markup):
     for name,label in [('name','Imię i nazwisko'),('phone','Numer telefonu'),('quantity','Liczba magnesów'),('caption','Napis lub data'),('delivery','Sposób dostawy'),('address','Dane do dostawy'),('message','Uwagi do zamówienia')]:
         markup=markup.replace(f'name="{name}"',f'name="{label}"')
     markup=markup.replace('Włącz JavaScript, aby korzystać z podglądu zdjęć i zapytań.', 'Włącz JavaScript, aby wybrać zdjęcia i wysłać zapytanie z załącznikami. Bez niego skontaktuj się z nami e-mailem.')
-    return markup
+    return add_purchase_document(markup)
