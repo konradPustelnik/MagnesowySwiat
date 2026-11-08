@@ -34,6 +34,8 @@ Zatrzymanie serwera: Ctrl+C. Ścieżki zasobów i nawigacji są względne, więc
 
 ## Co działa, a co wymaga integracji
 
+Tematy wiadomości odróżniają usługi już na liście poczty: `[NA ŻYWO] Zapytanie o termin | Magnesowy Świat` i `[NA ZAMÓWIENIE] Zapytanie o magnesy ze zdjęć | Magnesowy Świat`. Dodatkowe pole „Rodzaj zapytania” wskazuje usługę także w treści maila.
+
 Działają: nawigacja, menu telefonu, FAQ, powiększanie fotografii, wybór pakietu/ilości, walidacja, miniatury, liczba kopii każdego zdjęcia, usuwanie miniatur i bezpośrednia wysyłka formularzy. Usunięto dawny dialog „Podgląd zapytania” i kopiowanie szkicu. Znaki specjalne i załączniki są przekazywane przez natywny POST.
 
 **Zapytanie o termin:** przywrócono normalną wysyłkę HTML POST do `https://formsubmit.co/magnesowyswiat@gmail.com`, tak jak w backupie. Formularz działa również bez JavaScript. Nie używa AJAX, nie otwiera lokalnego szkicu i nie wysyła zdjęć. Ma normalną zgodę na kontakt, `_captcha=false`, `_honey`, temat i tabelaryczny szablon wiadomości oraz adres powrotu `/magnesy-na-zywo/?wyslano=1#rezerwacja`. Aktywacja i doręczenie zależą od FormSubmit oraz skrzynki odbiorczej. Powrót z serwisu nie jest dowodem doręczenia. Szczegóły integracji: https://formsubmit.co/

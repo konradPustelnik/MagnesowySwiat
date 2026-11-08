@@ -51,7 +51,7 @@ def field(label,name,type='text',required=False,options=None,full=False):
     else: control=f'<input {attrs} type="{type}"'+(' min="1" max="10000"' if type=='number' else '')+(' autocomplete="name"' if name=='name' else ' autocomplete="email"' if type=='email' else ' autocomplete="tel"' if type=='tel' else '')+'>'
     return f'<div class="field {"field--full" if full else ""}"><label for="{id}">{label}{" *" if required else ""}</label>{control}</div>'
 
-HIDDEN = '<input type="hidden" name="_subject" value="Nowe zapytanie ze strony Magnesowy Świat">\n<input type="hidden" name="_template" value="table">\n<input type="hidden" name="_captcha" value="false">\n<input type="hidden" name="_url" value="https://magnesowyswiat.pl/magnesy-na-zywo/">\n<input type="hidden" name="_next" value="https://magnesowyswiat.pl/magnesy-na-zywo/?wyslano=1#rezerwacja">\n<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">'
+HIDDEN = '<input type="hidden" name="_subject" value="[NA ŻYWO] Zapytanie o termin | Magnesowy Świat">\n<input type="hidden" name="Rodzaj zapytania" value="Magnesy na żywo">\n<input type="hidden" name="_template" value="table">\n<input type="hidden" name="_captcha" value="false">\n<input type="hidden" name="_url" value="https://magnesowyswiat.pl/magnesy-na-zywo/">\n<input type="hidden" name="_next" value="https://magnesowyswiat.pl/magnesy-na-zywo/?wyslano=1#rezerwacja">\n<input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">'
 CONSENT = 'Wyrażam zgodę na kontakt w celu udzielenia odpowiedzi na moje zapytanie. Wysłanie formularza oznacza przekazanie podanych danych w celu obsługi zapytania.'
 
 def live_form(markup):

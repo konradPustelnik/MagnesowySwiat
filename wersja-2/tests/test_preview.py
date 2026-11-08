@@ -132,6 +132,8 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(data['email'],['test@example.com'])
         self.assertEqual(data['_captcha'],['false'])
         self.assertEqual(data['_template'],['table'])
+        self.assertEqual(data['_subject'],['[NA ŻYWO] Zapytanie o termin | Magnesowy Świat'])
+        self.assertEqual(data['Rodzaj zapytania'],['Magnesy na żywo'])
     def test_footer_icons_stay_small_without_stylesheet(self):
         from selenium.webdriver.common.by import By
         d=self.driver
@@ -215,6 +217,8 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual([item['filename'] for item in self.server.uploads],['test.png','second.png'])
             self.assertTrue(all(item['content']==image.read_bytes() for item in self.server.uploads))
             self.assertEqual(self.server.submission['Liczba magnesów'],['4'])
+            self.assertEqual(self.server.submission['_subject'],['[NA ZAMÓWIENIE] Zapytanie o magnesy ze zdjęć | Magnesowy Świat'])
+            self.assertEqual(self.server.submission['Rodzaj zapytania'],['Magnesy na zamówienie ze zdjęć'])
             self.assertIn('test.png: 3 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('second.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertEqual(self.server.submission['Uwagi do zamówienia'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
