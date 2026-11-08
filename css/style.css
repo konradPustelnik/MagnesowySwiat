@@ -416,3 +416,10 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .confirmation-mark { display: grid; place-items: center; width: 58px; height: 58px; margin: 0 auto 24px; border: 1px solid var(--gold); border-radius: 50%; color: var(--gold-dark); background: var(--cream); font-size: 26px; }
 
 @media (max-width: 680px) { .site-footer > .wrap { width: calc(100% - 40px); } .footer-grid { column-gap: 20px; } }
+
+@media (max-width: 680px) {
+ .footer-grid > div:nth-child(3) { grid-column: 1 / -1; grid-row: 3; }
+ .footer-grid > div:nth-child(4) { grid-column: 2; grid-row: 2; }
+ .footer-grid > div:nth-child(3) .footer-links { flex-direction: row; flex-wrap: wrap; gap: 6px 18px; }
+ .footer-grid .social-link[href^="mailto:"] { flex-basis: 100%; }
+}
