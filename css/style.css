@@ -511,6 +511,11 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .page-home .social-link { justify-content: center; }
 .page-home .footer-button { align-self: center; text-align: center; }
 .page-home .footer-bottom { align-items: center; justify-content: center; flex-wrap: wrap; }
+.page-home #o-nas .editorial { display: flex; flex-direction: column; gap: 30px; text-align: center; }
+.page-home #o-nas .editorial-copy { width: min(100%, 900px); margin-inline: auto; }
+.page-home #o-nas .editorial-copy p:not(.eyebrow) { max-width: 850px; margin-inline: auto; }
+.page-home #o-nas .editorial-photo { width: 100%; }
+.page-home #o-nas .editorial-photo img { width: 100%; height: auto; }
 @media (max-width: 980px) { .hero--home .hero-grid { gap: 28px; } }
 @media (max-width: 680px) {
  .hero--home { padding-top: 16px; }
