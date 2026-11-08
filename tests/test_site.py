@@ -343,7 +343,19 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(tiktok.get_attribute('aria-label'),'TikTok: magnesowyswiat')
             find_us=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-grid > div:nth-child(3)')
             self.assertEqual(find_us.find_elements(By.CSS_SELECTOR,'a[href^="mailto:"]'),[])
+            offer=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-grid > div:nth-child(2)')
+            offer_links=offer.find_elements(By.CSS_SELECTOR,'.footer-links > a')
+            social_links=find_us.find_elements(By.CSS_SELECTOR,'.footer-links > a')
+            for column in (offer,find_us):
+                heading=column.find_element(By.CSS_SELECTOR,'.footer-heading')
+                self.assertEqual(d.execute_script('return getComputedStyle(arguments[0]).fontSize',heading),'12px')
+                self.assertAlmostEqual(heading.rect['x']+heading.rect['width']/2,column.rect['x']+column.rect['width']/2,delta=1)
+            self.assertEqual(len(offer_links),len(social_links))
+            for offer_link,social_link in zip(offer_links,social_links):
+                self.assertAlmostEqual(offer_link.rect['y'],social_link.rect['y'],delta=1)
             contact=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-grid > div:nth-child(4)')
+            contact_heading=contact.find_element(By.CSS_SELECTOR,'.footer-heading')
+            self.assertAlmostEqual(contact_heading.rect['x']+contact_heading.rect['width']/2,contact.rect['x']+contact.rect['width']/2,delta=1)
             phone=contact.find_element(By.CSS_SELECTOR,'a[href^="tel:"]')
             self.assertEqual(phone.text,'505 606 707')
             self.assertEqual(phone.find_element(By.CSS_SELECTOR,'svg.contact-icon').get_attribute('aria-hidden'),'true')
@@ -363,6 +375,8 @@ class BrowserTests(unittest.TestCase):
                 self.assertAlmostEqual(copyright.rect['x']+copyright.rect['width']/2,footer_bottom['x']+footer_bottom['width']/2,delta=1)
                 self.assertLess(privacy.rect['x']+privacy.rect['width'],copyright.rect['x'])
                 self.assertGreater(terms.rect['x'],copyright.rect['x']+copyright.rect['width'])
+                self.assertAlmostEqual(copyright.rect['x']-(privacy.rect['x']+privacy.rect['width']),24,delta=1)
+                self.assertAlmostEqual(terms.rect['x']-(copyright.rect['x']+copyright.rect['width']),24,delta=1)
             for icon in icons:
                 self.assertEqual(icon.rect['width'],18)
                 self.assertEqual(icon.rect['height'],18)

@@ -24,7 +24,7 @@ Na polecenie właściciela 8 listopada 2026 usunięto starą stronę `backup/`, 
 
 Publiczne adresy: `/`, `/magnesy-na-zywo/`, `/magnesy-na-zamowienie/`. Nagłówki i stopki są zapisane w każdym HTML — przy zmianie wspólnej nawigacji trzeba uaktualnić wszystkie trzy pliki.
 
-Stopki grupują profile Instagram, Facebook i [TikTok](https://www.tiktok.com/@magnesowyswiat) pod „Znajdź nas”, a numer telefonu i e-mail z ikonami pod „Kontakt”. Równe kolumny oferty, profili i kontaktu znajdują się obok marki. Dolny pasek ma politykę prywatności po lewej, informację o prawach autorskich na środku i regulamin po prawej. Podpisy profili Instagram i TikTok to `magnesowyswiat`.
+Stopki grupują profile Instagram, Facebook i [TikTok](https://www.tiktok.com/@magnesowyswiat) pod „Znajdź nas”, a numer telefonu i e-mail z ikonami pod „Kontakt”. Równe kolumny oferty, profili i kontaktu mają wyśrodkowaną treść; ich odnośniki są wyrównane w tych samych rzędach. Dolny pasek ma politykę prywatności i regulamin po obu stronach informacji o prawach autorskich, blisko środka. Podpisy profili Instagram i TikTok to `magnesowyswiat`.
 
 Na stronie głównej H1 jest pogrubiony, a dwa przyciski wyboru usługi znajdują się na końcu pełnego opisu i mają jednakową szerokość. Na małych ekranach opis może wymagać przewinięcia. Karty ofert mają wspólną oprawę, krótkie opisy i przyciski wyrównane na dole.
 

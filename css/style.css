@@ -126,22 +126,23 @@ p + p { margin-top: 16px; }
 .site-footer > .wrap { width: min(1440px, calc(100% - 96px)); }
 .footer-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: start; gap: clamp(24px, 3vw, 48px); padding-bottom: 20px; }
 .footer-grid > div { min-width: 0; }
-.footer-grid > div:not(.footer-brand) { text-align: left; }
+.footer-grid > div:not(.footer-brand) { text-align: center; }
 .footer-brand img { width: 200px; height: auto; margin-bottom: 12px; }
 .footer-brand p { max-width: 250px; font-size: 12px; line-height: 1.6; }
-.footer-heading { display: block; font-size: 10px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
+.footer-heading { display: block; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
 .footer-links { display: flex; flex-direction: column; gap: 7px; font-size: 12px; line-height: 1.6; }
+.footer-links > a { display: flex; align-items: center; min-height: 26px; text-align: center; }
 .footer-contact-link { display: inline-flex; align-items: center; gap: 9px; min-height: 26px; }
 .footer-contact-link span { overflow-wrap: anywhere; }
-.footer-grid > div:not(.footer-brand) .footer-links { align-items: flex-start; }
+.footer-grid > div:not(.footer-brand) .footer-links { align-items: center; }
 .contact-icon { display: block; flex: 0 0 18px; width: 18px; height: 18px; color: var(--gold-dark); }
 .footer-links a:hover, .footer-button:hover { color: var(--gold-dark); }
 .footer-button { display: inline; width: fit-content; padding: 0; border: 0; background: none; color: var(--muted); text-align: left; font: inherit; }
 .footer-links small { font-size: 9px; color: var(--muted); }
 .footer-bottom { padding: 12px 0; border-top: 1px solid var(--line); display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); align-items: center; gap: 8px 24px; font-size: 12px; color: var(--muted); }
-.footer-bottom > :first-child { justify-self: start; }
+.footer-bottom > :first-child { justify-self: end; }
 .footer-bottom > :nth-child(2) { justify-self: center; text-align: center; }
-.footer-bottom > :last-child { justify-self: end; text-align: right; }
+.footer-bottom > :last-child { justify-self: start; text-align: left; }
 .hero--service { padding-top: 20px; }
 .hero--service h1 { font-size: clamp(40px, 4.3vw, 62px); }
 .step-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
@@ -413,7 +414,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .footer-grid > div:nth-child(2) { grid-column: 1; grid-row: 2; }
  .footer-grid > div:nth-child(3) { grid-column: 2; grid-row: 2; }
  .footer-grid > div:nth-child(4) { grid-column: 1 / -1; grid-row: 3; }
- .footer-grid > div:nth-child(3) .footer-links { flex-direction: column; align-items: flex-start; gap: 5px; }
+ .footer-grid > div:nth-child(3) .footer-links { flex-direction: column; align-items: center; gap: 5px; }
 }
 
 /* Service anchors live under their main navigation tab. Native details works without JS. */
@@ -520,8 +521,8 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .page-home .offer-content .button { align-self: center; }
 .page-home .contact-banner .wrap { align-items: center; justify-content: center; }
 .page-home .contact-banner { padding-block: 30px; }
-.page-home .footer-links { align-items: flex-start; justify-content: flex-start; }
-.page-home .social-link { justify-content: flex-start; }
+.page-home .footer-links { align-items: center; justify-content: flex-start; }
+.page-home .social-link { justify-content: center; }
 .page-home #o-nas .editorial { display: flex; flex-direction: column; gap: 30px; text-align: center; }
 .page-home #o-nas .editorial-copy { width: min(100%, 900px); margin-inline: auto; }
 .page-home #o-nas .editorial-copy p:not(.eyebrow) { max-width: 850px; margin-inline: auto; }
