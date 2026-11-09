@@ -587,6 +587,9 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
  .hero--compact .actions .button { padding: 12px 10px; font-size: 10px; letter-spacing: .04em; }
 }
 .live-process-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; }
+.section.live-process { padding-bottom: 32px; }
+.section.live-occasion-section { padding-block: 24px 32px; }
+.live-occasion-section .section-heading { margin-bottom: 24px; }
 .live-closing { margin-top: 32px; text-align: center; font-family: var(--serif); font-size: 26px; color: var(--gold-dark); }
 .live-occasions { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .live-occasions .occasion-card img { height: auto; aspect-ratio: 16 / 9; }
