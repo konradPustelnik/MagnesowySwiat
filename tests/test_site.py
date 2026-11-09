@@ -202,9 +202,17 @@ class BrowserTests(unittest.TestCase):
                         choices = d.find_elements(By.CSS_SELECTOR, selector + ' .actions a')
                         self.assertEqual(len(choices), len(destinations))
                         header_bottom = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().bottom')
-                        if name == 'home':
-                            story = d.find_element(By.CSS_SELECTOR, '.hero--home .hero-story')
+                        if name in ['home', 'live']:
+                            story = d.find_element(By.CSS_SELECTOR, selector + ' .hero-story')
                             story_bottom = d.execute_script('return arguments[0].getBoundingClientRect().bottom', story)
+                            self.assertEqual(d.execute_script('return getComputedStyle(arguments[0]).textAlign', story), 'center')
+                            h1_weight = d.execute_script('return getComputedStyle(document.querySelector(arguments[0] + " h1")).fontWeight', selector)
+                            self.assertGreaterEqual(int(h1_weight), 600)
+                        if name == 'live':
+                            image = d.find_element(By.CSS_SELECTOR, selector + ' .hero-image img')
+                            image_size = d.execute_script('const r=arguments[0].getBoundingClientRect(); return [r.width,r.height]', image)
+                            self.assertTrue(all(size <= 421 for size in image_size), image_size)
+                        if name == 'home':
                             widths = [d.execute_script('return arguments[0].getBoundingClientRect().width', choice) for choice in choices]
                             self.assertAlmostEqual(widths[0], widths[1], delta=1)
                             h1_weight = d.execute_script('return getComputedStyle(document.querySelector(".hero--home h1")).fontWeight')
@@ -216,9 +224,9 @@ class BrowserTests(unittest.TestCase):
                             rect = d.execute_script('const r = arguments[0].getBoundingClientRect(); return {top:r.top,bottom:r.bottom,left:r.left,right:r.right,height:r.height}', choice)
                             self.assertGreaterEqual(rect['height'], 44, destination)
                             self.assertGreaterEqual(rect['top'], header_bottom - 1, destination)
-                            if name == 'home':
-                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Homepage actions must follow the complete hero description')
-                            if name != 'home' or width >= 981:
+                            if name in ['home', 'live']:
+                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Actions must follow the complete hero description')
+                            if name == 'order' or width >= 981:
                                 self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
                             self.assertGreaterEqual(rect['left'], 0, destination)
                             self.assertLessEqual(rect['right'], width, destination)

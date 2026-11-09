@@ -30,7 +30,7 @@ Na stronie głównej H1 jest pogrubiony, a dwa przyciski wyboru usługi znajduj�
 
 Cały tekst strony głównej jest wyśrodkowany — również opisy kart, „O nas”, zasięg, kontakt i stopka. Reguły są ograniczone do klasy `page-home`, aby nie zmieniać układu podstron usług.
 
-Na podstronie na żywo przyciski „Zobacz pakiety” i „Zapytaj o termin” również są bezpośrednio pod H1, przed opisem. Kompaktowy nagłówek i odstępy pozwalają wyświetlić oba przyciski bez przewijania w testowanych rozmiarach ekranu.
+Na podstronie na żywo wstęp jest wyśrodkowany, H1 pogrubiony, a przyciski „Zobacz pakiety” i „Zapytaj o termin” znajdują się pod pełnym opisem. Zdjęcie ma maksymalnie 420 × 420 px. Na komputerach przyciski mieszczą się bez przewijania; na telefonach dłuższy opis może wymagać przewinięcia.
 
 Podstrona zamówień korzysta z tego samego kompaktowego układu: przycisk „Zamów magnesy” jest pod H1 i pozostaje widoczny na pierwszym ekranie.
 
