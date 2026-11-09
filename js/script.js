@@ -82,13 +82,14 @@ document.querySelectorAll('[data-package]').forEach(link => link.addEventListene
 }));
 const magnetSlider = document.getElementById('magnet-quantity');
 if (magnetSlider) {
-  const formatPrice = value => new Intl.NumberFormat('pl-PL').format(value) + ' zł';
+  const formatPrice = value => new Intl.NumberFormat('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value) + ' zł';
   const updateMagnetPrice = () => {
     const count = Number(magnetSlider.value);
-    const unitPrice = Math.max(10, Math.round(12 - (count - 10) * 2 / 190));
+    const unitPriceGrosze = Math.max(1000, 1200 - Math.floor((count - 10) / 5) * 20);
+    const unitPrice = unitPriceGrosze / 100;
     document.getElementById('magnet-count').value = count;
     document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
-    document.getElementById('magnet-total-price').textContent = formatPrice(count * unitPrice);
+    document.getElementById('magnet-total-price').textContent = formatPrice(count * unitPriceGrosze / 100);
     const order = document.getElementById('magnet-order');
     order.dataset.quantity = count;
     order.textContent = `Zamów ${count} magnesów`;

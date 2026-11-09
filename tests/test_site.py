@@ -315,13 +315,13 @@ class BrowserTests(unittest.TestCase):
         d = self.driver
         d.get(self.base + PAGES[2])
         d.execute_script('document.documentElement.style.scrollBehavior="auto"')
-        for count, price in [(10, 12), (57, 12), (58, 11), (100, 11), (152, 11), (153, 10), (200, 10), (201, 10), (1000, 10)]:
+        for count, price in [(10, 12), (14, 12), (15, 11.8), (19, 11.8), (20, 11.6), (24, 11.6), (25, 11.4), (55, 10.2), (59, 10.2), (60, 10), (61, 10), (200, 10), (1000, 10)]:
             value = str(count)
             d.execute_script('const s=document.getElementById("magnet-quantity"); s.value=arguments[0]; s.dispatchEvent(new Event("input",{bubbles:true}))', value)
             self.assertEqual(d.find_element(By.ID, 'magnet-count').text, value)
-            self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, f'{price} zł')
+            self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, f'{price:.2f} zł'.replace('.', ','))
             total = d.find_element(By.ID, 'magnet-total-price').text.replace('\u00a0', '').replace(' ', '')
-            self.assertEqual(total, f'{count * price}zł')
+            self.assertEqual(total, f'{count * price:.2f}zł'.replace('.', ','))
             link = d.find_element(By.ID, 'magnet-order')
             d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', link)
             link.click()

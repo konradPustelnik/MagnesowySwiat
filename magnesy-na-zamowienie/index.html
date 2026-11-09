@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" href="../images/logo.png">
 <link rel="stylesheet" href="../css/style.css?v=20261109-quantity-slider">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
-<script src="../js/script.js?v=20261109-quantity-slider" defer>
+<script src="../js/script.js?v=20261109-price-steps" defer>
 </script>
 </head>
 <body>
@@ -163,10 +163,10 @@
 <input id="magnet-quantity" type="range" min="10" max="1000" step="1" value="10" aria-describedby="magnet-price-rule">
 <div class="quantity-range-labels"><span>10 szt.</span><span>1000 szt.</span></div>
 <div class="quantity-totals" aria-live="polite" aria-atomic="true">
-<p>Cena za sztukę <strong id="magnet-unit-price">12 zł</strong></p>
-<p>Razem za magnesy <strong id="magnet-total-price">120 zł</strong></p>
+<p>Cena za sztukę <strong id="magnet-unit-price">12,00 zł</strong></p>
+<p>Razem za magnesy <strong id="magnet-total-price">120,00 zł</strong></p>
 </div>
-<p id="magnet-price-rule" class="field-hint">Od 12 zł/szt. przy 10 magnesach do 10 zł/szt. przy 200 magnesach. Cena za sztukę spada liniowo i jest zaokrąglana do pełnych złotych. Od 200 sztuk zawsze 10 zł/szt. Dostawa płatna oddzielnie.</p>
+<p id="magnet-price-rule" class="field-hint">10–14 magnesów: 12,00 zł/szt., 15–19: 11,80 zł/szt., 20–24: 11,60 zł/szt. Każde kolejne 5 magnesów obniża cenę sztuki o 20 gr, aż do 10,00 zł/szt. przy 60 magnesach. Od 60 sztuk cena pozostaje 10,00 zł/szt. Dostawa płatna oddzielnie.</p>
 <a class="button" id="magnet-order" data-quantity="10" href="#zamowienie">Zamów 10 magnesów</a>
 <noscript><p>Do przeliczania ceny suwakiem potrzebny jest JavaScript. Podaj liczbę magnesów w formularzu, a potwierdzimy cenę mailowo.</p></noscript>
 </div>
