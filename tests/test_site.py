@@ -512,14 +512,14 @@ class BrowserTests(unittest.TestCase):
                 self.assertEqual(len(photos),4)
                 self.assertEqual(len({photo.rect['height'] for photo in photos}),1)
                 for photo in photos:
-                    # The PDF requests two large cards per row, with 16:9 photos.
+                    # Four smaller cards per desktop row, with consistent 16:9 photos.
                     self.assertAlmostEqual(photo.rect['width'] / photo.rect['height'], 16 / 9, delta=.03)
                     self.assertEqual(photo.value_of_css_property('object-fit'),'cover')
                 if width<600:
                     self.assertEqual(len({card.rect['x'] for card in cards}),1)
                 else:
-                    self.assertEqual(len({card.rect['x'] for card in cards}),2)
-                    self.assertEqual(len({card.rect['y'] for card in cards}),2)
+                    self.assertEqual(len({card.rect['x'] for card in cards}),4)
+                    self.assertEqual(len({card.rect['y'] for card in cards}),1)
                 self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'),width+1)
                 artifacts=Path(__file__).parent/'artifacts'; artifacts.mkdir(exist_ok=True)
                 d.execute_script("document.querySelector('.occasion-grid').scrollIntoView({behavior:'instant',block:'center'})")
