@@ -80,6 +80,23 @@ document.querySelectorAll('[data-lightbox]').forEach(button => {
 document.querySelectorAll('[data-package]').forEach(link => link.addEventListener('click', () => {
   document.getElementById('f-package').value = link.dataset.package;
 }));
+const magnetSlider = document.getElementById('magnet-quantity');
+if (magnetSlider) {
+  const formatPrice = value => new Intl.NumberFormat('pl-PL').format(value) + ' zł';
+  const updateMagnetPrice = () => {
+    const count = Number(magnetSlider.value);
+    const unitPrice = Math.max(10, Math.round(12 - (count - 10) * 2 / 190));
+    document.getElementById('magnet-count').value = count;
+    document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
+    document.getElementById('magnet-total-price').textContent = formatPrice(count * unitPrice);
+    const order = document.getElementById('magnet-order');
+    order.dataset.quantity = count;
+    order.textContent = `Zamów ${count} magnesów`;
+    magnetSlider.setAttribute('aria-valuetext', `${count} magnesów, ${unitPrice} zł za sztukę`);
+  };
+  magnetSlider.addEventListener('input', updateMagnetPrice);
+  updateMagnetPrice();
+}
 document.querySelectorAll('[data-quantity]').forEach(link => link.addEventListener('click', () => {
   document.getElementById('f-quantity').value = link.dataset.quantity;
 }));

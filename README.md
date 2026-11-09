@@ -100,7 +100,7 @@ Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów 
 
 Treści pochodzą z PDF właściciela. Dojazd do 30 km od Limanowej jest w cenie pakietu na żywo; dalszy transport ustalamy indywidualnie. Dodatkowy magnes poza limitem pakietu: 10 zł/szt. Zachowano promocję 20% na pierwsze trzy zlecenia — dostępność potwierdzana przy rezerwacji. Po wykorzystaniu promocji usuń panel `.launch-offer` z podstrony na żywo.
 
-Progi zamówień ze zdjęć: 5, 20, 50, 100 i 100+ sztuk. [Analiza cen](docs/cennik-na-zamowienie.md) zawiera propozycję, która nie jest jeszcze publicznym cennikiem.
+Suwak zamówień ze zdjęć obejmuje 10–1000 sztuk. Zatwierdzona 9 listopada cena jednostkowa to `max(10, round(12 - (liczba - 10) * 2 / 190))` zł: 12 zł dla 10–57 sztuk, 11 zł dla 58–152 oraz 10 zł od 153 sztuk. Od 200 sztuk cena zawsze pozostaje 10 zł. Suma to liczba sztuk pomnożona przez zaokrągloną cenę jednostkową; dostawa jest liczona oddzielnie. Przycisk pod suwakiem przenosi ilość do formularza. [Analiza cen](docs/cennik-na-zamowienie.md) jest wcześniejszą propozycją, a nie aktualnym cennikiem.
 
 Do uzupełnienia pozostają:
 

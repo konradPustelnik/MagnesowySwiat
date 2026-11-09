@@ -315,12 +315,25 @@ class BrowserTests(unittest.TestCase):
         d = self.driver
         d.get(self.base + PAGES[2])
         d.execute_script('document.documentElement.style.scrollBehavior="auto"')
-        for value in ['5', '20', '50', '100', '101']:
-            link = d.find_element(By.CSS_SELECTOR, f'[data-quantity="{value}"]')
+        for count, price in [(10, 12), (57, 12), (58, 11), (100, 11), (152, 11), (153, 10), (200, 10), (201, 10), (1000, 10)]:
+            value = str(count)
+            d.execute_script('const s=document.getElementById("magnet-quantity"); s.value=arguments[0]; s.dispatchEvent(new Event("input",{bubbles:true}))', value)
+            self.assertEqual(d.find_element(By.ID, 'magnet-count').text, value)
+            self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, f'{price} zł')
+            total = d.find_element(By.ID, 'magnet-total-price').text.replace('\u00a0', '').replace(' ', '')
+            self.assertEqual(total, f'{count * price}zł')
+            link = d.find_element(By.ID, 'magnet-order')
             d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', link)
             link.click()
             self.assertEqual(d.find_element(By.ID, 'f-quantity').get_attribute('value'), value)
             self.assertTrue(d.current_url.endswith('#zamowienie'))
+        slider = d.find_element(By.ID, 'magnet-quantity')
+        from selenium.webdriver.common.keys import Keys
+        d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', slider)
+        slider.send_keys(Keys.HOME)
+        slider.send_keys(Keys.ARROW_RIGHT)
+        self.assertEqual(slider.get_attribute('value'), '11')
+        self.assertEqual(d.find_element(By.ID, 'magnet-count').text, '11')
         try:
             for width in [1440, 390, 320]:
                 d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': 900, 'deviceScaleFactor': 1, 'mobile': width < 600})
