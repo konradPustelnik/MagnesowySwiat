@@ -75,6 +75,8 @@ Oba formularze mają opcjonalne pole „Kod rabatowy”. Testy rzeczywistego lok
 
 Aktualizacja suwaka: wybór co 1 sztukę w zakresie 10–200. Cena bazowa spada o 10 gr co 10 magnesów od 12 zł, z osobnym końcowym progiem 200 sztuk po 10 zł. Testy obejmują ilości między progami, 199/200 sztuk, obsługę klawiatury co 1 sztukę, usunięcie opisu oraz rabat 10% od końcowej ceny (200 sztuk po 9 zł). To zastępuje poprzedni zakres testu co 10 sztuk.
 
+Najnowsza zasada suwaka: 10 sztuk po 12 zł, 11–20 po 11,90 zł, kolejne progi co 10 sztuk tańsze o 10 gr, 191–200 po 10,10 zł. Końcowa opcja „200+” wymaga konkretnej liczby 201–10000 i stosuje 10 zł/szt. Testy sprawdzają brak sumy i blokadę przycisku przy pustej lub błędnej ilości, przeniesienie konkretnej ilości do formularza oraz progi cenowe i rabaty. To zastępuje wcześniejszą specjalną cenę 10 zł przy dokładnie 200 sztukach.
+
 ## Ograniczenia
 
 - Testy opisują zachowanie sprawdzanej wersji w chwili uruchomienia. Nie gwarantują przyszłej dostępności FormSubmit, Gmaila, DNS ani GitHub Pages.

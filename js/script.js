@@ -112,26 +112,39 @@ if (discountInput) {
 }
 const magnetSlider = document.getElementById('magnet-quantity');
 if (magnetSlider) {
+  const bulkQuantity = document.getElementById('magnet-bulk-quantity');
   const formatPrice = value => new Intl.NumberFormat('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value) + ' zł';
   const updateMagnetPrice = () => {
-    const count = Number(magnetSlider.value);
-    const unitPriceGrosze = count >= 200 ? 1000 : Math.max(1000, 1200 - Math.floor((count - 10) / 10) * 10);
+    const bulk = Number(magnetSlider.value) === 201;
+    document.getElementById('magnet-bulk-field').hidden = !bulk;
+    bulkQuantity.disabled = !bulk;
+    bulkQuantity.required = bulk;
+    const valid = !bulk || bulkQuantity.checkValidity();
+    const count = bulk ? Number(bulkQuantity.value) : Number(magnetSlider.value);
+    const unitPriceGrosze = bulk ? 1000 : 1200 - Math.ceil((count - 10) / 10) * 10;
     const discountedUnitGrosze = Math.round(unitPriceGrosze * (100 - discountPercent) / 100);
     const unitPrice = discountedUnitGrosze / 100;
-    document.getElementById('magnet-count').value = count;
+    document.getElementById('magnet-count').value = bulk ? '200+' : count;
     document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
-    document.getElementById('magnet-total-price').textContent = formatPrice(count * discountedUnitGrosze / 100);
+    document.getElementById('magnet-total-price').textContent = valid ? formatPrice(count * discountedUnitGrosze / 100) : '—';
     document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.` : '';
     const order = document.getElementById('magnet-order');
-    order.dataset.quantity = count;
-    order.textContent = `Zamów ${count} magnesów`;
-    magnetSlider.setAttribute('aria-valuetext', `${count} magnesów, ${unitPrice} zł za sztukę`);
+    order.dataset.quantity = valid ? count : '';
+    order.textContent = valid ? `Zamów ${count} magnesów` : 'Podaj liczbę magnesów';
+    magnetSlider.setAttribute('aria-valuetext', bulk ? 'Powyżej 200 magnesów — podaj konkretną liczbę' : `${count} magnesów, ${unitPrice} zł za sztukę`);
   };
   magnetSlider.addEventListener('input', updateMagnetPrice);
+  bulkQuantity.addEventListener('input', updateMagnetPrice);
   document.addEventListener('magnet-discount-change', updateMagnetPrice);
   updateMagnetPrice();
 }
-document.querySelectorAll('[data-quantity]').forEach(link => link.addEventListener('click', () => {
+document.querySelectorAll('[data-quantity]').forEach(link => link.addEventListener('click', event => {
+  if (!link.dataset.quantity) {
+    event.preventDefault();
+    const bulkQuantity = document.getElementById('magnet-bulk-quantity');
+    bulkQuantity.focus(); bulkQuantity.reportValidity();
+    return;
+  }
   document.getElementById('f-quantity').value = link.dataset.quantity;
 }));
 const date = document.getElementById('f-date');

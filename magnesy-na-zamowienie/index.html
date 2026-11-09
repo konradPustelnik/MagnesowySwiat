@@ -12,7 +12,7 @@
 <link rel="stylesheet" href="../css/style.css?v=20261109-logo-slider">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
 <script src="../js/discounts.js?v=20261109-discounts" defer></script>
-<script src="../js/script.js?v=20261109-single-magnet" defer>
+<script src="../js/script.js?v=20261109-bulk-quantity" defer>
 </script>
 </head>
 <body>
@@ -161,15 +161,19 @@
 </div>
 <div class="quantity-calculator" data-quantity-calculator>
 <label for="magnet-quantity">Liczba magnesów: <output id="magnet-count" for="magnet-quantity">10</output></label>
-<input id="magnet-quantity" type="range" min="10" max="200" step="1" value="10">
-<div class="quantity-range-labels"><span>10 szt.</span><span>200 szt.</span></div>
+<input id="magnet-quantity" type="range" min="10" max="201" step="1" value="10">
+<div class="quantity-range-labels"><span>10 szt.</span><span>200+ szt.</span></div>
+<div id="magnet-bulk-field" class="field" hidden>
+<label for="magnet-bulk-quantity">Podaj konkretną liczbę magnesów *</label>
+<input id="magnet-bulk-quantity" type="number" min="201" max="10000" step="1" inputmode="numeric" disabled>
+<p class="field-hint">Powyżej 200 sztuk: 10,00 zł za magnes przed rabatem.</p>
+</div>
 <div class="quantity-totals" aria-live="polite" aria-atomic="true">
 <p>Cena za sztukę <strong id="magnet-unit-price">12,00 zł</strong></p>
 <p>Razem za magnesy <strong id="magnet-total-price">120,00 zł</strong></p>
 </div>
 <p id="magnet-discount-note" class="field-hint" role="status"></p>
 <a class="button" id="magnet-order" data-quantity="10" href="#zamowienie">Zamów 10 magnesów</a>
-<p class="quantity-custom">Potrzebujesz więcej niż 200 magnesów? <a class="text-link" href="mailto:magnesowyswiat@gmail.com">Napisz do nas po indywidualną wycenę.</a></p>
 <noscript><p>Do przeliczania ceny suwakiem potrzebny jest JavaScript. Podaj liczbę magnesów w formularzu, a potwierdzimy cenę mailowo.</p></noscript>
 </div>
 </div>

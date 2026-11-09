@@ -315,7 +315,7 @@ class BrowserTests(unittest.TestCase):
         d = self.driver
         d.get(self.base + PAGES[2])
         d.execute_script('document.documentElement.style.scrollBehavior="auto"')
-        cases = [(10, 12), (11, 12), (19, 12), (20, 11.9), (21, 11.9), (29, 11.9), (30, 11.8), (189, 10.3), (190, 10.2), (199, 10.2), (200, 10)]
+        cases = [(10, 12), (11, 11.9), (19, 11.9), (20, 11.9), (21, 11.8), (29, 11.8), (30, 11.8), (189, 10.2), (190, 10.2), (191, 10.1), (199, 10.1), (200, 10.1)]
         for count, price in cases:
             value = str(count)
             d.execute_script('const s=document.getElementById("magnet-quantity"); s.value=arguments[0]; s.dispatchEvent(new Event("input",{bubbles:true}))', value)
@@ -337,8 +337,25 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(d.find_element(By.ID, 'magnet-count').text, '11')
         slider.send_keys(Keys.END)
         slider.send_keys(Keys.ARROW_RIGHT)
-        self.assertEqual(slider.get_attribute('value'), '200')
+        self.assertEqual(slider.get_attribute('value'), '201')
         self.assertEqual(slider.get_attribute('step'), '1')
+        bulk = d.find_element(By.ID, 'magnet-bulk-quantity')
+        self.assertTrue(bulk.is_displayed())
+        self.assertFalse(d.execute_script('return arguments[0].checkValidity()', bulk))
+        order = d.find_element(By.ID, 'magnet-order')
+        d.execute_script('arguments[0].click()', order)
+        self.assertEqual(d.switch_to.active_element.get_attribute('id'), 'magnet-bulk-quantity')
+        for value in ['200', '10001', '201', '357']:
+            bulk.clear(); bulk.send_keys(value)
+            valid = value in ['201', '357']
+            self.assertEqual(d.execute_script('return arguments[0].checkValidity()', bulk), valid)
+            if valid:
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,00 zł')
+                self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text.replace('\u00a0','').replace(' ',''), f'{int(value)*10},00zł')
+                d.execute_script('arguments[0].click()', order)
+                self.assertEqual(d.find_element(By.ID, 'f-quantity').get_attribute('value'), value)
+            else:
+                self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text, '—')
         self.assertFalse(d.find_elements(By.ID, 'magnet-price-rule'))
         try:
             for width in [1440, 390, 320]:
@@ -371,14 +388,14 @@ class BrowserTests(unittest.TestCase):
                 self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,80 zł')
                 self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text, '108,00 zł')
                 d.execute_script('const s=document.getElementById("magnet-quantity");s.value=200;s.dispatchEvent(new Event("input"))')
-                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '9,00 zł')
-                self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text.replace('\u00a0', ''), '1800,00 zł')
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '9,09 zł')
+                self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text.replace('\u00a0', ''), '1818,00 zł')
             field.clear()
             field.send_keys('invalid')
             self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '0')
             self.assertIn('nieprawidłowy', d.find_element(By.ID, 'discount-status').text)
             if page == PAGES[2]:
-                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,00 zł')
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,10 zł')
             # Configuration remains editable without changing the mechanism.
             d.execute_script('window.MAGNET_DISCOUNTS=[{code:"nowy",percent:15}]')
             field.clear(); field.send_keys('nowy')
