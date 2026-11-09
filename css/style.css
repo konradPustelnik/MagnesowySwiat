@@ -149,6 +149,7 @@ p + p { margin-top: 16px; }
 .process-step { padding-top: 20px; border-top: 1px solid var(--line); }
 .process-step .number { display: block; font: 400 48px/1 var(--serif); color: var(--gold); margin-bottom: 24px; }
 #jak-dzialamy { text-align: center; }
+#okazje > .wrap > .section-heading { margin-inline: auto; text-align: center; }
 #jak-dzialamy .section-heading { margin-inline: auto; }
 #jak-dzialamy .process-step .number { font: 600 18px/1.4 var(--sans); margin-bottom: 14px; }
 .process-step h3 { font-size: 27px; margin-bottom: 14px; }
