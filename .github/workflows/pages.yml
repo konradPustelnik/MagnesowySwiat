@@ -1,0 +1,43 @@
+name: Publish website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check HTML, links and SEO
+        run: python3 tests/test_site.py StaticTests -v
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare production files
+        run: |
+          mkdir -p "$RUNNER_TEMP/site"
+          cp index.html magnesy-na-zywo.html magnesy-na-zamowienie.html CNAME robots.txt sitemap.xml "$RUNNER_TEMP/site/"
+          cp -R css js images magnesy-na-zywo magnesy-na-zamowienie "$RUNNER_TEMP/site/"
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/site
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4

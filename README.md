@@ -2,7 +2,7 @@
 
 Strona firmy tworzącej personalizowane magnesy fotograficzne na wydarzeniach i na zamówienie. HTML, CSS i JavaScript, bez frameworka aplikacji i bez etapu budowania.
 
-**Produkcja:** [magnesowyswiat.pl](https://magnesowyswiat.pl/). Hosting: GitHub Pages z gałęzi `main`, katalog główny repozytorium. Domena jest zapisana w `CNAME`; publikacja kodu odbywa się przez commit i push zgodnie z `AGENTS.md`.
+**Produkcja:** [magnesowyswiat.pl](https://magnesowyswiat.pl/). Hosting: GitHub Pages przez workflow `.github/workflows/pages.yml` uruchamiany po pushu do `main` lub ręcznie. Źródłem są pliki produkcyjne w katalogu głównym. Workflow wykonuje testy statyczne i publikuje wyłącznie HTML, CSS, JS, zdjęcia, CNAME, robots.txt i sitemap.xml, bez dokumentacji i testów. W ustawieniach Pages źródło publikacji to GitHub Actions. Domena pozostaje `magnesowyswiat.pl`; publikacja kodu odbywa się przez commit i push zgodnie z `AGENTS.md`.
 
 ## Jedna aktualna wersja
 
