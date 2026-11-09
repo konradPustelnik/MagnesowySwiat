@@ -91,6 +91,15 @@ class StaticTests(unittest.TestCase):
                 # All three canonical pages must be reachable through real HTML links.
                 linked_paths = {urlsplit(urljoin(canonical, href)).path for href in parser.links}
                 self.assertTrue({'/', '/magnesy-na-zywo/', '/magnesy-na-zamowienie/'} <= linked_paths, page)
+                if page != 'index.html':
+                    nodes = [json.loads(block) for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', source, re.S)]
+                    trails = [node for node in nodes if node.get('@type') == 'BreadcrumbList']
+                    self.assertEqual(len(trails), 1)
+                    self.assertEqual(trails[0]['@context'], 'https://schema.org')
+                    items = trails[0]['itemListElement']
+                    self.assertEqual([item['position'] for item in items], [1, 2])
+                    self.assertEqual([item['item'] for item in items], [CANONICAL, canonical])
+                    self.assertTrue(all(item['@type'] == 'ListItem' and item['name'] for item in items))
         self.assertEqual(len(set(titles)), len(PAGES))
         self.assertEqual(len(set(descriptions_seen)), len(PAGES))
         self.assertEqual(titles[0], 'Magnesowy Świat – Magnesy na każdą okazję')

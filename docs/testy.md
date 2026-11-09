@@ -79,6 +79,8 @@ Najnowsza zasada suwaka: 10 sztuk po 12 zł, 11–20 po 11,90 zł, kolejne progi
 
 Aktualizacja okazji: cztery mniejsze zdjęcia 16:9 w jednym rzędzie na komputerze, dwie kolumny do 980 px i jedna do 680 px. Pod nimi nowe opisy wesel, urodzin, uroczystości rodzinnych i eventów firmowych. Test kadrowania oczekuje obecnie czterech kolumn i jednego rzędu na komputerze, zamiast wcześniejszego układu 2 × 2.
 
+Kontrola SEO weryfikuje również JSON-LD `BreadcrumbList` obu ofert: pozycje 1–2, typy elementów i adresy zgodne z canonical. [Raport kontroli według poradnika Google](seo-poradnik-google.md).
+
 ## Ograniczenia
 
 - Testy opisują zachowanie sprawdzanej wersji w chwili uruchomienia. Nie gwarantują przyszłej dostępności FormSubmit, Gmaila, DNS ani GitHub Pages.
