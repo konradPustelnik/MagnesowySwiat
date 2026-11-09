@@ -107,6 +107,12 @@ if (discountInput) {
     document.getElementById('info-dialog').showModal();
   });
   form.addEventListener('submit', applyDiscount);
+  document.querySelectorAll('[data-launch-code]').forEach(button => {
+    button.addEventListener('click', () => {
+      discountInput.value = button.dataset.launchCode;
+      document.getElementById('apply-discount').click();
+    });
+  });
   form.addEventListener('reset', () => setTimeout(applyDiscount, 0));
   applyDiscount();
 }
