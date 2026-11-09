@@ -561,7 +561,10 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .hero--compact .actions { margin-top: 0; }
 .hero--compact .hero-image > img { height: auto; max-height: 560px; aspect-ratio: 1; object-fit: cover; }
 .hero--live .hero-grid { align-items: center; }
+.hero--live { padding-bottom: 16px; }
+.hero--live + #jak-dzialamy { padding-top: 24px; }
 .hero--live .hero-copy { text-align: center; }
+.hero--live .hero-copy .eyebrow { margin-bottom: 8px; }
 .hero--live .hero-copy h1 { font-weight: 700; }
 .hero--live .hero-copy p { margin-inline: auto; }
 .hero--live .hero-story { margin-top: 18px; }
