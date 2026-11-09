@@ -1,5 +1,7 @@
 """Lokalne testy. Nie wysyłają e-maili ani zdjęć."""
 import base64
+import json
+import re
 from email.parser import BytesParser
 from email.policy import default
 from functools import partial
@@ -10,7 +12,7 @@ import tempfile
 from threading import Thread
 import unittest
 import xml.etree.ElementTree as ET
-from urllib.parse import unquote, urlsplit, parse_qs
+from urllib.parse import unquote, urlsplit, parse_qs, urljoin
 
 ROOT = Path(__file__).resolve().parents[1]
 PAGES = ['index.html', 'magnesy-na-zywo/index.html', 'magnesy-na-zamowienie/index.html']
@@ -68,6 +70,8 @@ class Parser(HTMLParser):
 class StaticTests(unittest.TestCase):
     def test_canonical_indexability_and_sitemap(self):
         expected = [CANONICAL + ('' if page == 'index.html' else page.removesuffix('index.html')) for page in PAGES]
+        titles = []
+        descriptions_seen = []
         for page, canonical in zip(PAGES, expected):
             with self.subTest(page=page):
                 source = (ROOT / page).read_text(encoding='utf-8')
@@ -79,7 +83,26 @@ class StaticTests(unittest.TestCase):
                 descriptions = [attrs.get('content', '').strip() for tag, attrs in parser.tags if tag == 'meta' and attrs.get('name') == 'description']
                 self.assertEqual(len(descriptions), 1)
                 self.assertTrue(descriptions[0], page)
-                self.assertIn('<title>', source.lower())
+                descriptions_seen.append(descriptions[0])
+                page_titles = re.findall(r'<title>(.*?)</title>', source, re.S)
+                self.assertEqual(len(page_titles), 1, page)
+                self.assertIn('Magnesowy Świat', page_titles[0])
+                titles.append(page_titles[0])
+                # All three canonical pages must be reachable through real HTML links.
+                linked_paths = {urlsplit(urljoin(canonical, href)).path for href in parser.links}
+                self.assertTrue({'/', '/magnesy-na-zywo/', '/magnesy-na-zamowienie/'} <= linked_paths, page)
+        self.assertEqual(len(set(titles)), len(PAGES))
+        self.assertEqual(len(set(descriptions_seen)), len(PAGES))
+        self.assertEqual(titles[0], 'Magnesowy Świat – Magnesy na każdą okazję')
+        home = (ROOT / PAGES[0]).read_text(encoding='utf-8')
+        structured = [json.loads(block) for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', home, re.S)]
+        websites = [node for node in structured if node.get('@type') == 'WebSite']
+        self.assertEqual(len(websites), 1)
+        self.assertEqual(websites[0]['@context'], 'https://schema.org')
+        self.assertEqual(websites[0]['name'], 'Magnesowy Świat')
+        self.assertEqual(websites[0]['url'], CANONICAL)
+        self.assertIn('magnesy na żywo', descriptions_seen[0])
+        self.assertIn('magnesy na zamówienie', descriptions_seen[0])
         self.assertEqual((ROOT / 'CNAME').read_text(encoding='utf-8').strip(), urlsplit(CANONICAL).hostname)
         robots_source = (ROOT / 'robots.txt').read_text(encoding='utf-8')
         directives = [line.split('#', 1)[0].strip() for line in robots_source.splitlines()]

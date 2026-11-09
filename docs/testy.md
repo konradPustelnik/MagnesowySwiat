@@ -65,6 +65,8 @@ To potwierdza, że kod strony poprawnie przygotowuje i przekazuje dane w sprawdz
 
 Pełną próbę doręczenia wykonuje właściciel: wysyła formularz na opublikowanej stronie z własnymi danymi i unikalnym oznaczeniem, np. `MS-SPRAWDZENIE-20261108-01`, a następnie sprawdza nową wiadomość z tym samym oznaczeniem w skrzynce `magnesowyswiat@gmail.com` i spamie. Warto wykonać osobną próbę dla na żywo i dla zamówienia z własnym testowym zdjęciem. Ten zestaw nie wysyła takich wiadomości samodzielnie.
 
+Kontrola SEO obejmuje też unikalność tytułów i opisów, wymagany tytuł strony głównej, poprawny JSON-LD `WebSite` z nazwą marki i adresem domeny oraz wzajemne linkowanie trzech stron. Raport: [SEO z 9 listopada 2026](seo-2026-11-09.md).
+
 ## Ograniczenia
 
 - Testy opisują zachowanie sprawdzanej wersji w chwili uruchomienia. Nie gwarantują przyszłej dostępności FormSubmit, Gmaila, DNS ani GitHub Pages.
