@@ -85,7 +85,7 @@ if (magnetSlider) {
   const formatPrice = value => new Intl.NumberFormat('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value) + ' zł';
   const updateMagnetPrice = () => {
     const count = Number(magnetSlider.value);
-    const unitPriceGrosze = Math.max(1000, 1200 - Math.floor((count - 10) / 5) * 20);
+    const unitPriceGrosze = Math.max(1000, 1200 - Math.floor((count - 10) / 10) * 10);
     const unitPrice = unitPriceGrosze / 100;
     document.getElementById('magnet-count').value = count;
     document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);

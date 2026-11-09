@@ -100,7 +100,7 @@ Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów 
 
 Treści pochodzą z PDF właściciela. Dojazd do 30 km od Limanowej jest w cenie pakietu na żywo; dalszy transport ustalamy indywidualnie. Dodatkowy magnes poza limitem pakietu: 10 zł/szt. Zachowano promocję 20% na pierwsze trzy zlecenia — dostępność potwierdzana przy rezerwacji. Po wykorzystaniu promocji usuń panel `.launch-offer` z podstrony na żywo.
 
-Suwak zamówień ze zdjęć obejmuje 10–1000 sztuk. Cena jednostkowa w groszach to `max(1000, 1200 - floor((liczba - 10) / 5) * 20)`: 10–14 sztuk po 12,00 zł, 15–19 po 11,80 zł, 20–24 po 11,60 zł itd. Od 60 sztuk obowiązuje minimum 10,00 zł za sztukę. Suma to liczba sztuk pomnożona przez cenę jednostkową; dostawa jest liczona oddzielnie. Obliczenia używają pełnych groszy, a ceny są wyświetlane z dwoma miejscami po przecinku. Przycisk pod suwakiem przenosi ilość do formularza. [Analiza cen](docs/cennik-na-zamowienie.md) jest wcześniejszą propozycją, a nie aktualnym cennikiem.
+Suwak zamówień ze zdjęć obejmuje 10–200 sztuk z krokiem co 10 magnesów i uchwytem z logo. Cena jednostkowa w groszach to `max(1000, 1200 - floor((liczba - 10) / 10) * 10)`: 10 sztuk po 12,00 zł, 20 po 11,90 zł, aż do 200 po 10,10 zł. Większe zamówienia wymagają kontaktu po indywidualną wycenę. Suma to liczba sztuk pomnożona przez cenę jednostkową; dostawa jest liczona oddzielnie. Obliczenia używają pełnych groszy, a ceny są wyświetlane z dwoma miejscami po przecinku. Przycisk pod suwakiem przenosi ilość do formularza. [Analiza cen](docs/cennik-na-zamowienie.md) jest wcześniejszą propozycją, a nie aktualnym cennikiem.
 
 Do uzupełnienia pozostają:
 

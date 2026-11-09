@@ -69,7 +69,7 @@ Aktualizacja 9 listopada 2026: w teście nr 19 oferta na żywo ma wyśrodkowany 
 
 Kontrola SEO obejmuje też unikalność tytułów i opisów, wymagany tytuł strony głównej, poprawny JSON-LD `WebSite` z nazwą marki i adresem domeny oraz wzajemne linkowanie trzech stron. Raport: [SEO z 9 listopada 2026](seo-2026-11-09.md).
 
-Aktualizacja cennika 9 listopada 2026: test nr 7 sprawdza suwak 10–1000 sztuk, ceny jednostkowe i sumy na granicach progów co 5 sztuk (10/14/15/19/20/24/25/55/59/60/61), minimum 10 zł także przy 200 i 1000 sztukach, obsługę klawiatury oraz przeniesienie ilości do formularza. Cena maleje o 20 gr co 5 sztuk od 12 zł, z minimum 10 zł. Zastępuje wcześniejsze kafelki i liniową wycenę zaokrąglaną do pełnych złotych.
+Aktualizacja cennika 9 listopada 2026: test nr 7 sprawdza wszystkie 20 pozycji suwaka 10–200 sztuk co 10 magnesów, ceny jednostkowe malejące od 12,00 zł o 10 gr na krok (200 sztuk po 10,10 zł), sumy, obsługę klawiatury, limit 200, logo na uchwycie oraz przeniesienie ilości do formularza. Zastępuje wcześniejsze zasady wyceny.
 
 Oba formularze mają opcjonalne pole „Kod rabatowy”. Testy rzeczywistego lokalnego POST sprawdzają jego opcjonalność i dokładne przesłanie kodu (także ze spacją i znakiem `&`) w formularzu na żywo oraz zamówieniu multipart. Kod jest przekazywany do indywidualnej weryfikacji; kalkulator nie nalicza automatycznie rabatu.
 

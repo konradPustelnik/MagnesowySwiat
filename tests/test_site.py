@@ -315,7 +315,8 @@ class BrowserTests(unittest.TestCase):
         d = self.driver
         d.get(self.base + PAGES[2])
         d.execute_script('document.documentElement.style.scrollBehavior="auto"')
-        for count, price in [(10, 12), (14, 12), (15, 11.8), (19, 11.8), (20, 11.6), (24, 11.6), (25, 11.4), (55, 10.2), (59, 10.2), (60, 10), (61, 10), (200, 10), (1000, 10)]:
+        for count in range(10, 201, 10):
+            price = (1200 - (count - 10)) / 100
             value = str(count)
             d.execute_script('const s=document.getElementById("magnet-quantity"); s.value=arguments[0]; s.dispatchEvent(new Event("input",{bubbles:true}))', value)
             self.assertEqual(d.find_element(By.ID, 'magnet-count').text, value)
@@ -332,8 +333,12 @@ class BrowserTests(unittest.TestCase):
         d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', slider)
         slider.send_keys(Keys.HOME)
         slider.send_keys(Keys.ARROW_RIGHT)
-        self.assertEqual(slider.get_attribute('value'), '11')
-        self.assertEqual(d.find_element(By.ID, 'magnet-count').text, '11')
+        self.assertEqual(slider.get_attribute('value'), '20')
+        self.assertEqual(d.find_element(By.ID, 'magnet-count').text, '20')
+        slider.send_keys(Keys.END)
+        slider.send_keys(Keys.ARROW_RIGHT)
+        self.assertEqual(slider.get_attribute('value'), '200')
+        self.assertEqual(slider.get_attribute('step'), '10')
         try:
             for width in [1440, 390, 320]:
                 d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': 900, 'deviceScaleFactor': 1, 'mobile': width < 600})

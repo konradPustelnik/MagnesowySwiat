@@ -9,9 +9,9 @@
 <link rel="canonical" href="https://magnesowyswiat.pl/magnesy-na-zamowienie/">
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" type="image/png" href="../images/logo.png">
-<link rel="stylesheet" href="../css/style.css?v=20261109-quantity-slider">
+<link rel="stylesheet" href="../css/style.css?v=20261109-logo-slider">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
-<script src="../js/script.js?v=20261109-price-steps" defer>
+<script src="../js/script.js?v=20261109-ten-step-slider" defer>
 </script>
 </head>
 <body>
@@ -160,14 +160,15 @@
 </div>
 <div class="quantity-calculator" data-quantity-calculator>
 <label for="magnet-quantity">Liczba magnesów: <output id="magnet-count" for="magnet-quantity">10</output></label>
-<input id="magnet-quantity" type="range" min="10" max="1000" step="1" value="10" aria-describedby="magnet-price-rule">
-<div class="quantity-range-labels"><span>10 szt.</span><span>1000 szt.</span></div>
+<input id="magnet-quantity" type="range" min="10" max="200" step="10" value="10" aria-describedby="magnet-price-rule">
+<div class="quantity-range-labels"><span>10 szt.</span><span>200 szt.</span></div>
 <div class="quantity-totals" aria-live="polite" aria-atomic="true">
 <p>Cena za sztukę <strong id="magnet-unit-price">12,00 zł</strong></p>
 <p>Razem za magnesy <strong id="magnet-total-price">120,00 zł</strong></p>
 </div>
-<p id="magnet-price-rule" class="field-hint">10–14 magnesów: 12,00 zł/szt., 15–19: 11,80 zł/szt., 20–24: 11,60 zł/szt. Każde kolejne 5 magnesów obniża cenę sztuki o 20 gr, aż do 10,00 zł/szt. przy 60 magnesach. Od 60 sztuk cena pozostaje 10,00 zł/szt. Dostawa płatna oddzielnie.</p>
+<p id="magnet-price-rule" class="field-hint">10 magnesów: 12,00 zł/szt., 20: 11,90 zł/szt., 30: 11,80 zł/szt. Każde kolejne 10 magnesów obniża cenę sztuki o 10 gr. Przy 200 magnesach: 10,10 zł/szt. Dostawa płatna oddzielnie.</p>
 <a class="button" id="magnet-order" data-quantity="10" href="#zamowienie">Zamów 10 magnesów</a>
+<p class="quantity-custom">Potrzebujesz więcej niż 200 magnesów? <a class="text-link" href="mailto:magnesowyswiat@gmail.com">Napisz do nas po indywidualną wycenę.</a></p>
 <noscript><p>Do przeliczania ceny suwakiem potrzebny jest JavaScript. Podaj liczbę magnesów w formularzu, a potwierdzimy cenę mailowo.</p></noscript>
 </div>
 </div>
