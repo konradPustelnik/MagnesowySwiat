@@ -71,6 +71,8 @@ Kontrola SEO obejmuje też unikalność tytułów i opisów, wymagany tytuł str
 
 Aktualizacja cennika 9 listopada 2026: test nr 7 sprawdza suwak 10–1000 sztuk, ceny jednostkowe i sumy na granicach progów co 5 sztuk (10/14/15/19/20/24/25/55/59/60/61), minimum 10 zł także przy 200 i 1000 sztukach, obsługę klawiatury oraz przeniesienie ilości do formularza. Cena maleje o 20 gr co 5 sztuk od 12 zł, z minimum 10 zł. Zastępuje wcześniejsze kafelki i liniową wycenę zaokrąglaną do pełnych złotych.
 
+Oba formularze mają opcjonalne pole „Kod rabatowy”. Testy rzeczywistego lokalnego POST sprawdzają jego opcjonalność i dokładne przesłanie kodu (także ze spacją i znakiem `&`) w formularzu na żywo oraz zamówieniu multipart. Kod jest przekazywany do indywidualnej weryfikacji; kalkulator nie nalicza automatycznie rabatu.
+
 ## Ograniczenia
 
 - Testy opisują zachowanie sprawdzanej wersji w chwili uruchomienia. Nie gwarantują przyszłej dostępności FormSubmit, Gmaila, DNS ani GitHub Pages.

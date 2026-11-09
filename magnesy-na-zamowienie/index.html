@@ -244,6 +244,11 @@
 <div class="field"><label for="f-post-office">Poczta (nazwa miejscowości)</label><input id="f-post-office" name="Poczta" type="text" maxlength="150" placeholder="np. Limanowa"></div>
 </div></fieldset>
 <fieldset class="field--full purchase-document"><legend>Dokument zakupu</legend><div class="document-options"><label class="document-option"><input id="document-receipt" type="radio" name="Dokument zakupu" value="Paragon" checked><span>Paragon</span></label><label class="document-option"><input id="document-invoice" type="radio" name="Dokument zakupu" value="Faktura imienna"><span>Faktura imienna</span></label></div></fieldset><div class="field field--full">
+<label for="f-discount-code">Kod rabatowy (opcjonalnie)</label>
+<input id="f-discount-code" name="Kod rabatowy" type="text" maxlength="100" spellcheck="false" aria-describedby="discount-code-help">
+<p id="discount-code-help" class="field-hint">Jeśli masz kod, wpisz go tutaj. Jego ważność i wysokość rabatu potwierdzimy w odpowiedzi na zapytanie. Kalkulator pokazuje cenę przed rabatem.</p>
+</div>
+<div class="field field--full">
 <label for="f-message">Uwagi do zamówienia</label>
 <textarea id="f-message" name="Uwagi do zamówienia" rows="4" maxlength="5000">
 </textarea>
