@@ -352,6 +352,37 @@ class BrowserTests(unittest.TestCase):
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
+    def test_discount_code_dialog_and_calculator(self):
+        from selenium.webdriver.common.by import By
+        d = self.driver
+        for page in PAGES[1:]:
+            d.get(self.base + page)
+            field = d.find_element(By.ID, 'f-discount-code')
+            field.send_keys(' TeSt ')
+            button = d.find_element(By.ID, 'apply-discount')
+            d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', button)
+            button.click()
+            self.assertTrue(d.find_element(By.ID, 'info-dialog').get_attribute('open'))
+            self.assertIn('10%', d.find_element(By.ID, 'info-title').text)
+            self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '10')
+            d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
+            if page == PAGES[2]:
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,80 zł')
+                self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text, '108,00 zł')
+                d.execute_script('const s=document.getElementById("magnet-quantity");s.value=200;s.dispatchEvent(new Event("input"))')
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '9,09 zł')
+                self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text.replace('\u00a0', ''), '1818,00 zł')
+            field.clear()
+            field.send_keys('invalid')
+            self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '0')
+            self.assertIn('nieprawidłowy', d.find_element(By.ID, 'discount-status').text)
+            if page == PAGES[2]:
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,10 zł')
+            # Configuration remains editable without changing the mechanism.
+            d.execute_script('window.MAGNET_DISCOUNTS=[{code:"nowy",percent:15}]')
+            field.clear(); field.send_keys('nowy')
+            self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '15')
+
     def test_reservation_special_characters_and_package(self):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import Select
@@ -369,7 +400,7 @@ class BrowserTests(unittest.TestCase):
         d.find_element(By.ID,'f-date').send_keys('01012099')
         discount = d.find_element(By.ID, 'f-discount-code')
         self.assertFalse(discount.get_attribute('required'))
-        discount.send_keys('TEST & LIVE-20')
+        discount.send_keys('TEST')
         Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
         d.find_element(By.NAME,'consent').click()
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
@@ -377,7 +408,8 @@ class BrowserTests(unittest.TestCase):
         data=self.server.submission
         self.assertEqual(data['Wiadomość'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
         self.assertEqual(data['Wybrany pakiet'],['Gold'])
-        self.assertEqual(data['Kod rabatowy'], ['TEST & LIVE-20'])
+        self.assertEqual(data['Kod rabatowy'], ['TEST'])
+        self.assertEqual(data['Rabat (%)'], ['10'])
         self.assertEqual(data['email'],['test@example.com'])
         self.assertEqual(data['_captcha'],['false'])
         self.assertEqual(data['_template'],['table'])
@@ -545,6 +577,7 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(self.server.submission['Poczta'],['Poczta testowa'])
             self.assertEqual(self.server.submission['Dokument zakupu'],['Faktura imienna'])
             self.assertEqual(self.server.submission['Kod rabatowy'], ['TEST & FOTO-10'])
+            self.assertEqual(self.server.submission['Rabat (%)'], ['0'])
             self.assertEqual(self.server.submission['_subject'],['[NA ZAMÓWIENIE] Zapytanie o magnesy ze zdjęć | Magnesowy Świat'])
             self.assertEqual(self.server.submission['Rodzaj zapytania'],['Magnesy na zamówienie ze zdjęć'])
             self.assertIn('test.png: 3 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])

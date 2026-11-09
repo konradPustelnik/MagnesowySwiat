@@ -80,22 +80,55 @@ document.querySelectorAll('[data-lightbox]').forEach(button => {
 document.querySelectorAll('[data-package]').forEach(link => link.addEventListener('click', () => {
   document.getElementById('f-package').value = link.dataset.package;
 }));
+let discountPercent = 0;
+const discountInput = document.getElementById('f-discount-code');
+if (discountInput) {
+  const form = discountInput.closest('form');
+  const discountValue = document.createElement('input');
+  discountValue.type = 'hidden'; discountValue.name = 'Rabat (%)'; discountValue.value = '0';
+  form.append(discountValue);
+  const applyDiscount = () => {
+    const code = discountInput.value.trim().toLowerCase();
+    const match = (window.MAGNET_DISCOUNTS || []).find(item =>
+      typeof item.code === 'string' && item.code.trim().toLowerCase() === code &&
+      Number.isFinite(item.percent) && item.percent > 0 && item.percent <= 100);
+    discountPercent = match ? match.percent : 0;
+    discountValue.value = String(discountPercent);
+    document.getElementById('discount-status').textContent = match
+      ? `Kod aktywny: ${discountPercent}% rabatu na magnesy. Dostawa i dojazd nie są objęte rabatem.`
+      : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
+    document.dispatchEvent(new Event('magnet-discount-change'));
+  };
+  discountInput.addEventListener('input', applyDiscount);
+  document.getElementById('apply-discount').addEventListener('click', () => {
+    applyDiscount();
+    document.getElementById('info-title').textContent = discountPercent ? `Rabat ${discountPercent}%` : 'Kod rabatowy';
+    document.getElementById('info-body').textContent = document.getElementById('discount-status').textContent || 'Wpisz kod rabatowy.';
+    document.getElementById('info-dialog').showModal();
+  });
+  form.addEventListener('submit', applyDiscount);
+  form.addEventListener('reset', () => setTimeout(applyDiscount, 0));
+  applyDiscount();
+}
 const magnetSlider = document.getElementById('magnet-quantity');
 if (magnetSlider) {
   const formatPrice = value => new Intl.NumberFormat('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value) + ' zł';
   const updateMagnetPrice = () => {
     const count = Number(magnetSlider.value);
     const unitPriceGrosze = Math.max(1000, 1200 - Math.floor((count - 10) / 10) * 10);
-    const unitPrice = unitPriceGrosze / 100;
+    const discountedUnitGrosze = Math.round(unitPriceGrosze * (100 - discountPercent) / 100);
+    const unitPrice = discountedUnitGrosze / 100;
     document.getElementById('magnet-count').value = count;
     document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
-    document.getElementById('magnet-total-price').textContent = formatPrice(count * unitPriceGrosze / 100);
+    document.getElementById('magnet-total-price').textContent = formatPrice(count * discountedUnitGrosze / 100);
+    document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.` : '';
     const order = document.getElementById('magnet-order');
     order.dataset.quantity = count;
     order.textContent = `Zamów ${count} magnesów`;
     magnetSlider.setAttribute('aria-valuetext', `${count} magnesów, ${unitPrice} zł za sztukę`);
   };
   magnetSlider.addEventListener('input', updateMagnetPrice);
+  document.addEventListener('magnet-discount-change', updateMagnetPrice);
   updateMagnetPrice();
 }
 document.querySelectorAll('[data-quantity]').forEach(link => link.addEventListener('click', () => {

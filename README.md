@@ -87,6 +87,8 @@ Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów 
 
 ## Formularze i prawdziwy test poczty
 
+Oba formularze obsługują kody z `js/discounts.js`; początkowo `test` daje 10% rabatu. Przycisk „Sprawdź kod” pokazuje okienko, kalkulator zamówień uwzględnia rabat, a kod i procent trafiają do zapytania. [Instrukcja zmiany kodów i rabatów](docs/kody-rabatowe.md).
+
 - Oba formularze wysyłają do `https://formsubmit.co/magnesowyswiat@gmail.com` zwykłym HTML POST; brak AJAX.
 - Zapytanie na żywo ma temat `[NA ŻYWO]`, a zamówienie ze zdjęć `[NA ZAMÓWIENIE]`. `_captcha=false` wyłącza obrazkowe zadania; pozostaje pole `_honey`.
 - Formularz zdjęciowy używa `multipart/form-data`: maksymalnie 20 plików JPEG/PNG/WebP, łącznie **10 000 000 bajtów (10 MB)**. Zdjęcia pozostają w pamięci karty do świadomego wysłania i nie trafiają do GitHuba ani localStorage.

@@ -11,7 +11,8 @@
 <link rel="icon" type="image/png" href="../images/logo.png">
 <link rel="stylesheet" href="../css/style.css?v=20261109-logo-slider">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
-<script src="../js/script.js?v=20261109-ten-step-slider" defer>
+<script src="../js/discounts.js?v=20261109-discounts" defer></script>
+<script src="../js/script.js?v=20261109-discounts" defer>
 </script>
 </head>
 <body>
@@ -166,6 +167,7 @@
 <p>Cena za sztukę <strong id="magnet-unit-price">12,00 zł</strong></p>
 <p>Razem za magnesy <strong id="magnet-total-price">120,00 zł</strong></p>
 </div>
+<p id="magnet-discount-note" class="field-hint" role="status"></p>
 <p id="magnet-price-rule" class="field-hint">10 magnesów: 12,00 zł/szt., 20: 11,90 zł/szt., 30: 11,80 zł/szt. Każde kolejne 10 magnesów obniża cenę sztuki o 10 gr. Przy 200 magnesach: 10,10 zł/szt. Dostawa płatna oddzielnie.</p>
 <a class="button" id="magnet-order" data-quantity="10" href="#zamowienie">Zamów 10 magnesów</a>
 <p class="quantity-custom">Potrzebujesz więcej niż 200 magnesów? <a class="text-link" href="mailto:magnesowyswiat@gmail.com">Napisz do nas po indywidualną wycenę.</a></p>
@@ -247,7 +249,9 @@
 <fieldset class="field--full purchase-document"><legend>Dokument zakupu</legend><div class="document-options"><label class="document-option"><input id="document-receipt" type="radio" name="Dokument zakupu" value="Paragon" checked><span>Paragon</span></label><label class="document-option"><input id="document-invoice" type="radio" name="Dokument zakupu" value="Faktura imienna"><span>Faktura imienna</span></label></div></fieldset><div class="field field--full">
 <label for="f-discount-code">Kod rabatowy (opcjonalnie)</label>
 <input id="f-discount-code" name="Kod rabatowy" type="text" maxlength="100" spellcheck="false" aria-describedby="discount-code-help">
-<p id="discount-code-help" class="field-hint">Jeśli masz kod, wpisz go tutaj. Jego ważność i wysokość rabatu potwierdzimy w odpowiedzi na zapytanie. Kalkulator pokazuje cenę przed rabatem.</p>
+<p id="discount-code-help" class="field-hint">Wpisz kod i sprawdź rabat na magnesy. Kalkulator uwzględni rabat; dostawa nie jest nim objęta.</p>
+<button class="button button--outline" id="apply-discount" type="button">Sprawdź kod</button>
+<p id="discount-status" class="field-hint" role="status"></p>
 </div>
 <div class="field field--full">
 <label for="f-message">Uwagi do zamówienia</label>

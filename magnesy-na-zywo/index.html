@@ -11,7 +11,8 @@
 <link rel="icon" type="image/png" href="../images/logo.png">
 <link rel="stylesheet" href="../css/style.css?v=20261109-live-spacing">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
-<script src="../js/script.js?v=20261108-cleanup" defer>
+<script src="../js/discounts.js?v=20261109-discounts" defer></script>
+<script src="../js/script.js?v=20261109-discounts" defer>
 </script>
 </head>
 <body>
@@ -503,7 +504,9 @@
 <div class="field field--full">
 <label for="f-discount-code">Kod rabatowy (opcjonalnie)</label>
 <input id="f-discount-code" name="Kod rabatowy" type="text" maxlength="100" spellcheck="false" aria-describedby="discount-code-help">
-<p id="discount-code-help" class="field-hint">Jeśli masz kod, wpisz go tutaj. Jego ważność i wysokość rabatu potwierdzimy w odpowiedzi na zapytanie.</p>
+<p id="discount-code-help" class="field-hint">Wpisz kod i sprawdź rabat na magnesy. Rabat nie obejmuje dojazdu.</p>
+<button class="button button--outline" id="apply-discount" type="button">Sprawdź kod</button>
+<p id="discount-status" class="field-hint" role="status"></p>
 </div>
 <div class="field field--full">
 <label for="f-message">Dodatkowa wiadomość</label>
