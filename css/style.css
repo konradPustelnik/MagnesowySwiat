@@ -148,6 +148,9 @@ p + p { margin-top: 16px; }
 .step-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
 .process-step { padding-top: 20px; border-top: 1px solid var(--line); }
 .process-step .number { display: block; font: 400 48px/1 var(--serif); color: var(--gold); margin-bottom: 24px; }
+#jak-dzialamy { text-align: center; }
+#jak-dzialamy .section-heading { margin-inline: auto; }
+#jak-dzialamy .process-step .number { font: 600 18px/1.4 var(--sans); margin-bottom: 14px; }
 .process-step h3 { font-size: 27px; margin-bottom: 14px; }
 .process-step p { font-size: 12px; }
 .occasion-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
