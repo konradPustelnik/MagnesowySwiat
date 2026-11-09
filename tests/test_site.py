@@ -220,7 +220,9 @@ class BrowserTests(unittest.TestCase):
                         if name == 'live':
                             image = d.find_element(By.CSS_SELECTOR, selector + ' .hero-image img')
                             image_size = d.execute_script('const r=arguments[0].getBoundingClientRect(); return [r.width,r.height]', image)
-                            self.assertTrue(all(size <= 421 for size in image_size), image_size)
+                            self.assertAlmostEqual(image_size[0] / image_size[1], 1627 / 916, delta=0.01)
+                            column_width = d.execute_script('return arguments[0].parentElement.getBoundingClientRect().width', image)
+                            self.assertAlmostEqual(image_size[0], column_width, delta=1)
                         if name == 'home':
                             widths = [d.execute_script('return arguments[0].getBoundingClientRect().width', choice) for choice in choices]
                             self.assertAlmostEqual(widths[0], widths[1], delta=1)

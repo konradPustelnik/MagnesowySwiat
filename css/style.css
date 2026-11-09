@@ -577,8 +577,8 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .hero--live .hero-story { margin-top: 18px; }
 .hero--live .actions { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 540px; gap: 12px; margin: 22px auto 0; }
 .hero--live .actions .button { width: 100%; padding-inline: 10px; }
-.hero--live .hero-image { width: min(100%, 420px); margin-inline: auto; }
-.hero--live .hero-image > img { max-height: 420px; aspect-ratio: 1672 / 941; object-fit: contain; }
+.hero--live .hero-image { width: 100%; margin-inline: auto; }
+.hero--live .hero-image > img { max-height: none; aspect-ratio: 1627 / 916; object-fit: contain; }
 @media (max-width: 980px) { .hero--compact .hero-grid { gap: 28px; } }
 @media (max-width: 680px) {
  .hero--compact { padding-top: 16px; }
