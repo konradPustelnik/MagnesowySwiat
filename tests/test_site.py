@@ -260,6 +260,24 @@ class BrowserTests(unittest.TestCase):
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
+    def test_process_anchor_keeps_next_heading_below_viewport(self):
+        from selenium.webdriver.support.ui import WebDriverWait
+        d = self.driver
+        try:
+            for width, height in [(1440, 900), (1366, 650), (1192, 580), (390, 844)]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
+                d.get(self.base + 'magnesy-na-zywo/')
+                d.execute_async_script('document.fonts.ready.then(arguments[0])')
+                d.execute_script('document.documentElement.style.scrollBehavior="auto";location.hash="jak-dzialamy"')
+                WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return document.querySelector("#okazje").getBoundingClientRect().top >= innerHeight - 1'))
+                self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
+                d.execute_script('location.hash="okazje"')
+                WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return document.querySelector("#okazje h2").getBoundingClientRect().top < 180'))
+                if width >= 981:
+                    self.assertLessEqual(d.execute_script('return document.querySelectorAll(".live-occasions .occasion-card")[2].getBoundingClientRect().bottom'), height)
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
+
     def test_responsive_menu_and_pages(self):
         from selenium.webdriver.common.by import By
         d=self.driver
