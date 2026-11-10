@@ -647,7 +647,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .live-package-extras h3, .live-custom-offer h3 { font-size: 30px; margin-bottom: 16px; }
 .live-package-extras p, .live-custom-offer p { font-size: 14px; }
 .live-custom-offer { display: flex; justify-content: space-between; align-items: center; gap: 32px; margin-top: 28px; padding: 30px; border: 1px solid var(--gold); }
-.live-custom-offer > div { max-width: 650px; }
+.live-custom-offer > div { max-width: 650px; text-align: center; }
 .live-custom-offer .button { flex-shrink: 0; max-width: 100%; }
 .live-contact-links { list-style: none; padding: 0; font-size: 13px; overflow-wrap: anywhere; }
 .live-contact-links li + li { margin-top: 12px; }
