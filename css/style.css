@@ -151,7 +151,8 @@ p + p { margin-top: 16px; }
 #jak-dzialamy { text-align: center; }
 #okazje > .wrap > .section-heading { margin-inline: auto; text-align: center; }
 #jak-dzialamy .section-heading { margin-inline: auto; }
-#jak-dzialamy .process-step .number { font: 600 18px/1.4 var(--sans); margin-bottom: 14px; }
+#jak-dzialamy .process-step .number,
+.live-differences .benefit-number { display: block; font: 600 18px/1.4 var(--sans); color: var(--gold); margin-bottom: 14px; }
 .process-step h3 { font-size: 27px; margin-bottom: 14px; }
 .process-step p { font-size: 12px; }
 .occasion-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
