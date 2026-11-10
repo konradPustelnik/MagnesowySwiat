@@ -467,7 +467,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .launch-offer .text-link { display: inline-block; margin-top: 10px; font-size: 11px; color: var(--gold-dark); }
 .launch-offer button.text-link { padding: 0; background: transparent; border: 0; font-family: inherit; cursor: pointer; min-height: 44px; }
 #pakiety.section { padding-block: 32px 40px; }
-#pakiety .pricing-intro { grid-template-columns: 1fr minmax(260px, 340px); gap: 24px; margin-bottom: 28px; }
+#pakiety .pricing-intro { grid-template-columns: 1fr minmax(360px, 460px); gap: 24px; margin-bottom: 28px; }
 #pakiety .section-heading { margin-inline: auto; text-align: center; }
 #pakiety .section-heading p { margin-top: 12px; }
 #pakiety .launch-offer { padding: 14px; gap: 12px; text-align: center; }
@@ -475,7 +475,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 @media (max-width: 680px) { .pricing-intro { grid-template-columns: 1fr; gap: 24px; margin-bottom: 32px; } .launch-offer { gap: 18px; padding: 20px; } .launch-discount { font-size: 42px; } }
 @media (max-width: 680px) {
  #pakiety .pricing-intro { grid-template-columns: 1fr; gap: 20px; }
- #pakiety .launch-offer { width: min(100%, 340px); margin-inline: auto; }
+ #pakiety .launch-offer { width: min(100%, 460px); margin-inline: auto; }
 }
 
 @media (min-width: 981px) and (max-width: 1150px) {
