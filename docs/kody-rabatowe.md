@@ -4,7 +4,7 @@ Edytuj wyłącznie listę w `js/discounts.js`, np.:
 
 ```js
 window.MAGNET_DISCOUNTS = [
-  { code: 'NA-START', percent: 20 },
+  { code: 'NA-START', percent: 10 },
   { code: 'WIOSNA', percent: 15 }
 ];
 ```
