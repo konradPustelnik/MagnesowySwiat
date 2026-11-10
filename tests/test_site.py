@@ -308,8 +308,10 @@ class BrowserTests(unittest.TestCase):
                     if page == PAGES[1]:
                         self.assertFalse(d.find_elements(By.ID, 'galeria'))
                         self.assertEqual(len(d.find_elements(By.CSS_SELECTOR, '#jak-dzialamy .process-step')), 3)
-                        self.assertIn('30 km', d.find_element(By.CSS_SELECTOR, '.package-travel').text)
-                        self.assertFalse(d.find_elements(By.CSS_SELECTOR, '.live-package-extras'))
+                        extras = d.find_element(By.CSS_SELECTOR, '.live-package-extras')
+                        self.assertIn('30 km', extras.text)
+                        self.assertIn('10 zł/szt.', extras.text.replace('\u00a0', ' '))
+                        self.assertEqual(len(extras.find_elements(By.TAG_NAME, 'article')), 2)
                         includes = d.find_element(By.CSS_SELECTOR, '.package-includes')
                         prices = d.find_element(By.CSS_SELECTOR, '#pakiety .pricing-grid')
                         self.assertLess(includes.rect['y'], prices.rect['y'])
