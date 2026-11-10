@@ -598,6 +598,10 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .live-differences .section-heading { max-width: 100%; margin: 0 auto 20px; }
 .live-differences .live-intro { margin: 0 auto 24px; }
 .live-differences .benefit { padding-top: 18px; }
+.live-differences .live-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media (max-width: 680px) {
+ .live-differences .live-benefits { grid-template-columns: 1fr; }
+}
 .live-closing { margin-top: 32px; text-align: center; font-family: var(--serif); font-size: 26px; color: var(--gold-dark); }
 .live-occasions { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 20px; }
 .live-occasions .occasion-card img { height: auto; aspect-ratio: 16 / 9; }
