@@ -643,7 +643,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .other-occasions h3 { font-size: 28px; margin-bottom: 14px; }
 .other-occasions p { font-size: 14px; }
 .live-package-extras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px; margin-top: 32px; }
-.live-package-extras article { padding: 28px; background: var(--paper); border: 1px solid var(--line); }
+.live-package-extras article { padding: 28px; background: var(--paper); border: 1px solid var(--line); text-align: center; }
 .live-package-extras h3, .live-custom-offer h3 { font-size: 30px; margin-bottom: 16px; }
 .live-package-extras p, .live-custom-offer p { font-size: 14px; }
 .live-custom-offer { display: flex; justify-content: space-between; align-items: center; gap: 32px; margin-top: 28px; padding: 30px; border: 1px solid var(--gold); }
