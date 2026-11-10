@@ -598,7 +598,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .live-differences .section-heading { max-width: 100%; margin: 0 auto 20px; }
 .live-differences .live-intro { margin: 0 auto 24px; }
 .live-differences .benefit { padding-top: 18px; }
-.live-differences .live-benefits { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.live-differences .live-benefits { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 980px) {
  .live-differences .live-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
