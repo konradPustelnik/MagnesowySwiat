@@ -408,6 +408,10 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .live-business { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; }
 .live-business img { width: 100%; height: 340px; object-fit: cover; }
 .live-business ul { padding-left: 20px; margin-block: 18px; font-size: 13px; color: var(--muted); }
+#oferta-firmowa { padding-block: 32px 40px; text-align: center; }
+#oferta-firmowa .section-heading { margin: 0 auto 24px; }
+#oferta-firmowa .live-business ul { padding-left: 0; list-style-position: inside; }
+#oferta-firmowa .actions { justify-content: center; }
 @media (max-width: 980px) {
  .live-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
  .live-offer-grid { gap: 18px; }
