@@ -278,6 +278,27 @@ class BrowserTests(unittest.TestCase):
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
+    def test_business_event_tiles_fill_reservation(self):
+        from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
+        from selenium.webdriver.support.ui import WebDriverWait
+        d = self.driver
+        for width in [1440, 390]:
+            d.set_window_size(width, 900)
+            d.get(self.base + 'magnesy-na-zywo/')
+            tiles = d.find_elements(By.CSS_SELECTOR, '#oferta-firmowa [data-event]')
+            self.assertEqual(len(tiles), 6)
+            for tile in tiles:
+                expected = tile.get_attribute('data-event')
+                d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', tile)
+                tile.click()
+                WebDriverWait(d, 5).until(lambda browser: browser.current_url.endswith('#rezerwacja'))
+                self.assertEqual(d.find_element(By.ID, 'f-event').get_attribute('value'), expected)
+                self.assertEqual(d.find_element(By.ID, 'f-event').get_attribute('name'), 'Rodzaj wydarzenia')
+            d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', tiles[0])
+            tiles[0].send_keys(Keys.ENTER)
+            self.assertEqual(d.find_element(By.ID, 'f-event').get_attribute('value'), tiles[0].get_attribute('data-event'))
+
     def test_responsive_menu_and_pages(self):
         from selenium.webdriver.common.by import By
         d=self.driver

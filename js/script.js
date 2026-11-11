@@ -80,6 +80,11 @@ document.querySelectorAll('[data-lightbox]').forEach(button => {
 document.querySelectorAll('[data-package]').forEach(link => link.addEventListener('click', () => {
   document.getElementById('f-package').value = link.dataset.package;
 }));
+document.querySelectorAll('[data-event]').forEach(link => link.addEventListener('click', () => {
+  const eventField = document.getElementById('f-event');
+  eventField.value = link.dataset.event;
+  eventField.dispatchEvent(new Event('change', { bubbles: true }));
+}));
 let discountPercent = 0;
 const discountInput = document.getElementById('f-discount-code');
 if (discountInput) {
