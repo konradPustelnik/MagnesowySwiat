@@ -179,7 +179,7 @@ p + p { margin-top: 16px; }
 .page-live #pakiety .price-card .button { align-self: center; }
 .page-live #pakiety .price-tag { left: 50%; transform: translateX(-50%); }
 #rezerwacja { text-align: center; }
-#rezerwacja .form-intro { margin-inline: auto; }
+#rezerwacja .form-intro { width: 100%; margin-inline: auto; text-align: center; }
 #rezerwacja .live-contact-links { justify-content: center; }
 #rezerwacja .field input,
 #rezerwacja .field select,
