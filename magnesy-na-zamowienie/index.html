@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="../css/style.css?v=20261111-order-steps">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
 <script src="../js/discounts.js?v=20261110-na-start-20-restored" defer></script>
-<script src="../js/script.js?v=20261111-order-form" defer>
+<script src="../js/script.js?v=20261111-delivery-fields" defer>
 </script>
 </head>
 <body>
@@ -192,9 +192,9 @@
 </div>
 
 <fieldset class="field--full"><legend>Dane do dostawy</legend><div class="form-grid">
-<div class="field"><label for="f-delivery-address">Miejscowość, ulica i numer domu / lokalu</label><input id="f-delivery-address" name="Adres dostawy" type="text" autocomplete="shipping street-address" maxlength="350"></div>
-<div class="field"><label for="f-postal-code">Kod pocztowy</label><input id="f-postal-code" name="Kod pocztowy" type="text" inputmode="numeric" autocomplete="shipping postal-code" placeholder="00-000" pattern="[0-9]{2}-[0-9]{3}" maxlength="6" title="Wpisz kod pocztowy w formacie 00-000"></div>
-<div class="field"><label for="f-post-office">Poczta (nazwa miejscowości)</label><input id="f-post-office" name="Poczta" type="text" maxlength="150" placeholder="np. Limanowa"></div>
+<div class="field"><label for="f-delivery-town">Miejscowość</label><input id="f-delivery-town" name="Miejscowość dostawy" type="text" autocomplete="shipping address-level2" maxlength="150"></div>
+<div class="field"><label for="f-delivery-street">Ulica i numer domu / lokalu</label><input id="f-delivery-street" name="Ulica i numer domu/lokalu" type="text" autocomplete="shipping street-address" maxlength="200" placeholder="np. Słoneczna 12A/3"></div>
+<div class="field"><label for="f-post-office">Poczta</label><input id="f-post-office" name="Poczta" type="text" maxlength="160" placeholder="00-000 Nazwa miejscowości" pattern="[0-9]{2}-[0-9]{3}\s+\S.*" title="Wpisz kod i miejscowość poczty, np. 34-600 Limanowa"></div>
 </div></fieldset>
 
 <div class="field field--full">

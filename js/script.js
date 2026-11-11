@@ -218,11 +218,14 @@ if (date) {
   if (typeof createPolishDatePicker === 'function') createPolishDatePicker(date, picker, button, today);
 }
 
-const postalCode = document.getElementById('f-postal-code');
+const postalCode = document.getElementById('f-post-office');
 if (postalCode) {
   postalCode.addEventListener('input', () => {
-    const digits = postalCode.value.replace(/\D/g, '').slice(0, 5);
-    postalCode.value = digits.slice(0, 2) + (digits.length > 2 ? '-' + digits.slice(2) : '');
+    const match = postalCode.value.match(/^(\d{2})-?(\d{1,3})(.*)$/);
+    if (match) {
+      const town = match[3];
+      postalCode.value = `${match[1]}-${match[2]}${town && !/^\s/.test(town) && match[2].length === 3 ? ' ' : ''}${town}`;
+    }
   });
 }
 
