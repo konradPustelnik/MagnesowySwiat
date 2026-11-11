@@ -128,7 +128,9 @@ p + p { margin-top: 16px; }
 .footer-grid > div { min-width: 0; }
 .footer-grid > div:not(.footer-brand) { text-align: center; }
 .footer-brand img { width: 200px; height: auto; margin-bottom: 12px; }
-.footer-brand p { max-width: 250px; font-size: 12px; line-height: 1.6; }
+.footer-brand { text-align: center; }
+.footer-brand img { margin-inline: auto; }
+.footer-brand p { max-width: 250px; margin-inline: auto; font-size: 12px; line-height: 1.6; }
 .footer-heading { display: block; font-size: 12px; letter-spacing: .05em; text-transform: uppercase; font-weight: 700; margin-bottom: 10px; }
 .footer-links { display: flex; flex-direction: column; gap: 7px; font-size: 12px; line-height: 1.6; }
 .footer-links > a { display: flex; align-items: center; min-height: 26px; text-align: center; font: inherit; }
