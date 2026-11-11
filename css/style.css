@@ -186,6 +186,8 @@ p + p { margin-top: 16px; }
 #rezerwacja { text-align: center; }
 #rezerwacja .form-intro { width: 100%; margin-inline: auto; text-align: center; }
 #rezerwacja .live-contact-links { justify-content: center; }
+#zamowienie .form-intro { width: 100%; margin-inline: auto; text-align: center; }
+#zamowienie .live-contact-links { justify-content: center; }
 #rezerwacja .field input,
 #rezerwacja .field select,
 #rezerwacja .field textarea { text-align: center; }
