@@ -152,8 +152,8 @@ p + p { margin-top: 16px; }
 #okazje > .wrap > .section-heading { margin-inline: auto; text-align: center; }
 #jak-dzialamy .section-heading, #jak-zamowic .section-heading { margin-inline: auto; }
 #jak-dzialamy .process-step .number,
-#jak-zamowic .process-step .number,
-.live-differences .benefit-number { display: block; font: 600 18px/1.4 var(--sans); color: var(--gold); margin-bottom: 14px; }
+#jak-zamowic .process-step .number { display: block; font: 600 18px/1.4 var(--sans); color: var(--gold); margin-bottom: 14px; }
+.live-differences .benefit-star { display: block; font: 400 28px/1 var(--sans); color: var(--gold); margin-bottom: 14px; }
 .process-step h3 { font-size: 27px; margin-bottom: 14px; }
 .process-step p { font-size: 12px; }
 .occasion-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
@@ -670,9 +670,16 @@ html:has(body.page-live) { scroll-padding-top: var(--live-header-height, 100px);
 .live-differences .benefit { padding-top: 18px; }
 .live-differences .live-benefits { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (min-width: 981px) {
+ .section.live-differences { display: flex; align-items: center; padding-block: 24px; }
+ .live-differences > .wrap { display: grid; gap: clamp(20px, 4vh, 40px); }
+ .live-differences .section-heading { margin-bottom: 0; }
  .live-differences .live-benefits { row-gap: 0; }
  .live-differences .benefit { display: grid; grid-template-rows: subgrid; grid-row: span 3; }
  .live-differences .benefit p { align-self: start; }
+}
+@media (min-width: 981px) and (min-height: 750px) {
+ .live-differences .benefit p { font-size: 14px; }
+ .live-differences .benefit { padding-top: 28px; }
 }
 @media (max-width: 980px) {
  .live-differences .live-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
