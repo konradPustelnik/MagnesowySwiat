@@ -410,9 +410,13 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .live-business ul { padding-left: 20px; margin-block: 18px; font-size: 13px; color: var(--muted); }
 #oferta-firmowa { padding-block: 12px; text-align: center; }
 #oferta-firmowa .section-heading { margin: 0 auto 12px; }
-#oferta-firmowa .business-occasions { display: table; max-width: 100%; margin: 12px auto; padding-left: 18px; text-align: left; }
+#oferta-firmowa .business-occasions { width: 100%; margin: 12px auto; text-align: center; }
 #oferta-firmowa .business-occasions p { font-size: 13px; }
-#oferta-firmowa .live-business ul { padding-left: 0; margin-block: 8px 0; list-style-position: outside; }
+#oferta-firmowa .live-business ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 14px; padding: 0; margin-block: 16px 0; list-style: none; }
+#oferta-firmowa .live-business li { align-self: center; }
+@media (max-width: 680px) {
+ #oferta-firmowa .live-business ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 #oferta-firmowa .live-business p { font-size: 13px; line-height: 1.55; }
 #oferta-firmowa .live-business p + p { margin-top: 10px; }
 #oferta-firmowa .actions { justify-content: center; margin-top: 14px; }
