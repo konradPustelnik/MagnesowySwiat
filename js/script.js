@@ -95,7 +95,7 @@ if (discountInput) {
     discountPercent = match ? match.percent : 0;
     discountValue.value = String(discountPercent);
     document.getElementById('discount-status').textContent = match
-      ? `Kod aktywny: ${discountPercent}% rabatu na magnesy. Dostawa i dojazd nie są objęte rabatem.`
+      ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
       : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
     document.dispatchEvent(new Event('magnet-discount-change'));
   };
