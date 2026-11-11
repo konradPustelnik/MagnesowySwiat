@@ -94,6 +94,7 @@ if (discountInput) {
       Number.isFinite(item.percent) && item.percent > 0 && item.percent <= 100);
     discountPercent = match ? match.percent : 0;
     discountValue.value = String(discountPercent);
+    document.getElementById('discount-code-help').hidden = Boolean(code);
     document.getElementById('discount-status').textContent = match
       ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
       : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';

@@ -19,10 +19,10 @@
 </script>
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" type="image/png" href="../images/logo.png">
-<link rel="stylesheet" href="../css/style.css?v=20261111-contact-icons">
+<link rel="stylesheet" href="../css/style.css?v=20261111-compact-reservation">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
 <script src="../js/discounts.js?v=20261110-na-start-20-restored" defer></script>
-<script src="../js/script.js?v=20261111-discount-confirmation" defer>
+<script src="../js/script.js?v=20261111-compact-discount" defer>
 </script>
 </head>
 <body>
@@ -398,9 +398,11 @@
 <option>Pomóżcie mi wybrać</option>
 </select>
 </div>
-<div class="field field--full">
+<div class="field">
 <label for="f-discount-code">Kod rabatowy</label>
 <input id="f-discount-code" name="Kod rabatowy" type="text" maxlength="100" spellcheck="false" aria-describedby="discount-code-help">
+</div>
+<div class="discount-feedback field--full">
 <p id="discount-code-help" class="field-hint">Wpisz kod i sprawdź rabat na magnesy. Rabat nie obejmuje dojazdu.</p>
 <button class="button button--outline" id="apply-discount" type="button">Sprawdź kod</button>
 <p id="discount-status" class="field-hint" role="status"></p>
