@@ -658,6 +658,7 @@ class BrowserTests(unittest.TestCase):
             self.assertTrue(d.find_element(By.ID, anchor).is_displayed())
     def test_order_preview_counts_delete_and_validation(self):
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
         d=self.driver; d.get(self.base+PAGES[2])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="order"]')
         self.assertFalse(d.find_elements(By.ID,'draft-dialog'))
@@ -703,8 +704,18 @@ class BrowserTests(unittest.TestCase):
             self.assertFalse(discount.get_attribute('required'))
             discount.send_keys('NA-START')
             d.find_element(By.NAME,'consent').click()
+            quantity=d.find_element(By.ID,'f-quantity')
+            quantity.clear(); quantity.send_keys('6')
             d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
-            self.assertIn('__capture',d.current_url)
+            dialog=d.find_element(By.ID,'info-dialog')
+            self.assertTrue(dialog.get_attribute('open'))
+            self.assertIn('Wybrano 6 magnesów',d.find_element(By.ID,'info-body').text)
+            self.assertIn('suma kopii dla 3 zdjęć wynosi 5',d.find_element(By.ID,'info-body').text)
+            self.assertNotIn('__capture',d.current_url)
+            d.find_element(By.CSS_SELECTOR,'#info-dialog [data-close]').click()
+            quantity.clear(); quantity.send_keys('5')
+            d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
+            WebDriverWait(d,5).until(lambda browser: '__capture' in browser.current_url)
             self.assertEqual(len(self.server.uploads),3)
             self.assertEqual([item['filename'] for item in self.server.uploads],['test.png','second.png','third.png'])
             self.assertTrue(all(item['content']==image.read_bytes() for item in self.server.uploads))
@@ -725,6 +736,14 @@ class BrowserTests(unittest.TestCase):
     def test_order_total_attachment_limit(self):
         from selenium.webdriver.common.by import By
         d=self.driver; d.get(self.base+PAGES[2])
+        d.execute_script("""
+          const input=document.getElementById('photos'); const files=new DataTransfer();
+          for (let index=1; index<=21; index++) files.items.add(new File([new Uint8Array([1])],`photo-${index}.png`,{type:'image/png'}));
+          input.files=files.files; input.dispatchEvent(new Event('change'));
+        """)
+        self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),21)
+        self.assertTrue(d.find_element(By.CSS_SELECTOR,'.add-photo').is_displayed())
+        d.get(self.base+PAGES[2])
         d.execute_script("""
           const input=document.getElementById('photos'); const files=new DataTransfer();
           files.items.add(new File([new Uint8Array(6000000)],'first.png',{type:'image/png'}));

@@ -259,7 +259,7 @@ function renderPhotos() {
     });
     card.append(image, name, label, remove); previews.append(card);
   });
-  if (photos.length > 0 && photos.length < 20) {
+  if (photos.length > 0) {
     const add = document.createElement('button');
     add.type = 'button'; add.className = 'add-photo';
     add.textContent = '+ Dodaj następne zdjęcie';
@@ -275,7 +275,6 @@ if (input) {
       if (file.size + photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
         errors.push(`${file.name}: łączny rozmiar zdjęć nie może przekraczać 10 MB. Usuń część zdjęć lub wybierz mniejsze pliki.`); continue;
       }
-      if (photos.length >= 20) { errors.push('Maksymalnie 20 zdjęć.'); break; }
       photos.push({ file, url: URL.createObjectURL(file), count: 1 });
     }
     input.value = '';
@@ -337,8 +336,17 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     if (!photos.length) {
       event.preventDefault(); status.textContent = 'Dodaj przynajmniej jedno zdjęcie.'; input.focus(); return;
     }
-    if (Number(quantity.value) !== photos.reduce((sum, item) => sum + item.count, 0)) {
-      event.preventDefault(); status.textContent = 'Liczba magnesów musi być równa sumie egzemplarzy przy zdjęciach.'; quantity.focus(); return;
+    const requestedQuantity = Number(quantity.value);
+    const copiesTotal = photos.reduce((sum, item) => sum + item.count, 0);
+    if (requestedQuantity !== copiesTotal) {
+      event.preventDefault();
+      const message = `Wybrano ${requestedQuantity} magnesów, ale suma kopii dla ${photos.length} ${photos.length === 1 ? 'zdjęcia' : 'zdjęć'} wynosi ${copiesTotal}. Popraw liczbę magnesów lub liczbę kopii przy zdjęciach.`;
+      status.textContent = message;
+      document.getElementById('info-title').textContent = 'Sprawdź liczbę magnesów';
+      document.getElementById('info-body').textContent = message;
+      const dialog = document.getElementById('info-dialog');
+      if (!dialog.open) dialog.showModal();
+      return;
     }
     if (photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
       event.preventDefault(); status.textContent = 'Łączny rozmiar zdjęć nie może przekraczać 10 MB.'; input.focus(); return;
