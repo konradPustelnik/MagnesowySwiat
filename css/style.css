@@ -201,6 +201,7 @@ form[data-inquiry="live"] #f-message { min-height: 56px; height: 56px; padding: 
 form[data-inquiry="live"] .discount-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
 form[data-inquiry="live"] .discount-feedback .field-hint { font-size: 10px; margin: 0; }
 form[data-inquiry="live"] #discount-status:empty { display: none; }
+form[data-inquiry="live"] .discount-feedback:has(#discount-status:empty) { display: none; }
 @media (min-width: 981px) and (max-height: 700px) {
  #rezerwacja.section { padding-block: 4px; }
  form[data-inquiry="live"] .form-grid { row-gap: 8px; }

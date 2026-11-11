@@ -446,6 +446,7 @@ class BrowserTests(unittest.TestCase):
 
     def test_discount_code_dialog_and_calculator(self):
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.support.ui import WebDriverWait
         d = self.driver
         for page in PAGES[1:]:
             d.get(self.base + page)
@@ -460,9 +461,14 @@ class BrowserTests(unittest.TestCase):
             field = d.find_element(By.ID, 'f-discount-code')
             field.clear()
             field.send_keys(' na-StArT ')
-            button = d.find_element(By.ID, 'apply-discount')
-            d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', button)
-            button.click()
+            if page == PAGES[1]:
+                self.assertFalse(d.find_elements(By.ID, 'apply-discount'))
+                self.assertFalse(d.find_elements(By.ID, 'discount-code-help'))
+                WebDriverWait(d, 5).until(lambda browser: browser.find_element(By.ID, 'info-dialog').get_attribute('open'))
+            else:
+                button = d.find_element(By.ID, 'apply-discount')
+                d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', button)
+                button.click()
             self.assertTrue(d.find_element(By.ID, 'info-dialog').get_attribute('open'))
             self.assertIn('20%', d.find_element(By.ID, 'info-title').text)
             self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '20')
@@ -471,6 +477,10 @@ class BrowserTests(unittest.TestCase):
             self.assertNotIn('Dostawa', confirmation)
             self.assertNotIn('dojazd', confirmation)
             d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
+            if page == PAGES[1]:
+                field.send_keys(' ')
+                d.execute_async_script('setTimeout(arguments[0], 450)')
+                self.assertFalse(d.find_element(By.ID, 'info-dialog').get_attribute('open'))
             if page == PAGES[2]:
                 self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '9,60 zł')
                 self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text, '96,00 zł')
@@ -506,6 +516,9 @@ class BrowserTests(unittest.TestCase):
         discount = d.find_element(By.ID, 'f-discount-code')
         self.assertFalse(discount.get_attribute('required'))
         discount.send_keys('NA-START')
+        from selenium.webdriver.support.ui import WebDriverWait
+        WebDriverWait(d, 5).until(lambda browser: browser.find_element(By.ID, 'info-dialog').get_attribute('open'))
+        d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
         Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
         d.find_element(By.NAME,'consent').click()
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()

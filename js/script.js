@@ -100,6 +100,8 @@ if (discountInput) {
   const discountValue = document.createElement('input');
   discountValue.type = 'hidden'; discountValue.name = 'Rabat (%)'; discountValue.value = '0';
   form.append(discountValue);
+  let discountNoticeTimer;
+  let lastNotifiedCode = '';
   const applyDiscount = () => {
     const code = discountInput.value.trim().toLowerCase();
     const match = (window.MAGNET_DISCOUNTS || []).find(item =>
@@ -107,27 +109,40 @@ if (discountInput) {
       Number.isFinite(item.percent) && item.percent > 0 && item.percent <= 100);
     discountPercent = match ? match.percent : 0;
     discountValue.value = String(discountPercent);
-    document.getElementById('discount-code-help').hidden = Boolean(code);
+    const help = document.getElementById('discount-code-help');
+    if (help) help.hidden = Boolean(code);
     document.getElementById('discount-status').textContent = match
       ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
       : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
     document.dispatchEvent(new Event('magnet-discount-change'));
+    return match;
   };
-  discountInput.addEventListener('input', applyDiscount);
-  document.getElementById('apply-discount').addEventListener('click', () => {
+  const showDiscountNotice = () => {
     applyDiscount();
     document.getElementById('info-title').textContent = discountPercent ? `Rabat ${discountPercent}%` : 'Kod rabatowy';
     document.getElementById('info-body').textContent = document.getElementById('discount-status').textContent || 'Wpisz kod rabatowy.';
-    document.getElementById('info-dialog').showModal();
+    const dialog = document.getElementById('info-dialog');
+    if (!dialog.open) dialog.showModal();
+    if (discountPercent) lastNotifiedCode = discountInput.value.trim().toLowerCase();
+  };
+  discountInput.addEventListener('input', () => {
+    clearTimeout(discountNoticeTimer);
+    const match = applyDiscount();
+    if (!match) lastNotifiedCode = '';
+    if (form.dataset.inquiry === 'live' && match && discountInput.value.trim().toLowerCase() !== lastNotifiedCode) {
+      discountNoticeTimer = setTimeout(showDiscountNotice, 300);
+    }
   });
-  form.addEventListener('submit', applyDiscount);
+  document.getElementById('apply-discount')?.addEventListener('click', showDiscountNotice);
+  form.addEventListener('submit', () => { clearTimeout(discountNoticeTimer); applyDiscount(); });
   document.querySelectorAll('[data-launch-code]').forEach(button => {
     button.addEventListener('click', () => {
       discountInput.value = button.dataset.launchCode;
-      document.getElementById('apply-discount').click();
+      clearTimeout(discountNoticeTimer);
+      showDiscountNotice();
     });
   });
-  form.addEventListener('reset', () => setTimeout(applyDiscount, 0));
+  form.addEventListener('reset', () => { clearTimeout(discountNoticeTimer); lastNotifiedCode = ''; setTimeout(applyDiscount, 0); });
   applyDiscount();
 }
 const magnetSlider = document.getElementById('magnet-quantity');
