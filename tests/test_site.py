@@ -190,7 +190,7 @@ class BrowserTests(unittest.TestCase):
         pages = [
             ('home', '', '.hero--home', [(path, '') for path in home_destinations]),
             ('live', 'magnesy-na-zywo/', '.hero--live', [('/magnesy-na-zywo/', 'pakiety'), ('/magnesy-na-zywo/', 'rezerwacja')]),
-            ('order', 'magnesy-na-zamowienie/', '.hero--order', [('/magnesy-na-zamowienie/', 'zamowienie')]),
+            ('order', 'magnesy-na-zamowienie/', '.hero--order', [('/magnesy-na-zamowienie/', 'cennik'), ('/magnesy-na-zamowienie/', 'zamowienie')]),
         ]
         viewports = [(1440, 900), (1366, 768), (1024, 768), (768, 1024), (390, 844), (360, 740), (320, 640)]
         try:
