@@ -413,7 +413,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 #oferta-firmowa .business-occasions { width: 100%; margin: 12px auto; text-align: center; }
 #oferta-firmowa .business-occasions p { font-size: 13px; }
 #oferta-firmowa .live-business ul { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px 14px; padding: 0; margin-block: 16px 0; list-style: none; }
-#oferta-firmowa .live-business li { align-self: center; }
+#oferta-firmowa .live-business li { display: flex; align-items: center; justify-content: center; padding: 12px 10px; border: 1px solid var(--line); background: var(--paper); min-height: 64px; }
 @media (max-width: 680px) {
  #oferta-firmowa .live-business ul { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
