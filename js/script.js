@@ -129,7 +129,7 @@ if (discountInput) {
     clearTimeout(discountNoticeTimer);
     const match = applyDiscount();
     if (!match) lastNotifiedCode = '';
-    if (form.dataset.inquiry === 'live' && match && discountInput.value.trim().toLowerCase() !== lastNotifiedCode) {
+    if (match && discountInput.value.trim().toLowerCase() !== lastNotifiedCode) {
       discountNoticeTimer = setTimeout(showDiscountNotice, 300);
     }
   });
