@@ -194,9 +194,10 @@ p + p { margin-top: 16px; }
  #rezerwacja.section { padding-block: 12px; }
  #rezerwacja .form-layout { gap: 36px; }
  #rezerwacja .form-intro h2 { font-size: clamp(30px, 2.8vw, 40px); margin-bottom: 14px; }
- form[data-inquiry="live"] textarea { min-height: 64px; height: 64px; }
+ form[data-inquiry="live"] textarea { min-height: 56px; height: 56px; }
  form[data-inquiry="live"] .consent { margin: 0; line-height: 1.4; }
 }
+form[data-inquiry="live"] #f-message { min-height: 56px; height: 56px; padding: 8px 12px; }
 form[data-inquiry="live"] .discount-feedback { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; }
 form[data-inquiry="live"] .discount-feedback .field-hint { font-size: 10px; margin: 0; }
 form[data-inquiry="live"] #discount-status:empty { display: none; }
