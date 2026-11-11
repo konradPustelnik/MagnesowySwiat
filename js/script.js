@@ -104,7 +104,9 @@ if (discountInput) {
   let lastNotifiedCode = '';
   const applyDiscount = () => {
     const code = discountInput.value.trim().toLowerCase();
-    const match = (window.MAGNET_DISCOUNTS || []).find(item =>
+    const codes = form.dataset.inquiry === 'live' ? window.MAGNET_DISCOUNTS_LIVE
+      : form.dataset.inquiry === 'order' ? window.MAGNET_DISCOUNTS_ORDER : [];
+    const match = (Array.isArray(codes) ? codes : []).find(item =>
       typeof item.code === 'string' && item.code.trim().toLowerCase() === code &&
       Number.isFinite(item.percent) && item.percent > 0 && item.percent <= 100);
     discountPercent = match ? match.percent : 0;

@@ -453,6 +453,22 @@ class BrowserTests(unittest.TestCase):
         d = self.driver
         for page in PAGES[1:]:
             d.get(self.base + page)
+            test_code = 'NA-START'
+            config_name = 'MAGNET_DISCOUNTS_LIVE'
+            if page == PAGES[2]:
+                field = d.find_element(By.ID, 'f-discount-code')
+                d.execute_script('window.MAGNET_DISCOUNTS_LIVE=[{code:"NA-START",percent:20}]')
+                field.send_keys('NA-START')
+                d.execute_async_script('setTimeout(arguments[0], 450)')
+                self.assertFalse(d.find_element(By.ID, 'info-dialog').get_attribute('open'))
+                self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '0')
+                self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '12,00 zł')
+                self.assertIn('nieprawidłowy', d.find_element(By.ID, 'discount-status').text)
+                field.clear()
+                # Synthetic order code exists only in this test, never in production.
+                d.execute_script('window.MAGNET_DISCOUNTS_ORDER=[{code:"ORDER-TEST",percent:20}]')
+                test_code = 'ORDER-TEST'
+                config_name = 'MAGNET_DISCOUNTS_ORDER'
             if page == PAGES[1]:
                 promo = d.find_element(By.CSS_SELECTOR, '[data-launch-code]')
                 d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', promo)
@@ -463,7 +479,7 @@ class BrowserTests(unittest.TestCase):
                 d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
             field = d.find_element(By.ID, 'f-discount-code')
             field.clear()
-            field.send_keys(' na-StArT ')
+            field.send_keys(' ' + test_code.swapcase() + ' ')
             self.assertFalse(d.find_elements(By.ID, 'apply-discount'))
             self.assertFalse(d.find_elements(By.ID, 'discount-code-help'))
             WebDriverWait(d, 5).until(lambda browser: browser.find_element(By.ID, 'info-dialog').get_attribute('open'))
@@ -471,7 +487,7 @@ class BrowserTests(unittest.TestCase):
             self.assertIn('20%', d.find_element(By.ID, 'info-title').text)
             self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '20')
             confirmation = d.find_element(By.ID, 'discount-status').text
-            self.assertIn('NA-START jest aktywny', confirmation)
+            self.assertIn(test_code + ' jest aktywny', confirmation)
             self.assertNotIn('Dostawa', confirmation)
             self.assertNotIn('dojazd', confirmation)
             d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
@@ -492,7 +508,7 @@ class BrowserTests(unittest.TestCase):
             if page == PAGES[2]:
                 self.assertEqual(d.find_element(By.ID, 'magnet-unit-price').text, '10,10 zł')
             # Configuration remains editable without changing the mechanism.
-            d.execute_script('window.MAGNET_DISCOUNTS=[{code:"nowy",percent:15}]')
+            d.execute_script('window[arguments[0]]=[{code:"nowy",percent:15}]', config_name)
             field.clear(); field.send_keys('nowy')
             self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '15')
 
@@ -685,7 +701,7 @@ class BrowserTests(unittest.TestCase):
             d.find_element(By.ID,'f-message').send_keys(':()@&%$#*($#^*!@(#&#@%&@(#$@!')
             discount = d.find_element(By.ID, 'f-discount-code')
             self.assertFalse(discount.get_attribute('required'))
-            discount.send_keys('TEST & FOTO-10')
+            discount.send_keys('NA-START')
             d.find_element(By.NAME,'consent').click()
             d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
             self.assertIn('__capture',d.current_url)
@@ -698,7 +714,7 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(self.server.submission['Poczta'],['34-500 Poczta testowa'])
             self.assertNotIn('Dokument zakupu', self.server.submission)
             self.assertNotIn('Sposób dostawy', self.server.submission)
-            self.assertEqual(self.server.submission['Kod rabatowy'], ['TEST & FOTO-10'])
+            self.assertEqual(self.server.submission['Kod rabatowy'], ['NA-START'])
             self.assertEqual(self.server.submission['Rabat (%)'], ['0'])
             self.assertEqual(self.server.submission['_subject'],['[NA ZAMÓWIENIE] Zapytanie o magnesy ze zdjęć | Magnesowy Świat'])
             self.assertEqual(self.server.submission['Rodzaj zapytania'],['Magnesy na zamówienie ze zdjęć'])

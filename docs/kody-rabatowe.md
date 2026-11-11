@@ -1,18 +1,25 @@
-# Zmiana kodów rabatowych
+# Kody rabatowe — osobno dla każdej oferty
 
-Edytuj wyłącznie listę w `js/discounts.js`, np.:
+Każda oferta ładuje wyłącznie własny plik konfiguracji. Kod z jednej listy nie działa w drugiej ofercie.
 
-```js
-window.MAGNET_DISCOUNTS = [
-  { code: 'NA-START', percent: 20 },
-  { code: 'WIOSNA', percent: 15 }
-];
-```
+## Magnesy na żywo
 
-`code` to nazwa kodu, `percent` to liczba procentów większa od 0 i nie większa niż 100. Wielkość liter oraz spacje na początku i końcu nie mają znaczenia. Każdy kod powinien występować raz. Aby wyłączyć promocje, ustaw pustą listę `[]`. Aby wyłączyć pojedynczy kod, usuń jego wpis. Rabaty nie sumują się.
+Edytuj `js/discounts-live.js`, listę `window.MAGNET_DISCOUNTS_LIVE`.
+Aktywny wpis: `{ code: 'NA-START', percent: 20 }`.
+Kod daje 20% wyłącznie na magnesy na żywo, bez dojazdu. Karty pakietów pokazują ceny bazowe; kod i procent są przekazywane w zapytaniu.
 
-Po edycji zmień parametr `?v=` przy `js/discounts.js` w obu podstronach ofert na nową, unikalną wartość, np. datę i godzinę. Opublikuj pliki przez commit i push do `origin/main`. Zmiana obowiązuje po wdrożeniu i ponownym otwarciu strony.
+## Magnesy na zamówienie
 
-W obu formularzach klient może sprawdzić kod przyciskiem i zobaczyć okienko z rabatem. Zmiana wpisanego kodu aktualizuje rabat od razu, także usuwa poprzedni rabat, gdy nowy kod jest błędny lub pusty. Kod oraz `Rabat (%)` trafiają do zapytania. Kalkulator zamówień przelicza cenę jednostkową z zaokrągleniem do groszy i mnoży ją przez liczbę magnesów. Cennik bazowy pozostaje bez zmian; rabat promocyjny może obniżyć końcową cenę poniżej bazowego minimum. Dostawa i dojazd nie są objęte rabatem. Na żywo procent dotyczy wyceny magnesów, bez automatycznej zmiany kart pakietów.
+Edytuj `js/discounts-order.js`, listę `window.MAGNET_DISCOUNTS_ORDER`.
+Obecnie lista jest pusta: `[]`. Nie ma aktywnych kodów dla zamówień. `NA-START` jest odrzucany i nie zmienia ceny.
+Nowe kody dodawaj wyłącznie do tej listy. Aktywny kod zamówień przelicza kalkulator magnesów, bez rabatu na dostawę.
 
-To statyczna strona: konfiguracja kodów jest publiczna, a formularz nie stanowi serwerowej autoryzacji rabatu. Przed potwierdzeniem zamówienia sprawdź kod i procent z zapytania względem aktualnej konfiguracji. Mechanizm nie obsługuje tajnych ani jednorazowych kodów i limitów użyć.
+## Edycja i działanie
+
+Każdy wpis zawiera `code` (nazwę) i `percent` (procent większy od 0, maksymalnie 100). Wielkość liter i skrajne spacje nie mają znaczenia. Pusta lista wyłącza kody dla danej oferty. Rabaty nie sumują się.
+
+Po edycji zmień parametr `?v=` przy odpowiednim pliku konfiguracji w HTML danej oferty. Opublikuj zmianę przez commit i push do `origin/main`.
+
+Wpisanie poprawnego kodu automatycznie otwiera okienko i pokazuje potwierdzenie pod polem. Błędny lub pusty kod usuwa poprzedni rabat. Kod oraz `Rabat (%)` trafiają do formularza. Kalkulator zaokrągla cenę jednostkową po rabacie do groszy i mnoży ją przez liczbę sztuk.
+
+Konfiguracje są publiczne, bo strona jest statyczna. Przed potwierdzeniem realizacji sprawdź kod i procent z zapytania według listy odpowiedniej oferty. Mechanizm nie weryfikuje liczby użyć kodów ani limitu pierwszych trzech zleceń — dostępność promocji potwierdza właściciel.
