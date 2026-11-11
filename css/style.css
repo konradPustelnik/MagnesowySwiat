@@ -173,6 +173,18 @@ p + p { margin-top: 16px; }
 .price-card li + li { margin-top: 8px; }
 .price-card p { font-size: 12px; margin-bottom: 24px; flex: 1; }
 .price-card .button { width: 100%; padding-inline: 10px; }
+.page-live #pakiety .price-card { text-align: center; }
+.page-live #pakiety .price-card ul { justify-content: center; }
+.page-live #pakiety .price-card .button { align-self: center; }
+.page-live #pakiety .price-tag { left: 50%; transform: translateX(-50%); }
+#rezerwacja { text-align: center; }
+#rezerwacja .form-intro { margin-inline: auto; }
+#rezerwacja .live-contact-links { justify-content: center; }
+#rezerwacja .field input,
+#rezerwacja .field select,
+#rezerwacja .field textarea { text-align: center; }
+#rezerwacja .consent,
+#rezerwacja .discount-feedback { justify-content: center; }
 .faq { max-width: 900px; margin: auto; }
 .faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; }
