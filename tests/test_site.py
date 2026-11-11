@@ -278,6 +278,24 @@ class BrowserTests(unittest.TestCase):
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
+    def test_live_sections_do_not_reveal_next_section(self):
+        from selenium.webdriver.support.ui import WebDriverWait
+        d = self.driver
+        try:
+            for width, height in [(1440, 900), (1366, 650), (1192, 580), (390, 844), (320, 740)]:
+                d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
+                d.get(self.base + 'magnesy-na-zywo/')
+                d.execute_async_script('document.fonts.ready.then(arguments[0])')
+                sections = d.execute_script('return [...document.querySelectorAll("main > section")].map(s=>s.id)')
+                self.assertEqual(len(sections), 7)
+                for section_id in sections:
+                    with self.subTest(viewport=(width, height), section=section_id):
+                        d.execute_script('document.documentElement.style.scrollBehavior="auto";location.hash=arguments[0];document.getElementById(arguments[0]).scrollIntoView({behavior:"instant"})', section_id)
+                        WebDriverWait(d, 5).until(lambda browser: browser.execute_script('const s=document.getElementById(arguments[0]);return s.nextElementSibling ? s.nextElementSibling.getBoundingClientRect().top>=innerHeight-1 : document.querySelector(".site-footer").getBoundingClientRect().top>=innerHeight-1', section_id))
+                        self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
+        finally:
+            d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
+
     def test_business_event_tiles_fill_reservation(self):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.keys import Keys
@@ -298,6 +316,7 @@ class BrowserTests(unittest.TestCase):
             d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})', tiles[0])
             tiles[0].send_keys(Keys.ENTER)
             self.assertEqual(d.find_element(By.ID, 'f-event').get_attribute('value'), tiles[0].get_attribute('data-event'))
+        d.set_window_size(1440, 1000)
 
     def test_responsive_menu_and_pages(self):
         from selenium.webdriver.common.by import By

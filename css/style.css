@@ -646,10 +646,8 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 }
 .live-process-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 36px; }
 .section.live-process { padding-bottom: 32px; }
-.section.live-process:target { min-height: calc(100dvh - 100px); }
-@media (max-width: 680px) {
- .section.live-process:target { min-height: calc(100dvh - 88px); }
-}
+html:has(body.page-live) { scroll-padding-top: var(--live-header-height, 100px); }
+.page-live main > section { min-height: calc(100dvh - var(--live-header-height, 100px)); }
 .section.live-occasion-section { padding-block: 12px 20px; }
 .live-occasion-section .section-heading { margin-bottom: 16px; }
 .section.live-differences { padding-block: 28px 40px; text-align: center; }

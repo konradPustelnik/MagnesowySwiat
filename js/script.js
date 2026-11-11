@@ -1,4 +1,12 @@
 'use strict';
+if (document.body.classList.contains('page-live')) {
+  const header = document.querySelector('.site-header');
+  const updateLiveHeaderHeight = () => {
+    document.documentElement.style.setProperty('--live-header-height', `${Math.ceil(header.getBoundingClientRect().height)}px`);
+  };
+  updateLiveHeaderHeight();
+  new ResizeObserver(updateLiveHeaderHeight).observe(header);
+}
 
 // Keep old index.html bookmarks working while showing the directory URL.
 if (['http:', 'https:'].includes(location.protocol) && location.pathname.endsWith('/index.html')) {
