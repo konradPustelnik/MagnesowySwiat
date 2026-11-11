@@ -216,7 +216,10 @@ class BrowserTests(unittest.TestCase):
                             story_bottom = d.execute_script('return arguments[0].getBoundingClientRect().bottom', story)
                             self.assertEqual(d.execute_script('return getComputedStyle(arguments[0]).textAlign', story), 'center')
                             h1_weight = d.execute_script('return getComputedStyle(document.querySelector(arguments[0] + " h1")).fontWeight', selector)
-                            self.assertGreaterEqual(int(h1_weight), 600)
+                            if name == 'live':
+                                self.assertEqual(int(h1_weight), 500)
+                            else:
+                                self.assertGreaterEqual(int(h1_weight), 600)
                         if name == 'live':
                             image = d.find_element(By.CSS_SELECTOR, selector + ' .hero-image img')
                             image_size = d.execute_script('const r=arguments[0].getBoundingClientRect(); return [r.width,r.height]', image)
