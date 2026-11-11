@@ -651,6 +651,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 .hero--live .actions .button { width: 100%; padding-inline: 10px; }
 .hero--live .hero-image { width: 100%; margin-inline: auto; }
 .hero--live .hero-image > img { max-height: none; aspect-ratio: 1627 / 916; object-fit: contain; }
+.hero--order .hero-image > img { max-height: none; aspect-ratio: 1627 / 916; object-fit: contain; }
 @media (max-width: 980px) { .hero--compact .hero-grid { gap: 28px; } }
 @media (max-width: 680px) {
  .hero--compact { padding-top: 16px; }
