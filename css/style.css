@@ -188,6 +188,11 @@ p + p { margin-top: 16px; }
 #rezerwacja .field textarea { text-align: center; }
 #rezerwacja .consent,
 #rezerwacja .discount-feedback { justify-content: center; }
+@media (min-width: 981px) {
+ #rezerwacja { display: flex; align-items: center; }
+ #rezerwacja .form-layout { align-items: center; }
+ #rezerwacja .form-intro { position: static; }
+}
 .faq { max-width: 900px; margin: auto; }
 .faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; }
