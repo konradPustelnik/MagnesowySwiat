@@ -176,7 +176,8 @@ p + p { margin-top: 16px; }
 .price-card .button { width: 100%; padding-inline: 10px; }
 .page-live #pakiety .price-card { text-align: center; }
 .page-live #pakiety .price-card h3 { font-size: 18px; letter-spacing: .1em; }
-.page-live #pakiety .price { font-family: var(--sans); font-weight: 600; font-variant-numeric: tabular-nums; }
+.page-live #pakiety .price { font-family: var(--serif); font-weight: 500; letter-spacing: -.04em; color: var(--gold-dark); }
+.page-live #pakiety .price small { font-family: var(--serif); }
 .page-live #pakiety .price-card ul { justify-content: center; }
 .page-live #pakiety .price-card .button { align-self: center; }
 .page-live #pakiety .price-tag { left: 50%; transform: translateX(-50%); }
