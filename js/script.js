@@ -257,6 +257,13 @@ function renderPhotos() {
     });
     card.append(image, name, label, remove); previews.append(card);
   });
+  if (photos.length > 0 && photos.length < 20) {
+    const add = document.createElement('button');
+    add.type = 'button'; add.className = 'add-photo';
+    add.textContent = '+ Dodaj następne zdjęcie';
+    add.addEventListener('click', () => input.click());
+    previews.append(add);
+  }
 }
 if (input) {
   input.addEventListener('change', () => {
