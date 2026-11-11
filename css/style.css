@@ -416,6 +416,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
 #oferta-firmowa .live-business p { font-size: 13px; line-height: 1.55; }
 #oferta-firmowa .live-business p + p { margin-top: 10px; }
 #oferta-firmowa .actions { justify-content: center; margin-top: 14px; }
+#oferta-firmowa .live-business img { height: auto; aspect-ratio: 1672 / 941; object-fit: contain; }
 @media (max-width: 980px) {
  .live-benefits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
  .live-offer-grid { gap: 18px; }
