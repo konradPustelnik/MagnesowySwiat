@@ -187,6 +187,10 @@ p + p { margin-top: 16px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px 20px; }
 .field { display: flex; flex-direction: column; min-width: 0; gap: 8px; }
 .field--full { grid-column: 1 / -1; }
+@media (min-width: 981px) {
+ form[data-inquiry="live"] .form-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px 14px; }
+ form[data-inquiry="live"] .field:not(.field--full) > label { min-height: 2.8em; }
+}
 .field label, .field-label { font-size: 11px; font-weight: 600; }
 .field input, .field select, .field textarea { width: 100%; min-height: 46px; padding: 11px 12px; border: 1px solid #c8bead; color: var(--ink); background: var(--white); font-size: 13px; }
 .field textarea { min-height: 120px; resize: vertical; }
