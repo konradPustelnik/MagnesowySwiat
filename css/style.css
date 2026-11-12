@@ -778,6 +778,7 @@ html:has(body.page-live) { scroll-padding-top: var(--live-header-height, 100px);
 .page-live main > section { min-height: calc(100dvh - var(--live-header-height, 100px)); }
 html:has(body.page-order) { scroll-padding-top: var(--order-header-height, 100px); }
 .page-order main > section { min-height: calc(100dvh - var(--order-header-height, 100px)); }
+.page-order main > #kontakt.order-contact-banner { min-height: auto; }
 .page-order main > #wyrozniki.order-differences,
 .page-order main > #cennik.section { min-height: calc(100dvh - var(--order-header-height, 100px)); }
 .section.live-occasion-section { padding-block: 24px 20px; }

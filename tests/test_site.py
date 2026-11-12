@@ -309,11 +309,15 @@ class BrowserTests(unittest.TestCase):
                 d.execute_async_script('document.fonts.ready.then(arguments[0])')
                 sections = d.execute_script('return [...document.querySelectorAll("main > section")].map(s=>s.id)')
                 self.assertEqual(len(sections), 7)
-                for section_id in sections:
+                for section_id in sections[:-1]:
                     with self.subTest(viewport=(width, height), section=section_id):
                         d.execute_script('document.documentElement.style.scrollBehavior="auto";location.hash=arguments[0];document.getElementById(arguments[0]).scrollIntoView({behavior:"instant"})', section_id)
                         WebDriverWait(d, 5).until(lambda browser: browser.execute_script('const s=document.getElementById(arguments[0]);return s.nextElementSibling ? s.nextElementSibling.getBoundingClientRect().top>=innerHeight-1 : document.querySelector(".site-footer").getBoundingClientRect().top>=innerHeight-1', section_id))
                         self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
+                if width > 980:
+                    contact_and_footer = d.execute_script('const c=document.getElementById("kontakt").getBoundingClientRect(),f=document.querySelector(".site-footer").getBoundingClientRect();return f.bottom-c.top')
+                    header_height = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().height')
+                    self.assertLessEqual(contact_and_footer, height - header_height + 1)
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
