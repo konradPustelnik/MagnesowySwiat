@@ -209,7 +209,6 @@ p + p { margin-top: 16px; }
 .page-live #pakiety .price-card { text-align: center; }
 .page-live #pakiety .price-card h3 { font-size: 18px; letter-spacing: .1em; }
 .page-live #pakiety .price { font-family: 'Jost', var(--sans); font-size: clamp(50px, 4.2vw, 60px); font-weight: 300; line-height: 1; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -.025em; color: var(--gold-dark); }
-.page-live #pakiety .price--mini { font-family: var(--sans); }
 .page-live #pakiety .price small { display: inline-block; margin-left: .24em; font-family: 'Jost', var(--sans); font-size: 15px; font-weight: 300; letter-spacing: .02em; vertical-align: .2em; }
 .page-live #pakiety .price-card ul { justify-content: center; }
 .page-live #pakiety .price-card .button { align-self: center; }
@@ -223,8 +222,8 @@ p + p { margin-top: 16px; }
 #rezerwacja .field input,
 #rezerwacja .field select,
 #rezerwacja .field textarea { text-align: center; }
-#rezerwacja select { text-align-last: center; }
-#rezerwacja select option { text-align: center; }
+#rezerwacja .field select { text-align: center !important; text-align-last: center !important; }
+#rezerwacja .field select option { text-align: center !important; }
 #rezerwacja .discount-feedback { justify-content: center; }
 @media (min-width: 981px) {
  #rezerwacja { display: flex; align-items: center; }

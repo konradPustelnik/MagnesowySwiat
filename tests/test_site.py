@@ -575,14 +575,17 @@ class BrowserTests(unittest.TestCase):
         d=self.driver; d.get(self.base+PAGES[1])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="live"]')
         mini_price=d.find_element(By.CSS_SELECTOR,'#pakiety .price--mini')
-        mini_quantity=d.find_element(By.CSS_SELECTOR,'#pakiety .price-card:first-child li')
+        standard_price=d.find_element(By.CSS_SELECTOR,'#pakiety .price-card:nth-child(2) .price')
         self.assertIn('1190',mini_price.text)
-        self.assertIn('100 magnesów',mini_quantity.text)
-        self.assertEqual(mini_price.value_of_css_property('font-family'),mini_quantity.value_of_css_property('font-family'))
+        self.assertIn('1490',standard_price.text)
+        for property_name in ['font-family','font-size','font-weight']:
+            self.assertEqual(mini_price.value_of_css_property(property_name),standard_price.value_of_css_property(property_name))
         for field_id in ['f-event', 'f-package']:
             select=d.find_element(By.ID,field_id)
             self.assertEqual(select.value_of_css_property('text-align-last'),'center')
-            self.assertEqual(select.find_element(By.TAG_NAME,'option').value_of_css_property('text-align'),'center')
+            self.assertEqual(select.value_of_css_property('text-align'),'center')
+            for option in select.find_elements(By.TAG_NAME,'option'):
+                self.assertEqual(option.value_of_css_property('text-align'),'center')
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('method'),'post')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
