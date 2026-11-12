@@ -715,6 +715,8 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(d.find_element(By.ID,'photo-picker').text,'Wybierz zdjęcia')
         self.assertFalse(d.find_elements(By.ID,'photo-picker-label'))
         self.assertEqual(d.find_element(By.CSS_SELECTOR,'form button[type=submit]').text,'ZOBACZ PODSUMOWANIE')
+        submit=d.find_element(By.CSS_SELECTOR,'form button[type=submit]')
+        self.assertAlmostEqual(submit.rect['x']+submit.rect['width']/2,form.rect['x']+form.rect['width']/2,delta=1)
         upload=d.find_element(By.CSS_SELECTOR,'.upload-zone')
         delivery_fields=d.find_element(By.CSS_SELECTOR,'fieldset .form-grid')
         message=d.find_element(By.ID,'f-message')
