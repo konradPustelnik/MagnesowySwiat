@@ -126,11 +126,11 @@ p + p { margin-top: 16px; }
 #kontakt.order-contact-banner .wrap > div { max-width: 1100px; }
 #kontakt.order-contact-banner h2,
 #kontakt.order-contact-banner p { margin-inline: auto; }
-.page-order #kontakt.order-contact-banner { padding-block: 22px; }
-.page-order #kontakt.order-contact-banner .wrap { gap: 14px; }
-.page-order #kontakt.order-contact-banner h2 { font-size: clamp(34px, 3vw, 46px); line-height: 1.05; }
-.page-order #kontakt.order-contact-banner p { margin-top: 8px; }
-.page-order #kontakt.order-contact-banner .button { min-height: 44px; padding-block: 9px; }
+.page-order #kontakt.order-contact-banner { padding-block: 34px; }
+.page-order #kontakt.order-contact-banner .wrap { gap: 18px; }
+.page-order #kontakt.order-contact-banner h2 { font-size: clamp(38px, 3.5vw, 52px); line-height: 1.08; }
+.page-order #kontakt.order-contact-banner p { margin-top: 12px; }
+.page-order #kontakt.order-contact-banner .button { min-height: 50px; padding-block: 12px; }
 .page-order .site-footer { padding-top: 14px; }
 .page-order .footer-grid { gap: 20px; padding-bottom: 10px; }
 .page-order .footer-brand img { width: 180px; margin-bottom: 6px; }
