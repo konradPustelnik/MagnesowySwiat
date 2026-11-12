@@ -682,12 +682,16 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('enctype'),'multipart/form-data')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
+        self.assertEqual(d.find_element(By.ID,'photo-picker').text,'Wybierz zdjęcia')
+        self.assertEqual(d.find_element(By.ID,'photo-picker-label').text,'Nie wybrano zdjęć')
+        self.assertEqual(d.find_element(By.ID,'photos').value_of_css_property('opacity'),'0')
         d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
         with tempfile.TemporaryDirectory() as folder:
             image=Path(folder)/'test.png'
             image.write_bytes(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII='))
             d.find_element(By.ID,'photos').send_keys(str(image))
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),1)
+            self.assertEqual(d.find_element(By.ID,'photo-picker-label').text,'Wybrano zdjęć: 1')
             count=d.find_element(By.CSS_SELECTOR,'.photo-preview input')
             d.execute_script("arguments[0].value=3;arguments[0].dispatchEvent(new Event('input'))",count)
             self.assertEqual(d.find_element(By.ID,'f-quantity').get_attribute('value'),'3')

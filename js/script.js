@@ -250,6 +250,8 @@ let photos = [];
 const input = document.getElementById('photos');
 const previews = document.getElementById('photo-previews');
 const quantity = document.getElementById('f-quantity');
+const photoPicker = document.getElementById('photo-picker');
+const photoPickerLabel = document.getElementById('photo-picker-label');
 function showPhotoProblem(title, message) {
   document.getElementById('photo-status').textContent = message;
   document.getElementById('info-title').textContent = title;
@@ -262,6 +264,7 @@ function updateQuantity() {
 }
 function renderPhotos() {
   previews.replaceChildren();
+  if (photoPickerLabel) photoPickerLabel.textContent = photos.length ? `Wybrano zdjęć: ${photos.length}` : 'Nie wybrano zdjęć';
   photos.forEach((item, index) => {
     const card = document.createElement('div'); card.className = 'photo-preview';
     const image = document.createElement('img'); image.src = item.url; image.alt = `Lokalny podgląd: ${item.file.name}`;
@@ -288,6 +291,7 @@ function renderPhotos() {
   }
 }
 if (input) {
+  photoPicker?.addEventListener('click', () => input.click());
   input.addEventListener('change', () => {
     const selectedFiles = [...input.files];
     const unsupported = selectedFiles.some(file => !['image/jpeg', 'image/png', 'image/webp'].includes(file.type));
