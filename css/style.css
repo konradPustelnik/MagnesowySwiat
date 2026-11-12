@@ -169,6 +169,9 @@ p + p { margin-top: 16px; }
 #okazje > .wrap > .section-heading { margin-inline: auto; text-align: center; }
 #jak-dzialamy .section-heading, #jak-zamowic .section-heading { margin-inline: auto; }
 #jak-zamowic .order-process-title { max-width: none; white-space: nowrap; font-size: clamp(14px, 3.8vw, 62px); letter-spacing: -.02em; }
+@media (min-width: 981px) {
+ #jak-zamowic > .wrap { width: calc(100% - 48px); }
+}
 #jak-dzialamy .process-step .number,
 #jak-zamowic .process-step .number { display: block; font: 600 18px/1.4 var(--sans); color: var(--gold); margin-bottom: 14px; }
 .live-differences .benefit-star { display: block; font: 400 28px/1 var(--sans); color: var(--gold); margin-bottom: 14px; }
