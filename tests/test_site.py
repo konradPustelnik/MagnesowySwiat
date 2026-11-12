@@ -830,6 +830,7 @@ class BrowserTests(unittest.TestCase):
             self.assertIn('test.png — 3 szt.',summary.text)
             self.assertIn('napis: Siema Milena',summary.text)
             self.assertIn('napis: Inny napis',summary.text)
+            self.assertNotIn('Napis lub data',summary.text)
             self.assertNotIn('__capture',d.current_url)
             d.find_element(By.ID,'confirm-order-submit').click()
             WebDriverWait(d,5).until(lambda browser: '__capture' in browser.current_url)

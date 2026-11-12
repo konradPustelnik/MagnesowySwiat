@@ -395,6 +395,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
 
   const fieldValue = id => document.getElementById(id)?.value.trim() || '';
   const showOrderSummary = () => {
+    const captionsDiffer = photos.some(item => item.caption.trim() !== fieldValue('f-caption'));
     const list = document.createElement('dl');
     list.className = 'order-summary-list';
     const rows = [
@@ -402,7 +403,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
       ['Adres e-mail', fieldValue('f-email')],
       ['Telefon', fieldValue('f-phone') || 'Nie podano'],
       ['Liczba magnesów', `${fieldValue('f-quantity')} szt.`],
-      ['Napis lub data', fieldValue('f-caption') || 'Nie podano'],
+      ...(!captionsDiffer ? [['Napis lub data', fieldValue('f-caption') || 'Nie podano']] : []),
       ['Kod rabatowy', fieldValue('f-discount-code') || 'Nie podano'],
       ['Miejscowość', fieldValue('f-delivery-town') || 'Nie podano'],
       ['Ulica i numer', fieldValue('f-delivery-street') || 'Nie podano'],
