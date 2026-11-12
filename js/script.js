@@ -93,116 +93,117 @@ document.querySelectorAll('[data-lightbox]').forEach(button => {
     document.getElementById('lightbox').showModal();
   });
 });
-const packageSelect = document.getElementById('f-package');
-if (packageSelect) {
-  const packageField = packageSelect.closest('.field');
-  const packageLabel = packageField.querySelector('label[for="f-package"]');
-  const packageOptions = [...packageSelect.options];
-  let packageActiveIndex = Math.max(packageSelect.selectedIndex, 0);
-  const packageControl = document.createElement('button');
-  const packageList = document.createElement('div');
-  const packageId = 'f-package-control';
-  packageLabel.id = `${packageId}-label`;
-  packageField.classList.add('field--custom-select');
-  packageSelect.classList.add('package-select-hidden');
-  packageSelect.tabIndex = -1;
-  packageSelect.setAttribute('aria-hidden', 'true');
-  packageLabel.htmlFor = packageId;
-  packageControl.type = 'button';
-  packageControl.id = packageId;
-  packageControl.className = 'custom-select-trigger';
-  packageControl.setAttribute('role', 'combobox');
-  packageControl.setAttribute('aria-haspopup', 'listbox');
-  packageControl.setAttribute('aria-expanded', 'false');
-  packageList.className = 'custom-select-options';
-  packageList.id = `${packageId}-options`;
-  packageList.setAttribute('role', 'listbox');
-  packageList.setAttribute('aria-labelledby', packageLabel.id);
-  packageControl.setAttribute('aria-labelledby', packageLabel.id);
-  packageControl.setAttribute('aria-controls', packageList.id);
+const createCenteredSelect = select => {
+  const field = select.closest('.field');
+  const label = field.querySelector(`label[for="${select.id}"]`);
+  const options = [...select.options];
+  const control = document.createElement('button');
+  const list = document.createElement('div');
+  const controlId = `${select.id}-control`;
+  let activeIndex = Math.max(select.selectedIndex, 0);
+  label.id = `${controlId}-label`;
+  field.classList.add('field--custom-select');
+  select.classList.add('native-select-hidden');
+  select.tabIndex = -1;
+  select.setAttribute('aria-hidden', 'true');
+  label.htmlFor = controlId;
+  control.type = 'button';
+  control.id = controlId;
+  control.className = 'custom-select-trigger';
+  control.setAttribute('role', 'combobox');
+  control.setAttribute('aria-haspopup', 'listbox');
+  control.setAttribute('aria-expanded', 'false');
+  control.setAttribute('aria-labelledby', label.id);
+  list.className = 'custom-select-options';
+  list.id = `${controlId}-options`;
+  list.setAttribute('role', 'listbox');
+  list.setAttribute('aria-labelledby', label.id);
+  control.setAttribute('aria-controls', list.id);
 
-  const renderPackageOptions = () => {
-    packageList.replaceChildren();
-    packageOptions.forEach((option, index) => {
+  const renderOptions = () => {
+    list.replaceChildren();
+    options.forEach((option, index) => {
       const item = document.createElement('div');
       item.className = 'custom-select-option';
-      item.id = `${packageId}-option-${index}`;
+      item.id = `${controlId}-option-${index}`;
       item.setAttribute('role', 'option');
-      item.setAttribute('aria-selected', String(option.value === packageSelect.value));
+      item.setAttribute('aria-selected', String(option.value === select.value));
       item.tabIndex = -1;
-      const label = document.createElement('span');
-      label.className = 'custom-select-option-label';
-      label.textContent = option.textContent;
-      item.append(label);
+      const optionLabel = document.createElement('span');
+      optionLabel.className = 'custom-select-option-label';
+      optionLabel.textContent = option.textContent;
+      item.append(optionLabel);
       item.addEventListener('click', () => {
-        packageSelect.value = option.value;
-        packageSelect.dispatchEvent(new Event('change', { bubbles: true }));
-        closePackageOptions(true);
+        select.value = option.value;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        closeOptions(true);
       });
-      packageList.append(item);
+      list.append(item);
     });
-    const selectedIndex = Math.max(packageSelect.selectedIndex, 0);
-    packageControl.textContent = packageOptions[selectedIndex].textContent;
-    packageControl.setAttribute('aria-activedescendant', `${packageId}-option-${selectedIndex}`);
+    const selectedIndex = Math.max(select.selectedIndex, 0);
+    control.textContent = options[selectedIndex].textContent;
+    control.setAttribute('aria-activedescendant', `${controlId}-option-${selectedIndex}`);
   };
-  const openPackageOptions = () => {
-    packageField.classList.add('is-open');
-    packageList.hidden = false;
-    packageControl.setAttribute('aria-expanded', 'true');
-    packageActiveIndex = Math.max(packageSelect.selectedIndex, 0);
-    packageControl.setAttribute('aria-activedescendant', `${packageId}-option-${packageActiveIndex}`);
-    packageList.querySelectorAll('[role="option"]').forEach((option, index) => {
-      option.classList.toggle('is-active', index === packageActiveIndex);
+  const openOptions = () => {
+    field.classList.add('is-open');
+    list.hidden = false;
+    control.setAttribute('aria-expanded', 'true');
+    activeIndex = Math.max(select.selectedIndex, 0);
+    control.setAttribute('aria-activedescendant', `${controlId}-option-${activeIndex}`);
+    list.querySelectorAll('[role="option"]').forEach((option, index) => {
+      option.classList.toggle('is-active', index === activeIndex);
     });
   };
-  const closePackageOptions = focusTrigger => {
-    packageField.classList.remove('is-open');
-    packageList.hidden = true;
-    packageControl.setAttribute('aria-expanded', 'false');
-    if (focusTrigger) packageControl.focus();
+  const closeOptions = focusControl => {
+    field.classList.remove('is-open');
+    list.hidden = true;
+    control.setAttribute('aria-expanded', 'false');
+    if (focusControl) control.focus();
   };
-  packageControl.addEventListener('click', () => {
-    if (packageControl.getAttribute('aria-expanded') === 'true') closePackageOptions(false);
-    else openPackageOptions();
+  control.addEventListener('click', () => {
+    if (control.getAttribute('aria-expanded') === 'true') closeOptions(false);
+    else openOptions();
   });
-  packageControl.addEventListener('keydown', event => {
-    const activeIndex = packageControl.getAttribute('aria-expanded') === 'true'
-      ? packageActiveIndex
-      : Math.max(packageSelect.selectedIndex, 0);
-    let nextIndex = activeIndex;
-    if (event.key === 'ArrowDown') nextIndex = Math.min(activeIndex + 1, packageOptions.length - 1);
-    else if (event.key === 'ArrowUp') nextIndex = Math.max(activeIndex - 1, 0);
+  control.addEventListener('keydown', event => {
+    const currentIndex = control.getAttribute('aria-expanded') === 'true'
+      ? activeIndex
+      : Math.max(select.selectedIndex, 0);
+    let nextIndex = currentIndex;
+    if (event.key === 'ArrowDown') nextIndex = Math.min(currentIndex + 1, options.length - 1);
+    else if (event.key === 'ArrowUp') nextIndex = Math.max(currentIndex - 1, 0);
     else if (event.key === 'Home') nextIndex = 0;
-    else if (event.key === 'End') nextIndex = packageOptions.length - 1;
+    else if (event.key === 'End') nextIndex = options.length - 1;
     else if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault();
-      if (packageControl.getAttribute('aria-expanded') !== 'true') openPackageOptions();
-      else packageList.querySelector(`#${packageId}-option-${packageActiveIndex}`).click();
+      if (control.getAttribute('aria-expanded') !== 'true') openOptions();
+      else list.querySelector(`#${controlId}-option-${activeIndex}`).click();
       return;
     } else if (event.key === 'Escape') {
-      closePackageOptions(false);
+      closeOptions(false);
       return;
     } else return;
     event.preventDefault();
-    if (packageControl.getAttribute('aria-expanded') !== 'true') openPackageOptions();
-    packageActiveIndex = nextIndex;
-    const activeOption = packageList.querySelector(`#${packageId}-option-${nextIndex}`);
-    packageList.querySelectorAll('[role="option"]').forEach(option => option.classList.remove('is-active'));
+    if (control.getAttribute('aria-expanded') !== 'true') openOptions();
+    activeIndex = nextIndex;
+    const activeOption = list.querySelector(`#${controlId}-option-${nextIndex}`);
+    list.querySelectorAll('[role="option"]').forEach(option => option.classList.remove('is-active'));
     activeOption.classList.add('is-active');
-    packageControl.setAttribute('aria-activedescendant', activeOption.id);
+    control.setAttribute('aria-activedescendant', activeOption.id);
     activeOption.scrollIntoView({ block: 'nearest' });
   });
   document.addEventListener('click', event => {
-    if (!packageField.contains(event.target)) closePackageOptions(false);
+    if (!field.contains(event.target)) closeOptions(false);
   });
-  packageField.addEventListener('focusout', event => {
-    if (!packageField.contains(event.relatedTarget)) closePackageOptions(false);
+  field.addEventListener('focusout', event => {
+    if (!field.contains(event.relatedTarget)) closeOptions(false);
   });
-  packageSelect.addEventListener('change', renderPackageOptions);
-  packageField.append(packageControl, packageList);
-  renderPackageOptions();
-  closePackageOptions(false);
-}
+  select.addEventListener('change', renderOptions);
+  field.append(control, list);
+  renderOptions();
+  closeOptions(false);
+};
+document.querySelectorAll('#f-event, #f-package').forEach(createCenteredSelect);
+const packageSelect = document.getElementById('f-package');
 document.querySelectorAll('[data-package]').forEach(link => link.addEventListener('click', () => {
   packageSelect.value = link.dataset.package;
   packageSelect.dispatchEvent(new Event('change', { bubbles: true }));

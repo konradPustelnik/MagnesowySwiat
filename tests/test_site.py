@@ -574,7 +574,6 @@ class BrowserTests(unittest.TestCase):
     def test_reservation_special_characters_and_package(self):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.common.keys import Keys
-        from selenium.webdriver.support.ui import Select
         d=self.driver; d.get(self.base+PAGES[1])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="live"]')
         mini_price=d.find_element(By.CSS_SELECTOR,'#pakiety .price--mini')
@@ -589,19 +588,21 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(select.value_of_css_property('text-align'),'center')
             for option in select.find_elements(By.TAG_NAME,'option'):
                 self.assertEqual(option.value_of_css_property('text-align'),'center')
+        for field_id,first_choice,next_choice in [('f-event','Wesele','Urodziny / osiemnastka'),('f-package','Mini','Standard')]:
+            control=d.find_element(By.ID,field_id+'-control')
+            control.click()
+            option_list=d.find_element(By.ID,field_id+'-control-options')
+            self.assertEqual(option_list.get_attribute('role'),'listbox')
+            for option in option_list.find_elements(By.CSS_SELECTOR,'[role="option"]'):
+                self.assertEqual(option.value_of_css_property('text-align'),'center')
+                label=option.find_element(By.CLASS_NAME,'custom-select-option-label')
+                geometry=d.execute_script('const r=document.createRange();r.selectNodeContents(arguments[0]);const t=r.getBoundingClientRect(),p=arguments[1].getBoundingClientRect();return [t.left,t.width,p.left,p.width]',label,option_list)
+                self.assertLessEqual(abs(geometry[0]+geometry[1]/2-geometry[2]-geometry[3]/2),1,str((option.text,geometry)))
+            option_list.find_element(By.XPATH,f'.//*[@role="option" and normalize-space(.)="{first_choice}"]').click()
+            self.assertEqual(d.find_element(By.ID,field_id).get_attribute('value'),first_choice)
+            control.send_keys(Keys.ARROW_DOWN, Keys.ENTER)
+            self.assertEqual(d.find_element(By.ID,field_id).get_attribute('value'),next_choice)
         package_control=d.find_element(By.ID,'f-package-control')
-        package_control.click()
-        package_list=d.find_element(By.ID,'f-package-control-options')
-        self.assertEqual(package_list.get_attribute('role'),'listbox')
-        for option in package_list.find_elements(By.CSS_SELECTOR,'[role="option"]'):
-            self.assertEqual(option.value_of_css_property('text-align'),'center')
-            label=option.find_element(By.CLASS_NAME,'custom-select-option-label')
-            geometry=d.execute_script('const r=document.createRange();r.selectNodeContents(arguments[0]);const t=r.getBoundingClientRect(),p=arguments[1].getBoundingClientRect(),o=arguments[2].getBoundingClientRect();return [t.left,t.width,p.left,p.width,o.left,o.width,getComputedStyle(arguments[0]).textAlign]',label,package_list,option)
-            self.assertLessEqual(abs(geometry[0]+geometry[1]/2-geometry[2]-geometry[3]/2),1,str((option.text,geometry)))
-        package_list.find_element(By.XPATH,'.//*[@role="option" and normalize-space(.)="Mini"]').click()
-        self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Mini')
-        package_control.send_keys(Keys.ARROW_DOWN, Keys.ENTER)
-        self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Standard')
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('method'),'post')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
@@ -621,7 +622,10 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.support.ui import WebDriverWait
         d.execute_async_script('setTimeout(arguments[0],450)')
         self.assertFalse(d.find_element(By.ID,'info-dialog').get_attribute('open'))
-        Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
+        event_control=d.find_element(By.ID,'f-event-control')
+        event_control.click()
+        d.find_element(By.XPATH,'//*[@id="f-event-control-options"]//*[@role="option" and normalize-space(.)="Wesele"]').click()
+        self.assertEqual(d.find_element(By.ID,'f-event').get_attribute('value'),'Wesele')
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
         self.assertIn('__capture',d.current_url)
         data=self.server.submission
