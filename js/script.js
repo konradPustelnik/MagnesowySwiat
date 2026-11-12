@@ -298,7 +298,7 @@ if (input) {
     const totalBytes = photos.reduce((sum, item) => sum + item.file.size, 0) + selectedFiles.reduce((sum, file) => sum + file.size, 0);
     if (unsupported) {
       input.value = '';
-      showPhotoProblem('Nieprawidłowy format zdjęcia', 'Dodaj zdjęcia w formacie JPEG, PNG lub WebP. Jeśli potrzebujesz pomocy, napisz na magnesowyswiat@gmail.com lub zadzwoń: 505 606 707.');
+      showPhotoProblem('Nieprawidłowy format zdjęcia', 'Dodaj zdjęcia w formacie JPG, PNG lub WebP. Jeśli potrzebujesz pomocy, napisz na magnesowyswiat@gmail.com lub zadzwoń: 505 606 707.');
       return;
     }
     if (totalBytes > MAX_PHOTO_BYTES) {
