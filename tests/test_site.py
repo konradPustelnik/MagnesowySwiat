@@ -278,6 +278,8 @@ class BrowserTests(unittest.TestCase):
                 WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return document.querySelector("#okazje h2").getBoundingClientRect().top < 180'))
                 if width >= 981:
                     self.assertLessEqual(d.execute_script('return document.querySelectorAll(".live-occasions .occasion-card")[2].getBoundingClientRect().bottom'), height)
+                    if height > 700:
+                        self.assertGreaterEqual(d.execute_script('return parseFloat(getComputedStyle(document.querySelector(".live-occasions .occasion-card-content")).paddingBottom)'),36)
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
