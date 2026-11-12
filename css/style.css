@@ -212,6 +212,7 @@ p + p { margin-top: 16px; }
 #rezerwacja .live-contact-links { justify-content: center; }
 #zamowienie .form-intro { width: 100%; margin-inline: auto; text-align: center; }
 #zamowienie .live-contact-links { justify-content: center; }
+.page-order #zamowienie.section { padding-block: 24px; }
 #rezerwacja .field input,
 #rezerwacja .field select,
 #rezerwacja .field textarea { text-align: center; }
