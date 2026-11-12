@@ -22,7 +22,7 @@
 <link rel="stylesheet" href="../css/style.css?v=20261112-complete-order-footer">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
 <script src="../js/discounts-order.js?v=20261112-order-delivery-offer" defer></script>
-<script src="../js/script.js?v=20261112-jpg-label" defer>
+<script src="../js/script.js?v=20261112-order-summary" defer>
 </script>
 </head>
 <body class="page-order">
@@ -150,7 +150,7 @@
 </li>
 </ul>
 </div>
-<form data-inquiry="order" action="https://formsubmit.co/magnesowyswiat@gmail.com" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
+<form id="order-form" data-inquiry="order" action="https://formsubmit.co/magnesowyswiat@gmail.com" method="POST" enctype="multipart/form-data" accept-charset="UTF-8">
 <input type="hidden" name="_subject" value="[NA ZAMÓWIENIE] Zapytanie o magnesy ze zdjęć | Magnesowy Świat">
 <input type="hidden" name="Rodzaj zapytania" value="Magnesy na zamówienie ze zdjęć">
 <input type="hidden" name="_template" value="table">
@@ -215,7 +215,7 @@
 <label class="consent field--full">
 <input type="checkbox" required name="consent" value="Tak"> Wyrażam zgodę na kontakt w sprawie zapytania oraz przesłanie podanych danych i wybranych zdjęć przez FormSubmit w celu jego obsługi.</label>
 <div class="field--full">
-<button class="button" type="submit">WYŚLIJ ZAPYTANIE O ZAMÓWIENIE</button>
+<button class="button" type="submit">ZOBACZ PODSUMOWANIE</button>
 <p class="form-status" role="status">
 </p>
 </div>
@@ -323,6 +323,17 @@
 <button class="dialog-close" data-close aria-label="Zamknij">×</button>
 </div>
 <div class="dialog-body" id="info-body">
+</div>
+</dialog>
+<dialog id="order-summary-dialog" class="order-summary-dialog" aria-labelledby="order-summary-title">
+<div class="dialog-top">
+<h2 id="order-summary-title">Podsumowanie zapytania</h2>
+<button class="dialog-close" type="button" data-close aria-label="Zamknij podsumowanie">×</button>
+</div>
+<div id="order-summary-content" class="order-summary-content"></div>
+<div class="order-summary-actions">
+<button class="button button--outline" type="button" data-close>Wróć i popraw</button>
+<button id="confirm-order-submit" class="button" type="submit" form="order-form">WYŚLIJ ZAPYTANIE</button>
 </div>
 </dialog>
 <dialog class="lightbox" id="lightbox" aria-label="Powiększenie fotografii">

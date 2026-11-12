@@ -363,15 +363,66 @@ if (liveForm) {
 }
 
 document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
+  const summaryDialog = document.getElementById('order-summary-dialog');
+  const summaryContent = document.getElementById('order-summary-content');
+  const confirmSubmit = document.getElementById('confirm-order-submit');
+  let confirmedSubmission = false;
+
+  const fieldValue = id => document.getElementById(id)?.value.trim() || '';
+  const showOrderSummary = () => {
+    const list = document.createElement('dl');
+    list.className = 'order-summary-list';
+    const rows = [
+      ['Imię i nazwisko', fieldValue('f-name')],
+      ['Adres e-mail', fieldValue('f-email')],
+      ['Telefon', fieldValue('f-phone') || 'Nie podano'],
+      ['Liczba magnesów', `${fieldValue('f-quantity')} szt.`],
+      ['Napis lub data', fieldValue('f-caption') || 'Nie podano'],
+      ['Kod rabatowy', fieldValue('f-discount-code') || 'Nie podano'],
+      ['Miejscowość', fieldValue('f-delivery-town') || 'Nie podano'],
+      ['Ulica i numer', fieldValue('f-delivery-street') || 'Nie podano'],
+      ['Poczta', fieldValue('f-post-office') || 'Nie podano'],
+      ['Uwagi', fieldValue('f-message') || 'Brak']
+    ];
+    rows.forEach(([label, value]) => {
+      const term = document.createElement('dt');
+      const detail = document.createElement('dd');
+      term.textContent = label;
+      detail.textContent = value;
+      list.append(term, detail);
+    });
+
+    const photosTitle = document.createElement('h3');
+    photosTitle.textContent = `Zdjęcia (${photos.length})`;
+    const photoList = document.createElement('div');
+    photoList.className = 'order-summary-photos';
+    photos.forEach(item => {
+      const card = document.createElement('div');
+      card.className = 'order-summary-photo';
+      const image = document.createElement('img');
+      image.src = item.url;
+      image.alt = '';
+      const description = document.createElement('p');
+      description.textContent = `${item.file.name} — ${item.count} szt.`;
+      card.append(image, description);
+      photoList.append(card);
+    });
+    summaryContent.replaceChildren(list, photosTitle, photoList);
+    summaryDialog.showModal();
+  };
+
+  summaryDialog?.addEventListener('close', () => { confirmedSubmission = false; });
+  confirmSubmit?.addEventListener('click', () => { confirmedSubmission = true; });
   form.addEventListener('submit', event => {
     const status = form.querySelector('.form-status');
     if (!photos.length) {
-      event.preventDefault(); status.textContent = 'Dodaj przynajmniej jedno zdjęcie.'; input.focus(); return;
+      event.preventDefault(); confirmedSubmission = false; status.textContent = 'Dodaj przynajmniej jedno zdjęcie.'; input.focus(); return;
     }
     const requestedQuantity = Number(quantity.value);
     const copiesTotal = photos.reduce((sum, item) => sum + item.count, 0);
     if (requestedQuantity !== copiesTotal) {
       event.preventDefault();
+      confirmedSubmission = false;
       const message = `Wybrano ${requestedQuantity} magnesów, ale suma kopii dla ${photos.length} ${photos.length === 1 ? 'zdjęcia' : 'zdjęć'} wynosi ${copiesTotal}. Popraw liczbę magnesów lub liczbę kopii przy zdjęciach.`;
       status.textContent = message;
       document.getElementById('info-title').textContent = 'Sprawdź liczbę magnesów';
@@ -382,11 +433,19 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     }
     if (photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
       event.preventDefault();
+      confirmedSubmission = false;
       const message = 'Łączny rozmiar wybranych zdjęć jest za duży. Napisz na magnesowyswiat@gmail.com lub zadzwoń: 505 606 707 — ustalimy wygodny sposób przesłania zdjęć.';
       status.textContent = message;
       showPhotoProblem('Za dużo zdjęć', message);
       return;
     }
+    if (!confirmedSubmission) {
+      event.preventDefault();
+      status.textContent = '';
+      showOrderSummary();
+      return;
+    }
+    summaryDialog?.close();
     const attachments = form.querySelector('[data-attachments]');
     attachments.replaceChildren();
     try {
@@ -398,7 +457,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
         attachments.append(fileInput);
       });
     } catch {
-      event.preventDefault(); attachments.replaceChildren();
+      event.preventDefault(); confirmedSubmission = false; attachments.replaceChildren();
       status.textContent = 'Nie udało się dołączyć zdjęć. Spróbuj w aktualnej przeglądarce lub napisz na magnesowyswiat@gmail.com.'; return;
     }
     document.getElementById('photo-summary').value = photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.`).join('\n');
@@ -407,8 +466,9 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     form.querySelector('[type="submit"]').textContent = 'Przechodzenie do wysyłki…';
   });
   window.addEventListener('pageshow', () => {
+    confirmedSubmission = false;
     form.removeAttribute('aria-busy');
-    form.querySelector('[type="submit"]').textContent = 'WYŚLIJ ZAPYTANIE O ZAMÓWIENIE';
+    form.querySelector('[type="submit"]').textContent = 'ZOBACZ PODSUMOWANIE';
   });
   if (new URLSearchParams(location.search).get('wyslano') === '1') {
     form.querySelector('.form-status').textContent = 'Dziękujemy za kontakt. Cenę i szczegóły zamówienia potwierdzimy mailowo.';
