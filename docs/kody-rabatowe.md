@@ -11,15 +11,15 @@ Kod daje 20% wyłącznie na magnesy na żywo, bez dojazdu. Karty pakietów pokaz
 ## Magnesy na zamówienie
 
 Edytuj `js/discounts-order.js`, listę `window.MAGNET_DISCOUNTS_ORDER`.
-Obecnie lista jest pusta: `[]`. Nie ma aktywnych kodów dla zamówień. `NA-START` jest odrzucany i nie zmienia ceny.
-Nowe kody dodawaj wyłącznie do tej listy. Aktywny kod zamówień przelicza kalkulator magnesów, bez rabatu na dostawę.
+Aktywny kod to `{ code: 'DOSTAWA', type: 'shipping' }`. Zapewnia darmową dostawę na terenie Polski; nie zmienia ceny magnesów.
+`NA-START` nie działa dla zamówień. Nowe kody dodawaj wyłącznie do tej listy.
 
 ## Edycja i działanie
 
-Każdy wpis zawiera `code` (nazwę) i `percent` (procent większy od 0, maksymalnie 100). Wielkość liter i skrajne spacje nie mają znaczenia. Pusta lista wyłącza kody dla danej oferty. Rabaty nie sumują się.
+Każdy wpis zawiera `code` (nazwę) oraz albo `percent` (procent większy od 0, maksymalnie 100), albo `type: 'shipping'` (darmowa dostawa, wyłącznie dla zamówień). Wielkość liter i skrajne spacje nie mają znaczenia. Pusta lista wyłącza kody dla danej oferty. Rabaty nie sumują się.
 
 Po edycji zmień parametr `?v=` przy odpowiednim pliku konfiguracji w HTML danej oferty. Opublikuj zmianę przez commit i push do `origin/main`.
 
-Wpisanie poprawnego kodu automatycznie otwiera okienko i pokazuje potwierdzenie pod polem. Błędny lub pusty kod usuwa poprzedni rabat. Kod oraz `Rabat (%)` trafiają do formularza. Kalkulator zaokrągla cenę jednostkową po rabacie do groszy i mnoży ją przez liczbę sztuk.
+Wpisanie poprawnego kodu automatycznie otwiera okienko i pokazuje potwierdzenie pod polem. Błędny lub pusty kod usuwa poprzedni rabat. Kod oraz `Rabat (%)` trafiają do formularza; kod `DOSTAWA` przekazuje dodatkowo `Darmowa dostawa: Tak`. Kalkulator zaokrągla procentowo obniżoną cenę jednostkową do groszy i mnoży ją przez liczbę sztuk.
 
 Konfiguracje są publiczne, bo strona jest statyczna. Przed potwierdzeniem realizacji sprawdź kod i procent z zapytania według listy odpowiedniej oferty. Mechanizm nie weryfikuje liczby użyć kodów ani limitu pierwszych trzech zleceń — dostępność promocji potwierdza właściciel.

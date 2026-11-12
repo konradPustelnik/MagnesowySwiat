@@ -71,7 +71,7 @@ Kontrola SEO obejmuje też unikalność tytułów i opisów, wymagany tytuł str
 
 Aktualizacja cennika 9 listopada 2026: test nr 7 sprawdza wszystkie 20 pozycji suwaka 10–200 sztuk co 10 magnesów, ceny jednostkowe malejące od 12,00 zł o 10 gr na krok (200 sztuk po 10,10 zł), sumy, obsługę klawiatury, limit 200, logo na uchwycie oraz przeniesienie ilości do formularza. Zastępuje wcześniejsze zasady wyceny.
 
-Oba formularze mają opcjonalne pole „Kod rabatowy”. Testy rzeczywistego lokalnego POST sprawdzają jego opcjonalność i przesłanie kodu. Dodatkowy test `test_discount_code_dialog_and_calculator` sprawdza kod `test` (10%), wielkość liter i spacje, okienko, przeliczenie kalkulatora, anulowanie rabatu błędnym kodem oraz zmianę konfiguracji na inny kod i procent. Łącznie zestaw obejmuje teraz 20 testów. Instrukcja: [kody rabatowe](kody-rabatowe.md).
+Oba formularze mają opcjonalne pole „Kod rabatowy”. Testy rzeczywistego lokalnego POST sprawdzają jego opcjonalność i przesłanie kodu. Dodatkowy test `test_discount_code_dialog_and_calculator` sprawdza kod `DOSTAWA` (darmowa dostawa bez zmiany ceny magnesów), układ i aktywację oferty, kod procentowy, wielkość liter i spacje, okienko, przeliczenie kalkulatora, anulowanie rabatu błędnym kodem oraz zmianę konfiguracji na inny kod i procent. Instrukcja: [kody rabatowe](kody-rabatowe.md).
 
 Aktualizacja suwaka: wybór co 1 sztukę w zakresie 10–200. Cena bazowa spada o 10 gr co 10 magnesów od 12 zł, z osobnym końcowym progiem 200 sztuk po 10 zł. Testy obejmują ilości między progami, 199/200 sztuk, obsługę klawiatury co 1 sztukę, usunięcie opisu oraz rabat 10% od końcowej ceny (200 sztuk po 9 zł). To zastępuje poprzedni zakres testu co 10 sztuk.
 

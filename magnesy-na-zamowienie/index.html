@@ -19,10 +19,10 @@
 </script>
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" type="image/png" href="../images/logo.png">
-<link rel="stylesheet" href="../css/style.css?v=20261111-order-delivery-offer">
+<link rel="stylesheet" href="../css/style.css?v=20261112-order-delivery-offer">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
-<script src="../js/discounts-order.js?v=20261111-separate-discounts" defer></script>
-<script src="../js/script.js?v=20261111-order-quantity-check" defer>
+<script src="../js/discounts-order.js?v=20261112-order-delivery-offer" defer></script>
+<script src="../js/script.js?v=20261112-order-delivery-offer" defer>
 </script>
 </head>
 <body>
@@ -95,10 +95,21 @@
 </section>
 <section id="cennik" class="section section--soft">
 <div class="wrap">
+<div class="pricing-intro order-pricing-intro">
 <div class="section-heading">
 <p class="eyebrow">Cennik magnesów na zamówienie</p>
 <h2>Im więcej magnesów, tym korzystniejsza cena!</h2>
 <p>Wybierz liczbę magnesów za pomocą suwaka i sprawdź, ile zapłacisz za swoje zamówienie. Im więcej zamawiasz, tym mniej płacisz za sztukę!</p>
+</div>
+<aside class="launch-offer order-delivery-offer" aria-label="Rabat na darmową dostawę">
+<strong class="launch-discount">DOSTAWA</strong>
+<div>
+<p class="eyebrow">Kod rabatowy</p>
+<p class="launch-title">Darmowa dostawa na terenie Polski</p>
+<p class="launch-description">Wpisz kod DOSTAWA w formularzu zamówienia, aby skorzystać z darmowej dostawy.</p>
+<button class="text-link" type="button" data-launch-code="DOSTAWA">Użyj kodu DOSTAWA →</button>
+</div>
+</aside>
 </div>
 <div class="quantity-calculator" data-quantity-calculator>
 <label for="magnet-quantity">Liczba magnesów: <output id="magnet-count" for="magnet-quantity">10</output></label>

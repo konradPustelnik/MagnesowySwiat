@@ -94,12 +94,18 @@ document.querySelectorAll('[data-event]').forEach(link => link.addEventListener(
   eventField.dispatchEvent(new Event('change', { bubbles: true }));
 }));
 let discountPercent = 0;
+let freeDelivery = false;
 const discountInput = document.getElementById('f-discount-code');
 if (discountInput) {
   const form = discountInput.closest('form');
   const discountValue = document.createElement('input');
   discountValue.type = 'hidden'; discountValue.name = 'Rabat (%)'; discountValue.value = '0';
   form.append(discountValue);
+  const deliveryValue = form.dataset.inquiry === 'order' ? document.createElement('input') : null;
+  if (deliveryValue) {
+    deliveryValue.type = 'hidden'; deliveryValue.name = 'Darmowa dostawa'; deliveryValue.value = 'Nie';
+    form.append(deliveryValue);
+  }
   let discountNoticeTimer;
   let lastNotifiedCode = '';
   const applyDiscount = () => {
@@ -108,24 +114,30 @@ if (discountInput) {
       : form.dataset.inquiry === 'order' ? window.MAGNET_DISCOUNTS_ORDER : [];
     const match = (Array.isArray(codes) ? codes : []).find(item =>
       typeof item.code === 'string' && item.code.trim().toLowerCase() === code &&
-      Number.isFinite(item.percent) && item.percent > 0 && item.percent <= 100);
-    discountPercent = match ? match.percent : 0;
+      ((Number.isFinite(item.percent) && item.percent > 0 && item.percent <= 100) ||
+        (form.dataset.inquiry === 'order' && item.type === 'shipping')));
+    freeDelivery = Boolean(match && form.dataset.inquiry === 'order' && match.type === 'shipping');
+    discountPercent = match && !freeDelivery ? match.percent : 0;
     discountValue.value = String(discountPercent);
+    if (deliveryValue) deliveryValue.value = freeDelivery ? 'Tak' : 'Nie';
     const help = document.getElementById('discount-code-help');
     if (help) help.hidden = Boolean(code);
     document.getElementById('discount-status').textContent = match
-      ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
+      ? freeDelivery
+        ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — darmowa dostawa.`
+        : `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
       : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
     document.dispatchEvent(new Event('magnet-discount-change'));
     return match;
   };
   const showDiscountNotice = () => {
     applyDiscount();
-    document.getElementById('info-title').textContent = discountPercent ? `Rabat ${discountPercent}%` : 'Kod rabatowy';
+    document.getElementById('info-title').textContent = freeDelivery ? 'Darmowa dostawa'
+      : discountPercent ? `Rabat ${discountPercent}%` : 'Kod rabatowy';
     document.getElementById('info-body').textContent = document.getElementById('discount-status').textContent || 'Wpisz kod rabatowy.';
     const dialog = document.getElementById('info-dialog');
     if (!dialog.open) dialog.showModal();
-    if (discountPercent) lastNotifiedCode = discountInput.value.trim().toLowerCase();
+    if (discountPercent || freeDelivery) lastNotifiedCode = discountInput.value.trim().toLowerCase();
   };
   discountInput.addEventListener('input', () => {
     clearTimeout(discountNoticeTimer);
@@ -164,7 +176,8 @@ if (magnetSlider) {
     document.getElementById('magnet-count').value = bulk ? '200+' : count;
     document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
     document.getElementById('magnet-total-price').textContent = valid ? formatPrice(count * discountedUnitGrosze / 100) : '—';
-    document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.` : '';
+    document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.`
+      : freeDelivery ? 'Kod DOSTAWA zapewnia darmową dostawę.' : '';
     const order = document.getElementById('magnet-order');
     order.dataset.quantity = valid ? count : '';
     order.textContent = valid ? `Zamów ${count} magnesów` : 'Podaj liczbę magnesów';
