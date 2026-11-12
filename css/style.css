@@ -153,6 +153,7 @@ p + p { margin-top: 16px; }
 #jak-dzialamy, #jak-zamowic { text-align: center; }
 #okazje > .wrap > .section-heading { margin-inline: auto; text-align: center; }
 #jak-dzialamy .section-heading, #jak-zamowic .section-heading { margin-inline: auto; }
+#jak-zamowic .heading-number { display: inline-block; font-family: 'Jost', var(--sans); font-size: .78em; font-weight: 400; line-height: 1; letter-spacing: 0; vertical-align: .05em; }
 #jak-dzialamy .process-step .number,
 #jak-zamowic .process-step .number { display: block; font: 600 18px/1.4 var(--sans); color: var(--gold); margin-bottom: 14px; }
 .live-differences .benefit-star { display: block; font: 400 28px/1 var(--sans); color: var(--gold); margin-bottom: 14px; }
@@ -268,13 +269,14 @@ legend { font-family: var(--serif); font-size: 28px; padding: 0 0 20px; }
 .quantity-calculator { max-width: 850px; margin-inline: auto; padding: clamp(22px, 4vw, 42px); border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
 #cennik.section { min-height: calc(100dvh - 100px); display: flex; align-items: center; padding-block: 24px; text-align: center; overflow-anchor: none; }
 #cennik .section-heading { margin: 0 auto 24px; }
+#cennik .section-heading > p:last-child { font-size: 16px; line-height: 1.65; }
 #cennik .field input { text-align: center; }
 @media (min-width: 981px) and (max-height: 1000px) {
  #cennik.section { padding-block: 8px; }
  #cennik .section-heading { margin-bottom: 12px; }
  #cennik .section-heading .eyebrow { margin-bottom: 6px; }
  #cennik h2 { font-size: 34px; }
- #cennik .section-heading > p:last-child { margin-top: 6px; font-size: 12px; }
+ #cennik .section-heading > p:last-child { margin-top: 6px; font-size: 14px; }
  #cennik .quantity-calculator { padding: 16px 24px; }
  #cennik .quantity-calculator > label { font-size: 18px; line-height: 1.4; }
  #cennik input[type="range"] { height: 60px; margin-top: 4px; }
