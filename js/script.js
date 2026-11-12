@@ -131,11 +131,11 @@ if (discountInput) {
     const help = document.getElementById('discount-code-help');
     if (help) help.hidden = Boolean(code);
     discountInput.classList.toggle('discount-valid', Boolean(match));
-    if (code && !match) discountInput.setAttribute('aria-invalid', 'true');
+    const invalidMessage = code && !match ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
+    discountInput.setCustomValidity(invalidMessage);
+    if (invalidMessage) discountInput.setAttribute('aria-invalid', 'true');
     else discountInput.removeAttribute('aria-invalid');
-    document.getElementById('discount-status').textContent = match
-      ? ''
-      : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
+    document.getElementById('discount-status').textContent = invalidMessage;
     document.dispatchEvent(new Event('magnet-discount-change'));
     return match;
   };
@@ -150,15 +150,21 @@ if (discountInput) {
       : document.getElementById('discount-status').textContent || 'Wpisz kod rabatowy.';
     const dialog = document.getElementById('info-dialog');
     if (!dialog.open) dialog.showModal();
-    if (discountPercent || freeDelivery) lastNotifiedCode = discountInput.value.trim().toLowerCase();
+    lastNotifiedCode = discountInput.value.trim().toLowerCase();
   };
   discountInput.addEventListener('input', () => {
     clearTimeout(discountNoticeTimer);
     const match = applyDiscount();
-    if (!match) lastNotifiedCode = '';
-    if (match && discountInput.value.trim().toLowerCase() !== lastNotifiedCode) {
+    const code = discountInput.value.trim().toLowerCase();
+    if (!code) lastNotifiedCode = '';
+    if (code && code !== lastNotifiedCode) {
       discountNoticeTimer = setTimeout(showDiscountNotice, 300);
     }
+  });
+  discountInput.addEventListener('invalid', event => {
+    event.preventDefault();
+    showDiscountNotice();
+    discountInput.focus();
   });
   document.getElementById('apply-discount')?.addEventListener('click', showDiscountNotice);
   form.addEventListener('submit', () => { clearTimeout(discountNoticeTimer); applyDiscount(); });
