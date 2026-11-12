@@ -703,6 +703,9 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(d.find_element(By.ID,'photo-picker').text,'Wybierz zdjęcia')
         self.assertEqual(d.find_element(By.ID,'photo-picker-label').text,'Nie wybrano zdjęć')
         self.assertEqual(d.find_element(By.CSS_SELECTOR,'form button[type=submit]').text,'ZOBACZ PODSUMOWANIE')
+        for field_id in ['f-name','f-email','f-phone','f-quantity','f-caption','f-discount-code','photos','f-delivery-town','f-delivery-street','f-post-office','f-message']:
+            label=d.find_element(By.CSS_SELECTOR,f'label[for="{field_id}"]')
+            self.assertEqual(label.value_of_css_property('text-align'),'center')
         self.assertEqual(d.find_element(By.ID,'photos').value_of_css_property('opacity'),'0')
         d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
         with tempfile.TemporaryDirectory() as folder:
