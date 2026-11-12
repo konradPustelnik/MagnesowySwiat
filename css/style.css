@@ -153,7 +153,6 @@ p + p { margin-top: 16px; }
 #jak-dzialamy, #jak-zamowic { text-align: center; }
 #okazje > .wrap > .section-heading { margin-inline: auto; text-align: center; }
 #jak-dzialamy .section-heading, #jak-zamowic .section-heading { margin-inline: auto; }
-#jak-zamowic .heading-number { display: inline-block; font-family: 'Jost', var(--sans); font-size: .78em; font-weight: 400; line-height: 1; letter-spacing: 0; vertical-align: .05em; }
 #jak-dzialamy .process-step .number,
 #jak-zamowic .process-step .number { display: block; font: 600 18px/1.4 var(--sans); color: var(--gold); margin-bottom: 14px; }
 .live-differences .benefit-star { display: block; font: 400 28px/1 var(--sans); color: var(--gold); margin-bottom: 14px; }
