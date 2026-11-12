@@ -304,6 +304,7 @@ legend { font-family: var(--serif); font-size: 28px; padding: 0 0 20px; }
 .add-photo { min-height: 100px; align-self: start; padding: 20px 12px; border: 1px dashed var(--gold); background: var(--paper); color: var(--gold-dark); font-weight: 600; }
 .add-photo:hover { background: var(--cream); }
 .photo-preview label { font-size: 10px; display: block; }
+.photo-preview label + label { margin-top: 10px; }
 .photo-preview input { width: 100%; border: 1px solid var(--line); padding: 5px; margin-top: 4px; }
 .remove-photo { border: 0; background: transparent; color: var(--muted); font-size: 10px; text-decoration: underline; padding: 8px 0 0; }
 .quantity-calculator { max-width: 850px; margin-inline: auto; padding: clamp(22px, 4vw, 42px); border: 1px solid var(--line); border-radius: 12px; background: var(--paper); }
