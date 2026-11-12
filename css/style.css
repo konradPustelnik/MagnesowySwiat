@@ -215,6 +215,7 @@ p + p { margin-top: 16px; }
  #rezerwacja .form-intro { position: static; }
 }
 .faq { max-width: 900px; margin: auto; }
+#faq .section-heading { margin-inline: auto; text-align: center; }
 .faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; }
 .faq summary::-webkit-details-marker { display: none; }
