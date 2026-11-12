@@ -264,10 +264,11 @@ class BrowserTests(unittest.TestCase):
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
     def test_process_anchor_keeps_next_heading_below_viewport(self):
+        from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import WebDriverWait
         d = self.driver
         try:
-            for width, height in [(1440, 900), (1440, 667), (1366, 650), (1192, 580), (390, 844)]:
+            for width, height in [(1800, 718), (1440, 900), (1440, 667), (1366, 650), (1192, 580), (390, 844)]:
                 d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
                 d.get(self.base + 'magnesy-na-zywo/')
                 d.execute_async_script('document.fonts.ready.then(arguments[0])')
@@ -277,11 +278,14 @@ class BrowserTests(unittest.TestCase):
                 d.execute_script('location.hash="okazje"')
                 WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return document.querySelector("#okazje h2").getBoundingClientRect().top < 180'))
                 if width >= 981:
-                    self.assertLessEqual(d.execute_script('return document.querySelectorAll(".live-occasions .occasion-card")[2].getBoundingClientRect().bottom'), height)
+                    cards = d.find_elements(By.CSS_SELECTOR, '.live-occasions .occasion-card')
+                    self.assertLessEqual(d.execute_script('return arguments[0].getBoundingClientRect().bottom', cards[2]), height)
+                    visible_gap = d.execute_script('const card=arguments[0],text=card.querySelector(".occasion-card-content p:last-child"),spacer=card.querySelector(".occasion-card-spacer");return card.getBoundingClientRect().bottom-text.getBoundingClientRect().bottom', cards[2])
                     if height > 700:
-                        self.assertGreaterEqual(d.execute_script('return parseFloat(getComputedStyle(document.querySelector(".live-occasions .occasion-card-content")).paddingBottom)'),80)
+                        self.assertGreaterEqual(visible_gap, 52)
                     elif height > 660:
-                        self.assertGreaterEqual(d.execute_script('return parseFloat(getComputedStyle(document.querySelector(".live-occasions .occasion-card-content")).paddingBottom)'),60)
+                        self.assertGreaterEqual(visible_gap, 26)
+                    self.assertTrue(all(card.find_elements(By.CSS_SELECTOR, '.occasion-card-spacer') for card in cards))
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
