@@ -714,8 +714,10 @@ class BrowserTests(unittest.TestCase):
         upload=d.find_element(By.CSS_SELECTOR,'.upload-zone')
         delivery_fields=d.find_element(By.CSS_SELECTOR,'fieldset .form-grid')
         self.assertLessEqual(upload.rect['width'],680)
+        self.assertLessEqual(upload.rect['height'],80)
         self.assertLessEqual(delivery_fields.rect['y']-(upload.rect['y']+upload.rect['height']),30)
-        for field_id in ['f-name','f-email','f-phone','f-quantity','f-caption','f-discount-code','photos','f-delivery-town','f-delivery-street','f-post-office','f-message']:
+        self.assertEqual(d.find_element(By.ID,'photos').get_attribute('aria-label'),'Dodaj zdjęcia')
+        for field_id in ['f-name','f-email','f-phone','f-quantity','f-caption','f-discount-code','f-delivery-town','f-delivery-street','f-post-office','f-message']:
             label=d.find_element(By.CSS_SELECTOR,f'label[for="{field_id}"]')
             self.assertEqual(label.value_of_css_property('text-align'),'center')
         self.assertEqual(d.find_element(By.ID,'photos').value_of_css_property('opacity'),'0')
