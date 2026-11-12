@@ -315,8 +315,10 @@ class BrowserTests(unittest.TestCase):
                         WebDriverWait(d, 5).until(lambda browser: browser.execute_script('const s=document.getElementById(arguments[0]);return s.nextElementSibling ? s.nextElementSibling.getBoundingClientRect().top>=innerHeight-1 : document.querySelector(".site-footer").getBoundingClientRect().top>=innerHeight-1', section_id))
                         self.assertLessEqual(d.execute_script('return document.documentElement.scrollWidth'), width + 1)
                 if width > 980:
+                    faq_height = d.execute_script('return document.getElementById("faq").getBoundingClientRect().height')
                     contact_and_footer = d.execute_script('const c=document.getElementById("kontakt").getBoundingClientRect(),f=document.querySelector(".site-footer").getBoundingClientRect();return f.bottom-c.top')
                     header_height = d.execute_script('return document.querySelector(".site-header").getBoundingClientRect().height')
+                    self.assertLessEqual(faq_height, height - header_height + 1)
                     self.assertLessEqual(contact_and_footer, height - header_height + 1)
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})

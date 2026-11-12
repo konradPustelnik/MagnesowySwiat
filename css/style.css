@@ -223,9 +223,9 @@ p + p { margin-top: 16px; }
  #rezerwacja .form-intro { position: static; }
 }
 .faq { max-width: 900px; margin: auto; }
-#faq.section { padding-block: 32px; }
-#faq .section-heading { margin: 0 auto 24px; text-align: center; }
-.faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
+#faq.section { padding-block: 20px; }
+#faq .section-heading { margin: 0 auto 14px; text-align: center; }
+.faq details { padding: 14px 0; border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: center; align-items: center; position: relative; gap: 20px; padding-inline: 40px; cursor: pointer; text-align: center; font-size: 14px; font-weight: 600; list-style: none; }
 .faq summary::-webkit-details-marker { display: none; }
 .faq summary::after { content: '+'; position: absolute; right: 0; font: 400 25px var(--serif); color: var(--gold-dark); }
@@ -481,7 +481,7 @@ dialog::backdrop { background: rgba(31,29,24,.64); }
   .price-card ul { display: flex; gap: 24px; flex-wrap: wrap; }
   .price-card li + li { margin-top: 0; }
   .price-card .button { width: fit-content; min-width: 170px; }
-  .faq details { padding-block: 18px; }
+  .faq details { padding-block: 14px; }
   .faq summary { font-size: 12px; }
   .faq details p { font-size: 12px; }
   .form-grid { grid-template-columns: 1fr; gap: 18px; }
