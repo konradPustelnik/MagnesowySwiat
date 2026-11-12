@@ -131,11 +131,8 @@ if (discountInput) {
     const help = document.getElementById('discount-code-help');
     if (help) help.hidden = Boolean(code);
     discountInput.classList.toggle('discount-valid', Boolean(match));
-    const invalidMessage = code && !match ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
-    discountInput.setCustomValidity(invalidMessage);
-    if (invalidMessage) discountInput.setAttribute('aria-invalid', 'true');
-    else discountInput.removeAttribute('aria-invalid');
-    document.getElementById('discount-status').textContent = invalidMessage;
+    discountInput.removeAttribute('aria-invalid');
+    document.getElementById('discount-status').textContent = '';
     document.dispatchEvent(new Event('magnet-discount-change'));
     return match;
   };
@@ -154,26 +151,19 @@ if (discountInput) {
   };
   discountInput.addEventListener('input', () => {
     clearTimeout(discountNoticeTimer);
-    const match = applyDiscount();
+    applyDiscount();
     const code = discountInput.value.trim().toLowerCase();
     if (!code) lastNotifiedCode = '';
-    if (match && code !== lastNotifiedCode) {
-      discountNoticeTimer = setTimeout(showDiscountNotice, 300);
-    }
-  });
-  discountInput.addEventListener('blur', () => {
-    clearTimeout(discountNoticeTimer);
-    const code = discountInput.value.trim().toLowerCase();
-    const match = applyDiscount();
-    if (code && !match && code !== lastNotifiedCode) showDiscountNotice();
-  });
-  discountInput.addEventListener('invalid', event => {
-    event.preventDefault();
-    showDiscountNotice();
-    discountInput.focus();
   });
   document.getElementById('apply-discount')?.addEventListener('click', showDiscountNotice);
-  form.addEventListener('submit', () => { clearTimeout(discountNoticeTimer); applyDiscount(); });
+  form.addEventListener('submit', () => {
+    clearTimeout(discountNoticeTimer);
+    const match = applyDiscount();
+    if (discountInput.value.trim() && !match) {
+      discountInput.value = '';
+      applyDiscount();
+    }
+  });
   document.querySelectorAll('[data-launch-code]').forEach(button => {
     button.addEventListener('click', () => {
       discountInput.value = button.dataset.launchCode;
