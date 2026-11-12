@@ -157,9 +157,15 @@ if (discountInput) {
     const match = applyDiscount();
     const code = discountInput.value.trim().toLowerCase();
     if (!code) lastNotifiedCode = '';
-    if (code && code !== lastNotifiedCode) {
+    if (match && code !== lastNotifiedCode) {
       discountNoticeTimer = setTimeout(showDiscountNotice, 300);
     }
+  });
+  discountInput.addEventListener('blur', () => {
+    clearTimeout(discountNoticeTimer);
+    const code = discountInput.value.trim().toLowerCase();
+    const match = applyDiscount();
+    if (code && !match && code !== lastNotifiedCode) showDiscountNotice();
   });
   discountInput.addEventListener('invalid', event => {
     event.preventDefault();
