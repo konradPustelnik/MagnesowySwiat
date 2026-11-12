@@ -220,7 +220,8 @@ p + p { margin-top: 16px; }
  #rezerwacja .form-intro { position: static; }
 }
 .faq { max-width: 900px; margin: auto; }
-#faq .section-heading { margin-inline: auto; text-align: center; }
+#faq.section { padding-block: 32px; }
+#faq .section-heading { margin: 0 auto 24px; text-align: center; }
 .faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
 .faq summary { display: flex; justify-content: center; align-items: center; position: relative; gap: 20px; padding-inline: 40px; cursor: pointer; text-align: center; font-size: 14px; font-weight: 600; list-style: none; }
 .faq summary::-webkit-details-marker { display: none; }
