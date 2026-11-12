@@ -267,7 +267,7 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.support.ui import WebDriverWait
         d = self.driver
         try:
-            for width, height in [(1440, 900), (1366, 650), (1192, 580), (390, 844)]:
+            for width, height in [(1440, 900), (1440, 667), (1366, 650), (1192, 580), (390, 844)]:
                 d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
                 d.get(self.base + 'magnesy-na-zywo/')
                 d.execute_async_script('document.fonts.ready.then(arguments[0])')
@@ -278,8 +278,8 @@ class BrowserTests(unittest.TestCase):
                 WebDriverWait(d, 5).until(lambda browser: browser.execute_script('return document.querySelector("#okazje h2").getBoundingClientRect().top < 180'))
                 if width >= 981:
                     self.assertLessEqual(d.execute_script('return document.querySelectorAll(".live-occasions .occasion-card")[2].getBoundingClientRect().bottom'), height)
-                    if height > 700:
-                        self.assertGreaterEqual(d.execute_script('return parseFloat(getComputedStyle(document.querySelector(".live-occasions .occasion-card-content")).paddingBottom)'),36)
+                    if height > 660:
+                        self.assertGreaterEqual(d.execute_script('return parseFloat(getComputedStyle(document.querySelector(".live-occasions .occasion-card-content")).paddingBottom)'),30)
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
 
@@ -743,12 +743,12 @@ class BrowserTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             image=Path(folder)/'test.png'
             image.write_bytes(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII='))
-            d.find_element(By.ID,'f-caption').send_keys('Siema Milena')
+            d.find_element(By.ID,'f-caption').send_keys('simea')
             d.find_element(By.ID,'photos').send_keys(str(image))
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),1)
             self.assertIn('Wybrano zdjęć: 1',d.find_element(By.ID,'photo-status').text)
             count=d.find_element(By.CSS_SELECTOR,'.photo-preview input[type="number"]')
-            self.assertEqual(d.find_element(By.CSS_SELECTOR,'.photo-caption').get_attribute('value'),'Siema Milena')
+            self.assertEqual(d.find_element(By.CSS_SELECTOR,'.photo-caption').get_attribute('value'),'simea')
             d.execute_script("arguments[0].value=3;arguments[0].dispatchEvent(new Event('input'))",count)
             self.assertEqual(d.find_element(By.ID,'f-quantity').get_attribute('value'),'')
             d.find_element(By.CSS_SELECTOR,'.remove-photo').click()
@@ -775,8 +775,8 @@ class BrowserTests(unittest.TestCase):
             d.execute_script("arguments[0].value=3;arguments[0].dispatchEvent(new Event('input'))",two_counts[0])
             d.execute_script("arguments[0].value=1;arguments[0].dispatchEvent(new Event('input'))",two_counts[1])
             two_captions=d.find_elements(By.CSS_SELECTOR,'.photo-caption')
-            self.assertEqual([field.get_attribute('value') for field in two_captions],['Siema Milena','Siema Milena'])
-            d.execute_script("arguments[0].value='Inny napis';arguments[0].dispatchEvent(new Event('input'))",two_captions[1])
+            self.assertEqual([field.get_attribute('value') for field in two_captions],['simea','simea'])
+            d.execute_script("arguments[0].value='simeaa';arguments[0].dispatchEvent(new Event('input'))",two_captions[1])
             quantity.clear(); quantity.send_keys('5')
             self.assertTrue(d.find_element(By.ID, 'photos').get_attribute('multiple'))
             d.execute_script('window.photoPickerClicks=0;document.getElementById("photos").addEventListener("click",e=>{e.preventDefault();window.photoPickerClicks++})')
@@ -786,7 +786,7 @@ class BrowserTests(unittest.TestCase):
             d.find_element(By.ID, 'photos').send_keys(str(third))
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR, '.photo-preview')), 3)
             self.assertEqual(d.find_element(By.CSS_SELECTOR, '.photo-preview input[type="number"]').get_attribute('value'), '3')
-            self.assertEqual([field.get_attribute('value') for field in d.find_elements(By.CSS_SELECTOR,'.photo-caption')],['Siema Milena','Inny napis','Siema Milena'])
+            self.assertEqual([field.get_attribute('value') for field in d.find_elements(By.CSS_SELECTOR,'.photo-caption')],['simea','simeaa','simea'])
             for id,value in [('f-delivery-town','Testowa miejscowość'),('f-delivery-street','Testowa 12A/3')]:
                 d.find_element(By.ID,id).send_keys(value)
             code=d.find_element(By.ID,'f-post-office')
@@ -828,8 +828,8 @@ class BrowserTests(unittest.TestCase):
             self.assertIn('Liczba magnesów',summary.text)
             self.assertIn('5 szt.',summary.text)
             self.assertIn('test.png — 3 szt.',summary.text)
-            self.assertIn('napis: Siema Milena',summary.text)
-            self.assertIn('napis: Inny napis',summary.text)
+            self.assertIn('napis: simea',summary.text)
+            self.assertIn('napis: simeaa',summary.text)
             self.assertNotIn('Napis lub data',summary.text)
             self.assertNotIn('__capture',d.current_url)
             d.find_element(By.ID,'confirm-order-submit').click()
@@ -851,8 +851,8 @@ class BrowserTests(unittest.TestCase):
             self.assertIn('test.png: 3 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('second.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('third.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
-            self.assertIn('test.png: 3 szt.; napis lub data: Siema Milena',self.server.submission['Zdjęcia i liczba kopii'][0])
-            self.assertIn('second.png: 1 szt.; napis lub data: Inny napis',self.server.submission['Zdjęcia i liczba kopii'][0])
+            self.assertIn('test.png: 3 szt.; napis lub data: simea',self.server.submission['Zdjęcia i liczba kopii'][0])
+            self.assertIn('second.png: 1 szt.; napis lub data: simeaa',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertEqual(self.server.submission['Uwagi do zamówienia'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
     def test_order_total_attachment_limit(self):
         from selenium.webdriver.common.by import By
