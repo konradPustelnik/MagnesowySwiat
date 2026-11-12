@@ -250,6 +250,13 @@ let photos = [];
 const input = document.getElementById('photos');
 const previews = document.getElementById('photo-previews');
 const quantity = document.getElementById('f-quantity');
+function showPhotoProblem(title, message) {
+  document.getElementById('photo-status').textContent = message;
+  document.getElementById('info-title').textContent = title;
+  document.getElementById('info-body').textContent = message;
+  const dialog = document.getElementById('info-dialog');
+  if (!dialog.open) dialog.showModal();
+}
 function updateQuantity() {
   if (quantity && photos.length) quantity.value = photos.reduce((sum, item) => sum + item.count, 0);
 }
@@ -282,16 +289,24 @@ function renderPhotos() {
 }
 if (input) {
   input.addEventListener('change', () => {
-    const errors = [];
-    for (const file of input.files) {
-      if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) { errors.push(`${file.name}: wybierz JPEG, PNG lub WebP.`); continue; }
-      if (file.size + photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
-        errors.push(`${file.name}: łączny rozmiar zdjęć nie może przekraczać 10 MB. Usuń część zdjęć lub wybierz mniejsze pliki.`); continue;
-      }
+    const selectedFiles = [...input.files];
+    const unsupported = selectedFiles.some(file => !['image/jpeg', 'image/png', 'image/webp'].includes(file.type));
+    const totalBytes = photos.reduce((sum, item) => sum + item.file.size, 0) + selectedFiles.reduce((sum, file) => sum + file.size, 0);
+    if (unsupported) {
+      input.value = '';
+      showPhotoProblem('Nieprawidłowy format zdjęcia', 'Dodaj zdjęcia w formacie JPEG, PNG lub WebP. Jeśli potrzebujesz pomocy, napisz na magnesowyswiat@gmail.com lub zadzwoń: 505 606 707.');
+      return;
+    }
+    if (totalBytes > MAX_PHOTO_BYTES) {
+      input.value = '';
+      showPhotoProblem('Za dużo zdjęć', 'Łączny rozmiar wybranych zdjęć jest za duży. Napisz na magnesowyswiat@gmail.com lub zadzwoń: 505 606 707 — ustalimy wygodny sposób przesłania zdjęć.');
+      return;
+    }
+    for (const file of selectedFiles) {
       photos.push({ file, url: URL.createObjectURL(file), count: 1 });
     }
     input.value = '';
-    document.getElementById('photo-status').textContent = errors.join(' ') || `Wybrano zdjęć: ${photos.length}. Łączny rozmiar: ${(photos.reduce((sum, item) => sum + item.file.size, 0) / 1_000_000).toFixed(2)} MB z 10 MB.`;
+    document.getElementById('photo-status').textContent = `Wybrano zdjęć: ${photos.length}. Łączny rozmiar: ${(photos.reduce((sum, item) => sum + item.file.size, 0) / 1_000_000).toFixed(2)} MB z 10 MB.`;
     renderPhotos(); updateQuantity();
   });
   window.addEventListener('pagehide', () => {
@@ -362,7 +377,11 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
       return;
     }
     if (photos.reduce((sum, item) => sum + item.file.size, 0) > MAX_PHOTO_BYTES) {
-      event.preventDefault(); status.textContent = 'Łączny rozmiar zdjęć nie może przekraczać 10 MB.'; input.focus(); return;
+      event.preventDefault();
+      const message = 'Łączny rozmiar wybranych zdjęć jest za duży. Napisz na magnesowyswiat@gmail.com lub zadzwoń: 505 606 707 — ustalimy wygodny sposób przesłania zdjęć.';
+      status.textContent = message;
+      showPhotoProblem('Za dużo zdjęć', message);
+      return;
     }
     const attachments = form.querySelector('[data-attachments]');
     attachments.replaceChildren();

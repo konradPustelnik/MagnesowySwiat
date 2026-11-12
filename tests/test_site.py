@@ -767,8 +767,14 @@ class BrowserTests(unittest.TestCase):
           files.items.add(new File([new Uint8Array(5000000)],'too-large.png',{type:'image/png'}));
           input.files=files.files; input.dispatchEvent(new Event('change'));
         """)
-        self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),1)
-        self.assertIn('10 MB',d.find_element(By.ID,'photo-status').text)
+        self.assertEqual(len(d.find_elements(By.CSS_SELECTOR,'.photo-preview')),0)
+        self.assertTrue(d.find_element(By.ID,'info-dialog').get_attribute('open'))
+        self.assertEqual(d.find_element(By.ID,'info-title').text,'Za dużo zdjęć')
+        message=d.find_element(By.ID,'info-body').text
+        self.assertIn('magnesowyswiat@gmail.com',message)
+        self.assertIn('505 606 707',message)
+        self.assertEqual(message.count('505 606 707'),1)
+        self.assertEqual(d.find_element(By.ID,'photo-status').text,message)
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'[data-attachments] input'))
     def test_return_dialog_countdown_and_manual_home(self):
         from selenium.webdriver.common.by import By
