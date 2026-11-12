@@ -580,8 +580,8 @@ class BrowserTests(unittest.TestCase):
         self.assertFalse(discount.get_attribute('required'))
         discount.send_keys('NA-START')
         from selenium.webdriver.support.ui import WebDriverWait
-        WebDriverWait(d, 5).until(lambda browser: browser.find_element(By.ID, 'info-dialog').get_attribute('open'))
-        d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
+        d.execute_async_script('setTimeout(arguments[0],450)')
+        self.assertFalse(d.find_element(By.ID,'info-dialog').get_attribute('open'))
         Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
         self.assertIn('__capture',d.current_url)
@@ -596,6 +596,7 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(data['Data wydarzenia'],['01/01/2099'])
         self.assertEqual(data['_subject'],['[NA ŻYWO] Zapytanie o termin | Magnesowy Świat'])
         self.assertEqual(data['Rodzaj zapytania'],['Magnesy na żywo'])
+        self.assertNotIn('consent',data)
     def test_footer_icons_stay_small_without_stylesheet(self):
         from selenium.webdriver.common.by import By
         d=self.driver
@@ -835,6 +836,7 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(self.server.submission['Rabat (%)'], ['0'])
             self.assertEqual(self.server.submission['_subject'],['[NA ZAMÓWIENIE] Zapytanie o magnesy ze zdjęć | Magnesowy Świat'])
             self.assertEqual(self.server.submission['Rodzaj zapytania'],['Magnesy na zamówienie ze zdjęć'])
+            self.assertNotIn('consent',self.server.submission)
             self.assertIn('test.png: 3 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('second.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('third.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
