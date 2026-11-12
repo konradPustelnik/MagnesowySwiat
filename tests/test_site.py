@@ -570,6 +570,11 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.support.ui import Select
         d=self.driver; d.get(self.base+PAGES[1])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="live"]')
+        mini_price=d.find_element(By.CSS_SELECTOR,'#pakiety .price--mini')
+        mini_quantity=d.find_element(By.CSS_SELECTOR,'#pakiety .price-card:first-child li')
+        self.assertIn('1190',mini_price.text)
+        self.assertIn('100 magnesów',mini_quantity.text)
+        self.assertEqual(mini_price.value_of_css_property('font-family'),mini_quantity.value_of_css_property('font-family'))
         for field_id in ['f-event', 'f-package']:
             select=d.find_element(By.ID,field_id)
             self.assertEqual(select.value_of_css_property('text-align-last'),'center')
