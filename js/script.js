@@ -93,8 +93,119 @@ document.querySelectorAll('[data-lightbox]').forEach(button => {
     document.getElementById('lightbox').showModal();
   });
 });
+const packageSelect = document.getElementById('f-package');
+if (packageSelect) {
+  const packageField = packageSelect.closest('.field');
+  const packageLabel = packageField.querySelector('label[for="f-package"]');
+  const packageOptions = [...packageSelect.options];
+  let packageActiveIndex = Math.max(packageSelect.selectedIndex, 0);
+  const packageControl = document.createElement('button');
+  const packageList = document.createElement('div');
+  const packageId = 'f-package-control';
+  packageLabel.id = `${packageId}-label`;
+  packageField.classList.add('field--custom-select');
+  packageSelect.classList.add('package-select-hidden');
+  packageSelect.tabIndex = -1;
+  packageSelect.setAttribute('aria-hidden', 'true');
+  packageLabel.htmlFor = packageId;
+  packageControl.type = 'button';
+  packageControl.id = packageId;
+  packageControl.className = 'custom-select-trigger';
+  packageControl.setAttribute('role', 'combobox');
+  packageControl.setAttribute('aria-haspopup', 'listbox');
+  packageControl.setAttribute('aria-expanded', 'false');
+  packageList.className = 'custom-select-options';
+  packageList.id = `${packageId}-options`;
+  packageList.setAttribute('role', 'listbox');
+  packageList.setAttribute('aria-labelledby', packageLabel.id);
+  packageControl.setAttribute('aria-labelledby', packageLabel.id);
+  packageControl.setAttribute('aria-controls', packageList.id);
+
+  const renderPackageOptions = () => {
+    packageList.replaceChildren();
+    packageOptions.forEach((option, index) => {
+      const item = document.createElement('div');
+      item.className = 'custom-select-option';
+      item.id = `${packageId}-option-${index}`;
+      item.setAttribute('role', 'option');
+      item.setAttribute('aria-selected', String(option.value === packageSelect.value));
+      item.tabIndex = -1;
+      const label = document.createElement('span');
+      label.className = 'custom-select-option-label';
+      label.textContent = option.textContent;
+      item.append(label);
+      item.addEventListener('click', () => {
+        packageSelect.value = option.value;
+        packageSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        closePackageOptions(true);
+      });
+      packageList.append(item);
+    });
+    const selectedIndex = Math.max(packageSelect.selectedIndex, 0);
+    packageControl.textContent = packageOptions[selectedIndex].textContent;
+    packageControl.setAttribute('aria-activedescendant', `${packageId}-option-${selectedIndex}`);
+  };
+  const openPackageOptions = () => {
+    packageField.classList.add('is-open');
+    packageList.hidden = false;
+    packageControl.setAttribute('aria-expanded', 'true');
+    packageActiveIndex = Math.max(packageSelect.selectedIndex, 0);
+    packageControl.setAttribute('aria-activedescendant', `${packageId}-option-${packageActiveIndex}`);
+    packageList.querySelectorAll('[role="option"]').forEach((option, index) => {
+      option.classList.toggle('is-active', index === packageActiveIndex);
+    });
+  };
+  const closePackageOptions = focusTrigger => {
+    packageField.classList.remove('is-open');
+    packageList.hidden = true;
+    packageControl.setAttribute('aria-expanded', 'false');
+    if (focusTrigger) packageControl.focus();
+  };
+  packageControl.addEventListener('click', () => {
+    if (packageControl.getAttribute('aria-expanded') === 'true') closePackageOptions(false);
+    else openPackageOptions();
+  });
+  packageControl.addEventListener('keydown', event => {
+    const activeIndex = packageControl.getAttribute('aria-expanded') === 'true'
+      ? packageActiveIndex
+      : Math.max(packageSelect.selectedIndex, 0);
+    let nextIndex = activeIndex;
+    if (event.key === 'ArrowDown') nextIndex = Math.min(activeIndex + 1, packageOptions.length - 1);
+    else if (event.key === 'ArrowUp') nextIndex = Math.max(activeIndex - 1, 0);
+    else if (event.key === 'Home') nextIndex = 0;
+    else if (event.key === 'End') nextIndex = packageOptions.length - 1;
+    else if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      if (packageControl.getAttribute('aria-expanded') !== 'true') openPackageOptions();
+      else packageList.querySelector(`#${packageId}-option-${packageActiveIndex}`).click();
+      return;
+    } else if (event.key === 'Escape') {
+      closePackageOptions(false);
+      return;
+    } else return;
+    event.preventDefault();
+    if (packageControl.getAttribute('aria-expanded') !== 'true') openPackageOptions();
+    packageActiveIndex = nextIndex;
+    const activeOption = packageList.querySelector(`#${packageId}-option-${nextIndex}`);
+    packageList.querySelectorAll('[role="option"]').forEach(option => option.classList.remove('is-active'));
+    activeOption.classList.add('is-active');
+    packageControl.setAttribute('aria-activedescendant', activeOption.id);
+    activeOption.scrollIntoView({ block: 'nearest' });
+  });
+  document.addEventListener('click', event => {
+    if (!packageField.contains(event.target)) closePackageOptions(false);
+  });
+  packageField.addEventListener('focusout', event => {
+    if (!packageField.contains(event.relatedTarget)) closePackageOptions(false);
+  });
+  packageSelect.addEventListener('change', renderPackageOptions);
+  packageField.append(packageControl, packageList);
+  renderPackageOptions();
+  closePackageOptions(false);
+}
 document.querySelectorAll('[data-package]').forEach(link => link.addEventListener('click', () => {
-  document.getElementById('f-package').value = link.dataset.package;
+  packageSelect.value = link.dataset.package;
+  packageSelect.dispatchEvent(new Event('change', { bubbles: true }));
 }));
 document.querySelectorAll('[data-event]').forEach(link => link.addEventListener('click', () => {
   const eventField = document.getElementById('f-event');

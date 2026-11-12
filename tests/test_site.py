@@ -573,6 +573,7 @@ class BrowserTests(unittest.TestCase):
 
     def test_reservation_special_characters_and_package(self):
         from selenium.webdriver.common.by import By
+        from selenium.webdriver.common.keys import Keys
         from selenium.webdriver.support.ui import Select
         d=self.driver; d.get(self.base+PAGES[1])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="live"]')
@@ -588,13 +589,29 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(select.value_of_css_property('text-align'),'center')
             for option in select.find_elements(By.TAG_NAME,'option'):
                 self.assertEqual(option.value_of_css_property('text-align'),'center')
+        package_control=d.find_element(By.ID,'f-package-control')
+        package_control.click()
+        package_list=d.find_element(By.ID,'f-package-control-options')
+        self.assertEqual(package_list.get_attribute('role'),'listbox')
+        for option in package_list.find_elements(By.CSS_SELECTOR,'[role="option"]'):
+            self.assertEqual(option.value_of_css_property('text-align'),'center')
+            label=option.find_element(By.CLASS_NAME,'custom-select-option-label')
+            geometry=d.execute_script('const r=document.createRange();r.selectNodeContents(arguments[0]);const t=r.getBoundingClientRect(),p=arguments[1].getBoundingClientRect(),o=arguments[2].getBoundingClientRect();return [t.left,t.width,p.left,p.width,o.left,o.width,getComputedStyle(arguments[0]).textAlign]',label,package_list,option)
+            self.assertLessEqual(abs(geometry[0]+geometry[1]/2-geometry[2]-geometry[3]/2),1,str((option.text,geometry)))
+        package_list.find_element(By.XPATH,'.//*[@role="option" and normalize-space(.)="Mini"]').click()
+        self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Mini')
+        package_control.send_keys(Keys.ARROW_DOWN, Keys.ENTER)
+        self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Standard')
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('method'),'post')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
         # Redirect only this local test to our receiver, never to FormSubmit.
         d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
-        d.find_element(By.CSS_SELECTOR,'[data-package="Gold"]').click()
+        gold_link=d.find_element(By.CSS_SELECTOR,'[data-package="Gold"]')
+        d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})',gold_link)
+        gold_link.click()
         self.assertEqual(d.find_element(By.ID,'f-package').get_attribute('value'),'Gold')
+        self.assertEqual(package_control.text,'Gold')
         for name,value in [('name','Test lokalny'),('email','test@example.com'),('city','Limanowa'),('guests','100'),('message',':()@&%$#*($#^*!@(#&#@%&@(#$@!')]:
             d.find_element(By.ID,'f-'+name).send_keys(value)
         d.find_element(By.ID,'f-date').send_keys('01012099')
