@@ -19,7 +19,7 @@
 </script>
 <meta name="theme-color" content="#fdfbf7">
 <link rel="icon" type="image/png" href="../images/logo.png">
-<link rel="stylesheet" href="../css/style.css?v=20261112-large-order-steps">
+<link rel="stylesheet" href="../css/style.css?v=20261112-address-before-photos">
 <script src="../js/calendar-pl.js?v=20261108-pl-calendar" defer></script>
 <script src="../js/discounts-order.js?v=20261112-order-delivery-offer" defer></script>
 <script src="../js/script.js?v=20261112-order-sections-one-screen" defer>
@@ -211,16 +211,6 @@
 <div class="discount-feedback field--full">
 <p id="discount-status" class="field-hint" role="status"></p>
 </div>
-<div class="field field--full">
-<div class="upload-zone">
-<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-label="Dodaj zdjęcia" aria-describedby="photo-help">
-<div class="upload-picker"><button id="photo-picker" type="button">Wybierz zdjęcia</button><span id="photo-picker-label">Nie wybrano zdjęć</span></div>
-<p id="photo-help">Możesz dodać więcej niż jedno zdjęcie w formacie JPG, PNG lub WebP, łącznie do 10 MB.</p>
-</div>
-<p id="photo-status" role="status"></p>
-<div class="photo-previews" id="photo-previews"></div>
-</div>
-
 <fieldset class="field--full" aria-label="Dane do dostawy"><div class="form-grid">
 <div class="field"><label for="f-delivery-town">Miejscowość</label><input id="f-delivery-town" name="Miejscowość dostawy" type="text" autocomplete="shipping address-level2" maxlength="150"></div>
 <div class="field"><label for="f-delivery-street">Ulica i numer domu / lokalu</label><input id="f-delivery-street" name="Ulica i numer domu/lokalu" type="text" autocomplete="shipping street-address" maxlength="200" placeholder="np. Słoneczna 12A/3"></div>
@@ -231,6 +221,15 @@
 <label for="f-message">Uwagi do zapytania</label>
 <textarea id="f-message" name="Uwagi do zamówienia" rows="2" maxlength="5000">
 </textarea>
+</div>
+<div class="field field--full">
+<div class="upload-zone">
+<input id="photos" type="file" accept="image/jpeg,image/png,image/webp" multiple aria-label="Dodaj zdjęcia" aria-describedby="photo-help">
+<div class="upload-picker"><button id="photo-picker" type="button">Wybierz zdjęcia</button><span id="photo-picker-label">Nie wybrano zdjęć</span></div>
+<p id="photo-help">Możesz dodać więcej niż jedno zdjęcie w formacie JPG, PNG lub WebP, łącznie do 10 MB.</p>
+</div>
+<p id="photo-status" role="status"></p>
+<div class="photo-previews" id="photo-previews"></div>
 </div>
 <label class="consent field--full">
 <input type="checkbox" required name="consent" value="Tak"> Wyrażam zgodę na kontakt w sprawie zapytania oraz przesłanie podanych danych i wybranych zdjęć przez FormSubmit w celu jego obsługi.</label>

@@ -717,9 +717,11 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(d.find_element(By.CSS_SELECTOR,'form button[type=submit]').text,'ZOBACZ PODSUMOWANIE')
         upload=d.find_element(By.CSS_SELECTOR,'.upload-zone')
         delivery_fields=d.find_element(By.CSS_SELECTOR,'fieldset .form-grid')
+        message=d.find_element(By.ID,'f-message')
         self.assertLessEqual(upload.rect['width'],680)
         self.assertLessEqual(upload.rect['height'],80)
-        self.assertLessEqual(delivery_fields.rect['y']-(upload.rect['y']+upload.rect['height']),30)
+        self.assertLess(delivery_fields.rect['y'],upload.rect['y'])
+        self.assertLess(message.rect['y'],upload.rect['y'])
         self.assertEqual(d.find_element(By.ID,'photos').get_attribute('aria-label'),'Dodaj zdjęcia')
         for field_id in ['f-name','f-email','f-phone','f-quantity','f-caption','f-discount-code','f-delivery-town','f-delivery-street','f-post-office','f-message']:
             label=d.find_element(By.CSS_SELECTOR,f'label[for="{field_id}"]')
