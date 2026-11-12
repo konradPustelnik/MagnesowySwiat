@@ -705,6 +705,7 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(d.find_element(By.CSS_SELECTOR,'form button[type=submit]').text,'ZOBACZ PODSUMOWANIE')
         upload=d.find_element(By.CSS_SELECTOR,'.upload-zone')
         delivery_legend=d.find_element(By.CSS_SELECTOR,'fieldset legend')
+        self.assertLessEqual(upload.rect['width'],680)
         self.assertLessEqual(delivery_legend.rect['y']-(upload.rect['y']+upload.rect['height']),30)
         for field_id in ['f-name','f-email','f-phone','f-quantity','f-caption','f-discount-code','photos','f-delivery-town','f-delivery-street','f-post-office','f-message']:
             label=d.find_element(By.CSS_SELECTOR,f'label[for="{field_id}"]')
