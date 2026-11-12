@@ -222,7 +222,6 @@ p + p { margin-top: 16px; }
 #rezerwacja .field input,
 #rezerwacja .field select,
 #rezerwacja .field textarea { text-align: center; }
-#rezerwacja .consent,
 #rezerwacja .discount-feedback { justify-content: center; }
 @media (min-width: 981px) {
  #rezerwacja { display: flex; align-items: center; }
@@ -253,7 +252,6 @@ p + p { margin-top: 16px; }
  #rezerwacja .form-layout { gap: 36px; }
  #rezerwacja .form-intro h2 { font-size: clamp(30px, 2.8vw, 40px); margin-bottom: 14px; }
  form[data-inquiry] textarea { min-height: 56px; height: 56px; }
- form[data-inquiry] .consent { margin: 0; line-height: 1.4; }
 }
 form[data-inquiry] #f-message { min-height: 56px; height: 56px; padding: 8px 12px; }
 .page-order form[data-inquiry="order"] #f-message { min-height: 46px; height: 46px; }
@@ -286,9 +284,8 @@ fieldset { min-width: 0; padding: 0; border: 0; margin: 0 0 28px; }
 legend { font-family: var(--serif); font-size: 28px; padding: 0 0 20px; }
 .page-order form[data-inquiry="order"] fieldset { margin-bottom: 0; }
 .page-order #order-form .field > label { display: block; width: 100%; text-align: center; }
+.page-order #order-form .form-fields-title { margin-bottom: 16px; text-align: center; font-size: 30px; }
 .page-order #order-form button[type="submit"] { display: flex; width: fit-content; margin-inline: auto; }
-.consent { display: flex; align-items: start; gap: 10px; margin: 24px 0; font-size: 10px; color: var(--muted); }
-.consent input { flex-shrink: 0; margin: 4px 0 0; accent-color: var(--gold-dark); }
 .form-status { font-size: 12px; color: var(--gold-dark); margin-top: 16px; }
 .form-error { color: #8b3025; }
 .upload-zone { display: grid; grid-template-columns: minmax(280px, auto) 1fr; align-items: center; gap: 14px; box-sizing: border-box; width: 100%; max-width: 680px; margin-inline: auto; padding: 8px; border: 1px dashed var(--gold); background: var(--cream); }

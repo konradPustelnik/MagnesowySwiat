@@ -588,7 +588,6 @@ class BrowserTests(unittest.TestCase):
         WebDriverWait(d, 5).until(lambda browser: browser.find_element(By.ID, 'info-dialog').get_attribute('open'))
         d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
         Select(d.find_element(By.ID,'f-event')).select_by_visible_text('Wesele')
-        d.find_element(By.NAME,'consent').click()
         d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
         self.assertIn('__capture',d.current_url)
         data=self.server.submission
@@ -715,6 +714,8 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.support.ui import WebDriverWait
         d=self.driver; d.get(self.base+PAGES[2])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="order"]')
+        self.assertEqual(d.find_element(By.CSS_SELECTOR,'.form-fields-title').text,'Wypełnij formularz!')
+        self.assertFalse(d.find_elements(By.NAME,'consent'))
         self.assertFalse(d.find_elements(By.ID,'draft-dialog'))
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('enctype'),'multipart/form-data')
@@ -791,7 +792,6 @@ class BrowserTests(unittest.TestCase):
             discount.send_keys('DOSTAWA')
             WebDriverWait(d,5).until(lambda browser: browser.find_element(By.ID,'info-dialog').get_attribute('open'))
             d.find_element(By.CSS_SELECTOR,'#info-dialog [data-close]').click()
-            d.find_element(By.NAME,'consent').click()
             quantity=d.find_element(By.ID,'f-quantity')
             quantity.clear(); quantity.send_keys('6')
             d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
