@@ -176,8 +176,7 @@ if (magnetSlider) {
     document.getElementById('magnet-count').value = bulk ? '200+' : count;
     document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
     document.getElementById('magnet-total-price').textContent = valid ? formatPrice(count * discountedUnitGrosze / 100) : '—';
-    document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.`
-      : freeDelivery ? 'Kod DOSTAWA zapewnia darmową dostawę.' : '';
+    document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.` : '';
     const order = document.getElementById('magnet-order');
     order.dataset.quantity = valid ? count : '';
     order.textContent = valid ? `Zamów ${count} magnesów` : 'Podaj liczbę magnesów';
