@@ -160,6 +160,10 @@ class StaticTests(unittest.TestCase):
                 target=resolved.relative_to(ROOT).as_posix()
                 self.assertTrue((ROOT/target).is_file(),f'{name}: {href}')
                 if url.fragment: self.assertIn(url.fragment,parsed[target].ids,f'{name}: {href}')
+    def test_order_hero_story_emphasis_and_heart(self):
+        source=(ROOT/'magnesy-na-zamowienie/index.html').read_text(encoding='utf-8')
+        self.assertIn('<p>✨ <strong>Masz ulubione zdjęcie, do którego uwielbiasz wracać?</strong> ✨</p>',source)
+        self.assertIn('wyślemy pod wskazany adres. 🧡</p>',source)
 
 @unittest.skipUnless(BROWSER,'Dodaj --browser, aby uruchomić Chrome / Selenium')
 class BrowserTests(unittest.TestCase):
