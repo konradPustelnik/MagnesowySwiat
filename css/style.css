@@ -222,6 +222,8 @@ p + p { margin-top: 16px; }
 #rezerwacja .field input,
 #rezerwacja .field select,
 #rezerwacja .field textarea { text-align: center; }
+#rezerwacja select { text-align-last: center; }
+#rezerwacja select option { text-align: center; }
 #rezerwacja .discount-feedback { justify-content: center; }
 @media (min-width: 981px) {
  #rezerwacja { display: flex; align-items: center; }

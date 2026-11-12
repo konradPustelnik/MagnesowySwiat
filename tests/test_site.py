@@ -570,6 +570,10 @@ class BrowserTests(unittest.TestCase):
         from selenium.webdriver.support.ui import Select
         d=self.driver; d.get(self.base+PAGES[1])
         form=d.find_element(By.CSS_SELECTOR,'form[data-inquiry="live"]')
+        for field_id in ['f-event', 'f-package']:
+            select=d.find_element(By.ID,field_id)
+            self.assertEqual(select.value_of_css_property('text-align-last'),'center')
+            self.assertEqual(select.find_element(By.TAG_NAME,'option').value_of_css_property('text-align'),'center')
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('method'),'post')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
