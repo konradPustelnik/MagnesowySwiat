@@ -217,11 +217,11 @@ p + p { margin-top: 16px; }
 .faq { max-width: 900px; margin: auto; }
 #faq .section-heading { margin-inline: auto; text-align: center; }
 .faq details { padding: 22px 0; border-bottom: 1px solid var(--line); }
-.faq summary { display: flex; justify-content: space-between; align-items: center; gap: 20px; cursor: pointer; font-size: 14px; font-weight: 600; list-style: none; }
+.faq summary { display: flex; justify-content: center; align-items: center; position: relative; gap: 20px; padding-inline: 40px; cursor: pointer; text-align: center; font-size: 14px; font-weight: 600; list-style: none; }
 .faq summary::-webkit-details-marker { display: none; }
-.faq summary::after { content: '+'; font: 400 25px var(--serif); color: var(--gold-dark); }
+.faq summary::after { content: '+'; position: absolute; right: 0; font: 400 25px var(--serif); color: var(--gold-dark); }
 .faq details[open] summary::after { content: '−'; }
-.faq details p { padding-top: 16px; font-size: 13px; max-width: 760px; }
+.faq details p { max-width: 760px; margin-inline: auto; padding-top: 16px; text-align: center; font-size: 13px; }
 .form-layout { display: grid; grid-template-columns: .75fr 1.25fr; gap: 80px; align-items: start; }
 .form-intro { position: sticky; top: 128px; }
 .form-intro h2 { margin-bottom: 22px; }
