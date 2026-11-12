@@ -175,9 +175,11 @@ if (discountInput) {
   applyDiscount();
 }
 const magnetSlider = document.getElementById('magnet-quantity');
+const magnetUnitPriceGrosze = count => count > 200 ? 1000 : 1200 - Math.ceil((count - 10) / 10) * 10;
+const discountedMagnetUnitPriceGrosze = count => Math.round(magnetUnitPriceGrosze(count) * (100 - discountPercent) / 100);
+const formatMagnetPrice = cents => new Intl.NumberFormat('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(cents / 100) + ' zł';
 if (magnetSlider) {
   const bulkQuantity = document.getElementById('magnet-bulk-quantity');
-  const formatPrice = value => new Intl.NumberFormat('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(value) + ' zł';
   const updateMagnetPrice = () => {
     const bulk = Number(magnetSlider.value) === 201;
     document.getElementById('magnet-bulk-field').hidden = !bulk;
@@ -185,12 +187,11 @@ if (magnetSlider) {
     bulkQuantity.required = bulk;
     const valid = !bulk || bulkQuantity.checkValidity();
     const count = bulk ? Number(bulkQuantity.value) : Number(magnetSlider.value);
-    const unitPriceGrosze = bulk ? 1000 : 1200 - Math.ceil((count - 10) / 10) * 10;
-    const discountedUnitGrosze = Math.round(unitPriceGrosze * (100 - discountPercent) / 100);
+    const discountedUnitGrosze = discountedMagnetUnitPriceGrosze(count);
     const unitPrice = discountedUnitGrosze / 100;
     document.getElementById('magnet-count').value = bulk ? '200+' : count;
-    document.getElementById('magnet-unit-price').textContent = formatPrice(unitPrice);
-    document.getElementById('magnet-total-price').textContent = valid ? formatPrice(count * discountedUnitGrosze / 100) : '—';
+    document.getElementById('magnet-unit-price').textContent = formatMagnetPrice(discountedUnitGrosze);
+    document.getElementById('magnet-total-price').textContent = valid ? formatMagnetPrice(count * discountedUnitGrosze) : '—';
     document.getElementById('magnet-discount-note').textContent = discountPercent ? `Cena po rabacie ${discountPercent}%.` : '';
     const order = document.getElementById('magnet-order');
     order.dataset.quantity = valid ? count : '';
@@ -286,10 +287,10 @@ function renderPhotos() {
     count.setAttribute('aria-label', `Liczba egzemplarzy zdjęcia ${index + 1}`);
     count.addEventListener('input', () => { item.count = Number(count.value) || 0; });
     label.append(count);
-    const captionLabel = document.createElement('label'); captionLabel.textContent = 'Napis lub data';
+    const captionLabel = document.createElement('label'); captionLabel.textContent = 'Napis';
     const caption = document.createElement('input'); caption.type = 'text'; caption.maxLength = 200; caption.value = item.caption;
     caption.className = 'photo-caption';
-    caption.setAttribute('aria-label', `Napis lub data dla zdjęcia ${index + 1}`);
+    caption.setAttribute('aria-label', `Napis dla zdjęcia ${index + 1}`);
     caption.addEventListener('input', () => { item.caption = caption.value; item.captionCustomized = true; });
     captionLabel.append(caption);
     const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'remove-photo'; remove.textContent = 'Usuń zdjęcie';
@@ -396,14 +397,16 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
   const fieldValue = id => document.getElementById(id)?.value.trim() || '';
   const showOrderSummary = () => {
     const captionsDiffer = photos.some(item => item.caption.trim() !== fieldValue('f-caption'));
+    const copiesTotal = photos.reduce((sum, item) => sum + item.count, 0);
     const list = document.createElement('dl');
     list.className = 'order-summary-list';
     const rows = [
       ['Imię i nazwisko', fieldValue('f-name')],
       ['Adres e-mail', fieldValue('f-email')],
       ['Telefon', fieldValue('f-phone') || 'Nie podano'],
-      ['Liczba magnesów', `${fieldValue('f-quantity')} szt.`],
-      ...(!captionsDiffer ? [['Napis lub data', fieldValue('f-caption') || 'Nie podano']] : []),
+      ['Liczba magnesów', `${copiesTotal} szt.`],
+      ['Razem za magnesy', formatMagnetPrice(copiesTotal * discountedMagnetUnitPriceGrosze(copiesTotal))],
+      ...(!captionsDiffer ? [['Napis', fieldValue('f-caption') || 'Nie podano']] : []),
       ['Kod rabatowy', fieldValue('f-discount-code') || 'Nie podano'],
       ['Miejscowość', fieldValue('f-delivery-town') || 'Nie podano'],
       ['Ulica i numer', fieldValue('f-delivery-street') || 'Nie podano'],
@@ -446,6 +449,17 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     }
     const requestedQuantity = Number(quantity.value);
     const copiesTotal = photos.reduce((sum, item) => sum + item.count, 0);
+    if (requestedQuantity < 10 || copiesTotal < 10) {
+      event.preventDefault();
+      confirmedSubmission = false;
+      const message = `Minimalne zamówienie to 10 magnesów. Wpisano ${requestedQuantity} szt., a zdjęcia mają łącznie ${copiesTotal} szt.`;
+      status.textContent = message;
+      document.getElementById('info-title').textContent = 'Minimalna liczba magnesów';
+      document.getElementById('info-body').textContent = message;
+      const dialog = document.getElementById('info-dialog');
+      if (!dialog.open) dialog.showModal();
+      return;
+    }
     if (requestedQuantity !== copiesTotal) {
       event.preventDefault();
       confirmedSubmission = false;
@@ -492,7 +506,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
       event.preventDefault(); confirmedSubmission = false; attachments.replaceChildren();
       status.textContent = 'Nie udało się dołączyć zdjęć. Spróbuj w aktualnej przeglądarce lub napisz na magnesowyswiat@gmail.com.'; return;
     }
-    document.getElementById('photo-summary').value = photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.${item.caption ? `; napis lub data: ${item.caption}` : ''}`).join('\n');
+    document.getElementById('photo-summary').value = photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.${item.caption ? `; napis: ${item.caption}` : ''}`).join('\n');
     form.setAttribute('aria-busy', 'true');
     status.textContent = 'Przechodzenie do wysyłki zapytania i zdjęć…';
     form.querySelector('[type="submit"]').textContent = 'Przechodzenie do wysyłki…';
