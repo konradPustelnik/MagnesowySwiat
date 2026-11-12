@@ -130,19 +130,24 @@ if (discountInput) {
     if (deliveryValue) deliveryValue.value = freeDelivery ? 'Tak' : 'Nie';
     const help = document.getElementById('discount-code-help');
     if (help) help.hidden = Boolean(code);
+    discountInput.classList.toggle('discount-valid', Boolean(match));
+    if (code && !match) discountInput.setAttribute('aria-invalid', 'true');
+    else discountInput.removeAttribute('aria-invalid');
     document.getElementById('discount-status').textContent = match
-      ? freeDelivery
-        ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — darmowa dostawa.`
-        : `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
+      ? ''
       : code ? 'Kod rabatowy jest nieprawidłowy lub nieaktywny.' : '';
     document.dispatchEvent(new Event('magnet-discount-change'));
     return match;
   };
   const showDiscountNotice = () => {
-    applyDiscount();
+    const match = applyDiscount();
     document.getElementById('info-title').textContent = freeDelivery ? 'Darmowa dostawa'
       : discountPercent ? `Rabat ${discountPercent}%` : 'Kod rabatowy';
-    document.getElementById('info-body').textContent = document.getElementById('discount-status').textContent || 'Wpisz kod rabatowy.';
+    document.getElementById('info-body').textContent = match
+      ? freeDelivery
+        ? `Kod ${match.code.trim().toUpperCase()} jest aktywny — darmowa dostawa.`
+        : `Kod ${match.code.trim().toUpperCase()} jest aktywny — ${discountPercent}% rabatu na magnesy.`
+      : document.getElementById('discount-status').textContent || 'Wpisz kod rabatowy.';
     const dialog = document.getElementById('info-dialog');
     if (!dialog.open) dialog.showModal();
     if (discountPercent || freeDelivery) lastNotifiedCode = discountInput.value.trim().toLowerCase();

@@ -494,7 +494,8 @@ class BrowserTests(unittest.TestCase):
                 promo.click()
                 self.assertTrue(d.find_element(By.ID, 'info-dialog').get_attribute('open'))
                 self.assertEqual(d.find_element(By.ID, 'info-title').text, 'Darmowa dostawa')
-                self.assertIn('darmowa dostawa', d.find_element(By.ID, 'discount-status').text)
+                self.assertEqual(d.find_element(By.ID, 'discount-status').text, '')
+                self.assertIn('discount-valid', field.get_attribute('class').split())
                 self.assertEqual(d.find_element(By.NAME, 'Darmowa dostawa').get_attribute('value'), 'Tak')
                 self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '0')
                 self.assertEqual(d.find_element(By.ID, 'magnet-total-price').text, '120,00 zł')
@@ -533,10 +534,8 @@ class BrowserTests(unittest.TestCase):
             self.assertTrue(d.find_element(By.ID, 'info-dialog').get_attribute('open'))
             self.assertIn('20%', d.find_element(By.ID, 'info-title').text)
             self.assertEqual(d.find_element(By.NAME, 'Rabat (%)').get_attribute('value'), '20')
-            confirmation = d.find_element(By.ID, 'discount-status').text
-            self.assertIn(test_code + ' jest aktywny', confirmation)
-            self.assertNotIn('Dostawa', confirmation)
-            self.assertNotIn('dojazd', confirmation)
+            self.assertEqual(d.find_element(By.ID, 'discount-status').text, '')
+            self.assertIn('discount-valid', field.get_attribute('class').split())
             d.find_element(By.CSS_SELECTOR, '#info-dialog [data-close]').click()
             if page == PAGES[1]:
                 field.send_keys(' ')

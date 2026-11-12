@@ -278,6 +278,7 @@ form[data-inquiry] .discount-feedback:has(#discount-status:empty) { display: non
 .field input, .field select, .field textarea { width: 100%; min-height: 46px; padding: 11px 12px; border: 1px solid #c8bead; color: var(--ink); background: var(--white); font-size: 13px; }
 .field textarea { min-height: 120px; resize: vertical; }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--gold-dark); }
+.field input.discount-valid { border-color: #3f8a52; background: #f0f8f1; box-shadow: 0 0 0 2px rgba(63,138,82,.16); }
 .field input[readonly] { background: var(--cream); }
 .field small, .helper { font-size: 10px; color: var(--muted); }
 fieldset { min-width: 0; padding: 0; border: 0; margin: 0 0 28px; }
