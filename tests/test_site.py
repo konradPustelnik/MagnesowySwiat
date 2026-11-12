@@ -283,8 +283,10 @@ class BrowserTests(unittest.TestCase):
                     visible_gap = d.execute_script('const card=arguments[0],text=card.querySelector(".occasion-card-content p:last-child"),spacer=card.querySelector(".occasion-card-spacer");return card.getBoundingClientRect().bottom-text.getBoundingClientRect().bottom', cards[2])
                     if height > 700:
                         self.assertGreaterEqual(visible_gap, 52)
-                    elif height > 660:
-                        self.assertGreaterEqual(visible_gap, 26)
+                    elif height >= 621:
+                        self.assertGreaterEqual(visible_gap, 42)
+                    elif height >= 581:
+                        self.assertGreaterEqual(visible_gap, 20)
                     self.assertTrue(all(card.find_elements(By.CSS_SELECTOR, '.occasion-card-spacer') for card in cards))
         finally:
             d.execute_cdp_cmd('Emulation.clearDeviceMetricsOverride', {})
