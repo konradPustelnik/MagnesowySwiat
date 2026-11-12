@@ -273,9 +273,6 @@ function showPhotoProblem(title, message) {
   const dialog = document.getElementById('info-dialog');
   if (!dialog.open) dialog.showModal();
 }
-function updateQuantity() {
-  if (quantity && photos.length) quantity.value = photos.reduce((sum, item) => sum + item.count, 0);
-}
 function renderPhotos() {
   previews.replaceChildren();
   if (photoPickerLabel) photoPickerLabel.textContent = photos.length ? `Wybrano zdjęć: ${photos.length}` : 'Nie wybrano zdjęć';
@@ -286,12 +283,11 @@ function renderPhotos() {
     const label = document.createElement('label'); label.textContent = 'Liczba egzemplarzy';
     const count = document.createElement('input'); count.type = 'number'; count.min = '1'; count.max = '10000'; count.value = item.count; count.required = true;
     count.setAttribute('aria-label', `Liczba egzemplarzy zdjęcia ${index + 1}`);
-    count.addEventListener('input', () => { item.count = Number(count.value) || 0; updateQuantity(); });
+    count.addEventListener('input', () => { item.count = Number(count.value) || 0; });
     label.append(count);
     const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'remove-photo'; remove.textContent = 'Usuń zdjęcie';
     remove.addEventListener('click', () => {
-      URL.revokeObjectURL(item.url); photos = photos.filter(photo => photo !== item); renderPhotos(); updateQuantity();
-      if (!photos.length) quantity.value = '';
+      URL.revokeObjectURL(item.url); photos = photos.filter(photo => photo !== item); renderPhotos();
       input.focus();
     });
     card.append(image, name, label, remove); previews.append(card);
@@ -325,7 +321,7 @@ if (input) {
     }
     input.value = '';
     document.getElementById('photo-status').textContent = `Wybrano zdjęć: ${photos.length}. Łączny rozmiar: ${(photos.reduce((sum, item) => sum + item.file.size, 0) / 1_000_000).toFixed(2)} MB z 10 MB.`;
-    renderPhotos(); updateQuantity();
+    renderPhotos();
   });
   window.addEventListener('pagehide', () => {
     photos.forEach(item => URL.revokeObjectURL(item.url)); photos = []; renderPhotos();
@@ -437,7 +433,13 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     if (requestedQuantity !== copiesTotal) {
       event.preventDefault();
       confirmedSubmission = false;
-      const message = `Wybrano ${requestedQuantity} magnesów, ale suma kopii dla ${photos.length} ${photos.length === 1 ? 'zdjęcia' : 'zdjęć'} wynosi ${copiesTotal}. Popraw liczbę magnesów lub liczbę kopii przy zdjęciach.`;
+      const counts = photos.map(item => item.count);
+      const photoWord = photos.length === 1 ? 'zdjęcie' : photos.length >= 2 && photos.length <= 4 ? 'zdjęcia' : 'zdjęć';
+      const sameCount = counts.every(count => count === counts[0]);
+      const selection = sameCount
+        ? `${photos.length} ${photoWord} po ${counts[0]} szt.`
+        : `${photos.length} ${photoWord} z liczbą kopii: ${counts.join(' + ')}`;
+      const message = `Wybrano ${selection}, czyli łącznie ${copiesTotal} magnesów, a w polu „Liczba magnesów” podano ${requestedQuantity}. Uzupełnij liczbę kopii przy zdjęciach tak, aby ich suma wynosiła ${requestedQuantity}.`;
       status.textContent = message;
       document.getElementById('info-title').textContent = 'Sprawdź liczbę magnesów';
       document.getElementById('info-body').textContent = message;
