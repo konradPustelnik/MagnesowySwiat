@@ -32,7 +32,7 @@ jobs:
       - name: Prepare production files
         run: |
           mkdir -p "$RUNNER_TEMP/site"
-          cp index.html magnesy-na-zywo.html magnesy-na-zamowienie.html CNAME robots.txt sitemap.xml "$RUNNER_TEMP/site/"
+          cp index.html magnesy-na-zywo.html magnesy-na-zamowienie.html CNAME robots.txt sitemap.xml regulamin.pdf polityka-prywatnosci.pdf "$RUNNER_TEMP/site/"
           cp -R css js images magnesy-na-zywo magnesy-na-zamowienie "$RUNNER_TEMP/site/"
       - name: Upload website
         uses: actions/upload-pages-artifact@v4
