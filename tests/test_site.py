@@ -679,7 +679,7 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(len(contact.find_elements(By.CSS_SELECTOR,'svg.contact-icon')),2)
             privacy=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom [data-info="privacy"]')
             copyright=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-copyright')
-            terms=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom [data-info="terms"]')
+            terms=d.find_element(By.CSS_SELECTOR,'.site-footer .footer-bottom a[href$=".pdf"]')
             self.assertFalse(d.find_elements(By.XPATH,"//*[contains(text(),'Strona stworzona i zarządzana przez KP')]"))
             fonts=[d.execute_script('return [getComputedStyle(arguments[0]).fontFamily,getComputedStyle(arguments[0]).fontSize]',element) for element in (privacy,copyright,terms)]
             self.assertEqual(fonts[0],fonts[1])
