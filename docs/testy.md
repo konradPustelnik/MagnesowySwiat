@@ -81,6 +81,13 @@ Aktualizacja okazji: cztery mniejsze zdjęcia 16:9 w jednym rzędzie na komputer
 
 Kontrola SEO weryfikuje również JSON-LD `BreadcrumbList` obu ofert: pozycje 1–2, typy elementów i adresy zgodne z canonical. [Raport kontroli według poradnika Google](seo-poradnik-google.md).
 
+## Pomiar czasu wysyłki
+
+- `test-strony.cmd --czas` mierzy oba formularze w Chrome z lokalnym odbiornikiem HTTP.
+- `test-strony.cmd --czas-formsubmit` wysyła po jednym syntetycznym formularzu każdej oferty przez produkcyjny FormSubmit. Wiadomości mają temat zaczynający się od `[TEST CZASU]`. Test zamówienia używa sztucznych PNG.
+- Każda próba dopisuje wiersz do lokalnego pliku `test-results/czasy-formularzy.jsonl`. Zapis obejmuje datę UTC, ofertę, tryb, status HTTP oraz czasy w sekundach. `page_seconds` mierzy od ostatniego kliknięcia do przygotowania danych formularza, `upload_seconds` mierzy wysłanie żądania przez Chrome, a `http_after_upload_seconds` mierzy od końca wysyłania do początku nagłówków odpowiedzi HTTP. Ten ostatni czas obejmuje również opóźnienie sieci. Test kończy pomiar na odpowiedzi na POST, przed stroną powrotu.
+- Doręczenie do Gmaila sprawdź osobno po temacie próby i jej czasie UTC. Odpowiedź HTTP może pojawić się przed mailem. Czasy wysyłania sztucznych PNG nie oddają kosztu dużych zdjęć klientów.
+
 ## Ograniczenia
 
 - Testy opisują zachowanie sprawdzanej wersji w chwili uruchomienia. Nie gwarantują przyszłej dostępności FormSubmit, Gmaila, DNS ani GitHub Pages.

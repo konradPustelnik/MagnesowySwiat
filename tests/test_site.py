@@ -1,7 +1,8 @@
-"""Lokalne testy. Nie wysyłają e-maili ani zdjęć."""
+"""Testy lokalne oraz opcjonalny pomiar na produkcyjnym FormSubmit."""
 import base64
 import json
 import re
+from datetime import datetime, timezone
 from email.parser import BytesParser
 from email.policy import default
 from functools import partial
@@ -18,6 +19,18 @@ ROOT = Path(__file__).resolve().parents[1]
 PAGES = ['index.html', 'magnesy-na-zywo/index.html', 'magnesy-na-zamowienie/index.html']
 CANONICAL = 'https://magnesowyswiat.pl/'
 BROWSER = '--browser' in __import__('sys').argv
+FORM_TIMING = '--form-timing' in __import__('sys').argv
+FORMSUBMIT_TIMING = '--formsubmit-timing' in __import__('sys').argv
+
+
+def save_form_timing(result):
+    path = ROOT / 'test-results' / 'czasy-formularzy.jsonl'
+    path.parent.mkdir(exist_ok=True)
+    record = {'timestamp_utc': datetime.now(timezone.utc).isoformat(), **result}
+    line = json.dumps(record, ensure_ascii=True)
+    with path.open('a', encoding='utf-8') as report:
+        report.write(line + '\n')
+    print(f'\n{line}\nZapisano: {path}', flush=True)
 
 class CaptureHandler(SimpleHTTPRequestHandler):
     """Local-only receiver: tests must never send a real email."""
@@ -177,13 +190,88 @@ class BrowserTests(unittest.TestCase):
         options=webdriver.ChromeOptions()
         options.add_argument('--headless=new'); options.add_argument('--disable-gpu')
         options.add_argument('--window-size=1440,1000')
+        if FORM_TIMING or FORMSUBMIT_TIMING:
+            options.set_capability('goog:loggingPrefs', {'performance': 'ALL', 'browser': 'ALL'})
         cls.driver=webdriver.Chrome(options=options)
+        cls.driver.set_page_load_timeout(90)
         cls.driver.execute_cdp_cmd('Network.enable', {})
-        cls.driver.execute_cdp_cmd('Network.setBlockedURLs', {'urls': ['*formsubmit.co*']})
+        if not FORMSUBMIT_TIMING:
+            cls.driver.execute_cdp_cmd('Network.setBlockedURLs', {'urls': ['*formsubmit.co*']})
         cls.driver.execute_cdp_cmd('Emulation.setEmulatedMedia', {'features':[{'name':'prefers-reduced-motion','value':'reduce'}]})
     @classmethod
     def tearDownClass(cls):
         cls.driver.quit(); cls.server.shutdown(); cls.server.server_close()
+    def click_and_measure_form(self, button, offer):
+        driver = self.driver
+        if not (FORM_TIMING or FORMSUBMIT_TIMING):
+            button.click()
+            return
+        from selenium.common.exceptions import TimeoutException
+        from selenium.webdriver.support.ui import WebDriverWait
+        driver.get_log('performance')
+        driver.get_log('browser')
+        driver.execute_script("""
+            const form = document.querySelector('form[data-inquiry]');
+            if (arguments[1]) {
+                form.elements.namedItem('_subject').value = '[TEST CZASU] ' + arguments[2];
+                document.getElementById('f-discount-code').value = '';
+            }
+            arguments[0].addEventListener('click', () => {
+                const start = performance.now();
+                form.addEventListener('formdata', () => {
+                    console.warn('MS_FORM_READY=' + (performance.now() - start).toFixed(3));
+                }, {once: true});
+            }, {capture: true, once: true});
+        """, button, FORMSUBMIT_TIMING, offer)
+        result = {
+            'started_utc': datetime.now(timezone.utc).isoformat(),
+            'offer': offer,
+            'mode': 'formsubmit' if FORMSUBMIT_TIMING else 'local',
+        }
+        try:
+            button.click()
+        except TimeoutException:
+            result['navigation_timeout'] = True
+        endpoint = 'https://formsubmit.co/' if FORMSUBMIT_TIMING else self.base + '__capture'
+        requests = set()
+
+        def read_post_response(browser):
+            for entry in browser.get_log('performance'):
+                event = json.loads(entry['message'])['message']
+                params = event['params']
+                if event['method'] == 'Network.requestWillBeSent':
+                    request = params['request']
+                    if request['method'] == 'POST' and request['url'].startswith(endpoint):
+                        requests.add(params['requestId'])
+                    response = params.get('redirectResponse')
+                elif event['method'] == 'Network.responseReceived':
+                    response = params['response']
+                else:
+                    continue
+                if params['requestId'] in requests and response:
+                    return response
+            return None
+
+        try:
+            response = WebDriverWait(driver, 15, poll_frequency=0.1).until(read_post_response)
+        except TimeoutException:
+            result['post_response_timeout'] = True
+        else:
+            timing = response.get('timing', {})
+            result['http_status'] = response['status']
+            if timing.get('sendEnd', -1) >= 0 and timing.get('receiveHeadersStart', -1) >= timing['sendEnd']:
+                result['http_after_upload_seconds'] = round((timing['receiveHeadersStart'] - timing['sendEnd']) / 1000, 6)
+            if timing.get('sendStart', -1) >= 0:
+                result['upload_seconds'] = round((timing['sendEnd'] - timing['sendStart']) / 1000, 6)
+        for entry in driver.get_log('browser'):
+            match = re.search(r'MS_FORM_READY=(\d+\.\d+)', entry['message'])
+            if match:
+                result['page_seconds'] = round(float(match[1]) / 1000, 6)
+                break
+        save_form_timing(result)
+        self.assertIn('http_after_upload_seconds', result)
+        self.assertIn('page_seconds', result)
+        self.assertTrue(200 <= result['http_status'] < 400, result)
     def test_home_service_choices_fit_first_viewport(self):
         from selenium.webdriver.common.by import By
         from selenium.webdriver.support.ui import WebDriverWait
@@ -610,8 +698,8 @@ class BrowserTests(unittest.TestCase):
         self.assertEqual(form.get_attribute('action'),'https://formsubmit.co/magnesowyswiat@gmail.com')
         self.assertEqual(form.get_attribute('method'),'post')
         self.assertFalse(d.find_elements(By.CSS_SELECTOR,'.preview-notice'))
-        # Redirect only this local test to our receiver, never to FormSubmit.
-        d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
+        if not FORMSUBMIT_TIMING:
+            d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
         gold_link=d.find_element(By.CSS_SELECTOR,'[data-package="Gold"]')
         d.execute_script('arguments[0].scrollIntoView({block:"center",behavior:"instant"})',gold_link)
         gold_link.click()
@@ -630,7 +718,9 @@ class BrowserTests(unittest.TestCase):
         event_control.click()
         d.find_element(By.XPATH,'//*[@id="f-event-control-options"]//*[@role="option" and normalize-space(.)="Wesele"]').click()
         self.assertEqual(d.find_element(By.ID,'f-event').get_attribute('value'),'Wesele')
-        d.find_element(By.CSS_SELECTOR,'form button[type=submit]').click()
+        self.click_and_measure_form(d.find_element(By.CSS_SELECTOR,'form button[type=submit]'), 'live')
+        if FORMSUBMIT_TIMING:
+            return
         self.assertIn('__capture',d.current_url)
         data=self.server.submission
         self.assertEqual(data['Wiadomość'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
@@ -785,7 +875,8 @@ class BrowserTests(unittest.TestCase):
             label=d.find_element(By.CSS_SELECTOR,f'label[for="{field_id}"]')
             self.assertEqual(label.value_of_css_property('text-align'),'center')
         self.assertEqual(d.find_element(By.ID,'photos').value_of_css_property('opacity'),'0')
-        d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
+        if not FORMSUBMIT_TIMING:
+            d.execute_script('arguments[0].action=arguments[1]',form,self.base+'__capture')
         with tempfile.TemporaryDirectory() as folder:
             image=Path(folder)/'test.png'
             image.write_bytes(base64.b64decode('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+jRZkAAAAASUVORK5CYII='))
@@ -908,7 +999,9 @@ class BrowserTests(unittest.TestCase):
             self.assertNotIn('Napis lub data',summary.text)
             self.assertNotIn('Napis',summary.text)
             self.assertNotIn('__capture',d.current_url)
-            d.find_element(By.ID,'confirm-order-submit').click()
+            self.click_and_measure_form(d.find_element(By.ID,'confirm-order-submit'), 'order')
+            if FORMSUBMIT_TIMING:
+                return
             WebDriverWait(d,5).until(lambda browser: '__capture' in browser.current_url)
             self.assertEqual(len(self.server.uploads),3)
             self.assertEqual([item['filename'] for item in self.server.uploads],['test.png','second.png','third.png'])
@@ -1096,4 +1189,13 @@ class BrowserTests(unittest.TestCase):
 
 if __name__=='__main__':
     import sys
-    unittest.main(argv=[sys.argv[0]]+[arg for arg in sys.argv[1:] if arg not in ['--browser']])
+    if FORM_TIMING or FORMSUBMIT_TIMING:
+        if not BROWSER or FORM_TIMING == FORMSUBMIT_TIMING:
+            sys.exit('Select --browser and exactly one measurement mode.')
+        unittest.main(argv=[
+            sys.argv[0], '-v',
+            'BrowserTests.test_reservation_special_characters_and_package',
+            'BrowserTests.test_order_preview_counts_delete_and_validation',
+        ])
+    else:
+        unittest.main(argv=[sys.argv[0]]+[arg for arg in sys.argv[1:] if arg != '--browser'])

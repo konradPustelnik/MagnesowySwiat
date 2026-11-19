@@ -4,10 +4,19 @@ cd /d "%~dp0"
 set "TEST_INTERACTIVE="
 set "TEST_EXIT_CODE=1"
 set "TEST_BROWSER=--browser"
+set "TEST_TIMING="
 if "%~1"=="" set "TEST_INTERACTIVE=1"
 if not "%~2"=="" goto usage_error
 if "%~1"=="" goto prepare
 if /i "%~1"=="--browser" goto prepare
+if /i "%~1"=="--czas" (
+  set "TEST_TIMING=--form-timing"
+  goto prepare
+)
+if /i "%~1"=="--czas-formsubmit" (
+  set "TEST_TIMING=--formsubmit-timing"
+  goto prepare
+)
 if /i "%~1"=="--static" (
   set "TEST_BROWSER="
   goto prepare
@@ -41,8 +50,9 @@ echo Instalowanie zaleznosci testow przegladarkowych...
 if errorlevel 1 goto finish
 
 :run
+if "%TEST_TIMING%"=="--formsubmit-timing" goto run_formsubmit
 echo Testy lokalne. Wiadomosci i zdjecia nie sa wysylane do FormSubmit.
-.venv-tests\Scripts\python.exe tests\test_site.py %TEST_BROWSER% -v
+.venv-tests\Scripts\python.exe tests\test_site.py %TEST_BROWSER% %TEST_TIMING% -v
 set "TEST_EXIT_CODE=%errorlevel%"
 if "%TEST_EXIT_CODE%"=="0" (
   echo.
@@ -51,6 +61,12 @@ if "%TEST_EXIT_CODE%"=="0" (
   echo.
   echo Testy wykryly blad. Szczegoly znajduja sie powyzej.
 )
+goto finish
+
+:run_formsubmit
+echo Proba produkcyjna. Wysyla dwa syntetyczne formularze, w tym sztuczne PNG.
+.venv-tests\Scripts\python.exe tests\test_site.py --browser --formsubmit-timing
+set "TEST_EXIT_CODE=%errorlevel%"
 goto finish
 
 :usage_error
@@ -66,6 +82,8 @@ echo Uzycie:
 echo   test-strony.cmd             pelny test w Chrome
 echo   test-strony.cmd --browser   pelny test w Chrome
 echo   test-strony.cmd --static    szybkie kontrole plikow, bez Chrome
+echo   test-strony.cmd --czas      pomiar obu formularzy z lokalnym odbiornikiem
+echo   test-strony.cmd --czas-formsubmit    pomiar z wyslaniem prob do FormSubmit
 
 :finish
 if defined TEST_INTERACTIVE pause
