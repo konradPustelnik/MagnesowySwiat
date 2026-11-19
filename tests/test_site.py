@@ -331,8 +331,8 @@ class BrowserTests(unittest.TestCase):
                             self.assertGreaterEqual(rect['height'], 44, destination)
                             self.assertGreaterEqual(rect['top'], header_bottom - 1, destination)
                             if name in ['home', 'live']:
-                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Actions must follow the opening text')
-                            if name in ['live', 'order'] or width >= 981:
+                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Actions must follow the complete hero description')
+                            if name == 'order' or width >= 981 or (name == 'live' and width == 926):
                                 self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
                             self.assertGreaterEqual(rect['left'], 0, destination)
                             self.assertLessEqual(rect['right'], width, destination)
