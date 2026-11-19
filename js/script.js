@@ -485,13 +485,16 @@ function showSendConfirmation() {
 
 const liveForm = document.querySelector('form[data-inquiry="live"]');
 if (liveForm) {
-  liveForm.addEventListener('submit', () => {
+  liveForm.addEventListener('submit', event => {
+    if (liveForm.getAttribute('aria-busy') === 'true') { event.preventDefault(); return; }
     liveForm.setAttribute('aria-busy', 'true');
-    liveForm.querySelector('.form-status').textContent = 'Przechodzenie do wysyłki…';
-    liveForm.querySelector('[type="submit"]').textContent = 'Przechodzenie do wysyłki…';
+    liveForm.querySelector('.form-status').textContent = '';
+    liveForm.querySelector('[type="submit"]').textContent = 'Wysyłanie…';
+    liveForm.querySelector('[type="submit"]').disabled = true;
   });
   window.addEventListener('pageshow', () => {
     liveForm.removeAttribute('aria-busy');
+    liveForm.querySelector('[type="submit"]').disabled = false;
     liveForm.querySelector('[type="submit"]').textContent = 'ZAPYTAJ O DOSTĘPNOŚĆ TERMINU';
   });
   if (new URLSearchParams(location.search).get('wyslano') === '1') {
@@ -556,6 +559,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
   confirmSubmit?.addEventListener('click', () => { confirmedSubmission = true; });
   form.addEventListener('submit', event => {
     const status = form.querySelector('.form-status');
+    if (form.getAttribute('aria-busy') === 'true') { event.preventDefault(); return; }
     if (!photos.length) {
       event.preventDefault(); confirmedSubmission = false; status.textContent = 'Dodaj przynajmniej jedno zdjęcie.'; input.focus(); return;
     }
@@ -620,12 +624,16 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
     }
     document.getElementById('photo-summary').value = photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.${item.caption ? `; napis: ${item.caption}` : ''}`).join('\n');
     form.setAttribute('aria-busy', 'true');
-    status.textContent = 'Przechodzenie do wysyłki zapytania i zdjęć…';
-    form.querySelector('[type="submit"]').textContent = 'Przechodzenie do wysyłki…';
+    status.textContent = '';
+    form.querySelector('[type="submit"]').textContent = 'Wysyłanie…';
+    form.querySelector('[type="submit"]').disabled = true;
+    if (confirmSubmit) confirmSubmit.disabled = true;
   });
   window.addEventListener('pageshow', () => {
     confirmedSubmission = false;
     form.removeAttribute('aria-busy');
+    form.querySelector('[type="submit"]').disabled = false;
+    if (confirmSubmit) confirmSubmit.disabled = false;
     form.querySelector('[type="submit"]').textContent = 'ZOBACZ PODSUMOWANIE';
   });
   if (new URLSearchParams(location.search).get('wyslano') === '1') {
