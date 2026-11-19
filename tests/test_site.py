@@ -115,7 +115,7 @@ class StaticTests(unittest.TestCase):
                     self.assertTrue(all(item['@type'] == 'ListItem' and item['name'] for item in items))
         self.assertEqual(len(set(titles)), len(PAGES))
         self.assertEqual(len(set(descriptions_seen)), len(PAGES))
-        self.assertEqual(titles[0], 'Magnesowy Świat – Magnesy na każdą okazję')
+        self.assertEqual(titles[0], 'Magnesowy Świat | Fotomagnesy na wesele i zamówienie')
         home = (ROOT / PAGES[0]).read_text(encoding='utf-8')
         structured = [json.loads(block) for block in re.findall(r'<script type="application/ld\+json">(.*?)</script>', home, re.S)]
         websites = [node for node in structured if node.get('@type') == 'WebSite']
@@ -123,8 +123,8 @@ class StaticTests(unittest.TestCase):
         self.assertEqual(websites[0]['@context'], 'https://schema.org')
         self.assertEqual(websites[0]['name'], 'Magnesowy Świat')
         self.assertEqual(websites[0]['url'], CANONICAL)
-        self.assertIn('magnesy na żywo', descriptions_seen[0])
-        self.assertIn('magnesy na zamówienie', descriptions_seen[0])
+        self.assertIn('magnesy na żywo', descriptions_seen[0].casefold())
+        self.assertIn('ze zdjęć na zamówienie', descriptions_seen[0].casefold())
         self.assertEqual((ROOT / 'CNAME').read_text(encoding='utf-8').strip(), urlsplit(CANONICAL).hostname)
         robots_source = (ROOT / 'robots.txt').read_text(encoding='utf-8')
         directives = [line.split('#', 1)[0].strip() for line in robots_source.splitlines()]
