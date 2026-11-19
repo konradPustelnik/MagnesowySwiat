@@ -284,7 +284,7 @@ class BrowserTests(unittest.TestCase):
             ('live', 'magnesy-na-zywo/', '.hero--live', [('/magnesy-na-zywo/', 'pakiety'), ('/magnesy-na-zywo/', 'rezerwacja')]),
             ('order', 'magnesy-na-zamowienie/', '.hero--order', [('/magnesy-na-zamowienie/', 'cennik'), ('/magnesy-na-zamowienie/', 'zamowienie')]),
         ]
-        viewports = [(1440, 900), (1366, 768), (1024, 768), (768, 1024), (390, 844), (360, 740), (320, 640)]
+        viewports = [(1440, 900), (1366, 768), (1024, 768), (926, 758), (768, 1024), (390, 844), (360, 740), (320, 640)]
         try:
             for width, height in viewports:
                 d.execute_cdp_cmd('Emulation.setDeviceMetricsOverride', {'width': width, 'height': height, 'deviceScaleFactor': 1, 'mobile': width < 600})
@@ -331,8 +331,8 @@ class BrowserTests(unittest.TestCase):
                             self.assertGreaterEqual(rect['height'], 44, destination)
                             self.assertGreaterEqual(rect['top'], header_bottom - 1, destination)
                             if name in ['home', 'live']:
-                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Actions must follow the complete hero description')
-                            if name == 'order' or width >= 981:
+                                self.assertGreaterEqual(rect['top'], story_bottom - 1, 'Actions must follow the opening text')
+                            if name in ['live', 'order'] or width >= 981:
                                 self.assertLessEqual(rect['bottom'], height, f'{destination} requires scrolling at {width}x{height}')
                             self.assertGreaterEqual(rect['left'], 0, destination)
                             self.assertLessEqual(rect['right'], width, destination)
