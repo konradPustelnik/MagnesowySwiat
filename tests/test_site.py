@@ -1085,6 +1085,16 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR, '.photo-preview')), 3)
             self.assertEqual(d.find_element(By.CSS_SELECTOR, '.photo-preview input[type="number"]').get_attribute('value'), '8')
             self.assertEqual([field.get_attribute('value') for field in d.find_elements(By.CSS_SELECTOR,'.photo-caption')],['simea','simeaa','simea'])
+            from selenium.webdriver.support.ui import Select
+            third_choice = Select(d.find_elements(By.CSS_SELECTOR, '.photo-caption-choice')[2])
+            third_caption = d.find_elements(By.CSS_SELECTOR, '.photo-caption')[2]
+            third_choice.select_by_value('no')
+            self.assertFalse(third_caption.is_displayed())
+            self.assertFalse(third_caption.is_enabled())
+            third_choice.select_by_value('yes')
+            self.assertTrue(third_caption.is_displayed())
+            self.assertEqual(third_caption.get_attribute('value'), 'simea')
+            third_choice.select_by_value('no')
             for id,value in [('f-delivery-town','Testowa miejscowość'),('f-delivery-street','Testowa 12A/3')]:
                 d.find_element(By.ID,id).send_keys(value)
             code=d.find_element(By.ID,'f-post-office')
@@ -1130,6 +1140,7 @@ class BrowserTests(unittest.TestCase):
             self.assertIn('120,00 zł',summary.text)
             self.assertIn('napis: simea',summary.text)
             self.assertIn('napis: simeaa',summary.text)
+            self.assertIn('third.png — 1 szt. — bez napisu',summary.text)
             self.assertNotIn('Napis lub data',summary.text)
             self.assertNotIn('Napis',summary.text)
             self.assertNotIn('__capture',d.current_url)
@@ -1154,9 +1165,10 @@ class BrowserTests(unittest.TestCase):
             self.assertIn('test.png: 8 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('second.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('third.png: 1 szt.',self.server.submission['Zdjęcia i liczba kopii'][0])
-            self.assertEqual(self.server.submission['Napis'],['simea'])
+            self.assertNotIn('Napis',self.server.submission)
             self.assertIn('test.png: 8 szt.; napis: simea',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertIn('second.png: 1 szt.; napis: simeaa',self.server.submission['Zdjęcia i liczba kopii'][0])
+            self.assertIn('third.png: 1 szt.; bez napisu',self.server.submission['Zdjęcia i liczba kopii'][0])
             self.assertEqual(self.server.submission['Uwagi do zamówienia'],[':()@&%$#*($#^*!@(#&#@%&@(#$@!'])
     def test_order_total_attachment_limit(self):
         from selenium.webdriver.common.by import By

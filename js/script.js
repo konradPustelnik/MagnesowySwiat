@@ -386,6 +386,9 @@ function defaultPhotoCount() {
   const requested = quantity.valueAsNumber;
   return photos.length === 1 && Number.isInteger(requested) && requested >= 1 && requested <= 10000 ? requested : 1;
 }
+function photoCaption(item) {
+  return item.captionEnabled ? item.caption.trim() : '';
+}
 function showPhotoProblem(title, message) {
   document.getElementById('photo-status').textContent = message;
   document.getElementById('info-title').textContent = title;
@@ -412,15 +415,33 @@ function renderPhotos() {
     const captionLabel = document.createElement('label'); captionLabel.textContent = 'Napis';
     const caption = document.createElement('input'); caption.type = 'text'; caption.maxLength = 200; caption.value = item.caption;
     caption.className = 'photo-caption';
-    caption.setAttribute('aria-label', `Napis dla zdjęcia ${index + 1}`);
+    caption.setAttribute('aria-label', `Treść napisu dla zdjęcia ${index + 1}`);
+    const captionChoice = document.createElement('select');
+    captionChoice.className = 'photo-caption-choice';
+    captionChoice.setAttribute('aria-label', `Napis dla zdjęcia ${index + 1}`);
+    captionChoice.add(new Option('Bez napisu', 'no'));
+    captionChoice.add(new Option('Z napisem', 'yes'));
+    const updateCaptionField = () => {
+      caption.hidden = !item.captionEnabled;
+      caption.disabled = !item.captionEnabled;
+      caption.required = item.captionEnabled;
+      captionChoice.value = item.captionEnabled ? 'yes' : 'no';
+    };
+    captionChoice.addEventListener('change', () => {
+      item.captionEnabled = captionChoice.value === 'yes';
+      item.captionChoiceCustomized = true;
+      updateCaptionField();
+      if (item.captionEnabled) caption.focus();
+    });
+    updateCaptionField();
     caption.addEventListener('input', () => { item.caption = caption.value; item.captionCustomized = true; });
-    captionLabel.append(caption);
+    captionLabel.append(captionChoice);
     const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'remove-photo'; remove.textContent = 'Usuń zdjęcie';
     remove.addEventListener('click', () => {
       URL.revokeObjectURL(item.url); photos = photos.filter(photo => photo !== item); renderPhotos();
       input.focus();
     });
-    card.append(image, name, label, captionLabel, remove); previews.append(card);
+    card.append(image, name, label, captionLabel, caption, remove); previews.append(card);
   });
   if (photos.length > 0) {
     const add = document.createElement('button');
@@ -452,7 +473,11 @@ if (input) {
       return;
     }
     for (const file of selectedFiles) {
-      photos.push({ file, url: URL.createObjectURL(file), count: 1, countCustomized: false, caption: sharedCaption?.value.trim() || '', captionCustomized: false });
+      const caption = sharedCaption?.value.trim() || '';
+      photos.push({
+        file, url: URL.createObjectURL(file), count: 1, countCustomized: false,
+        caption, captionCustomized: false, captionEnabled: Boolean(caption), captionChoiceCustomized: false
+      });
     }
     input.value = '';
     document.getElementById('photo-status').textContent = `Wybrano zdjęć: ${photos.length}. Łączny rozmiar: ${(photos.reduce((sum, item) => sum + item.file.size, 0) / 1_000_000).toFixed(2)} MB z 10 MB.`;
@@ -466,10 +491,9 @@ if (input) {
 sharedCaption?.addEventListener('input', () => {
   photos.forEach(item => {
     if (!item.captionCustomized) item.caption = sharedCaption.value;
+    if (!item.captionChoiceCustomized) item.captionEnabled = Boolean(item.caption.trim());
   });
-  previews?.querySelectorAll('.photo-caption').forEach((field, index) => {
-    if (!photos[index]?.captionCustomized) field.value = sharedCaption.value;
-  });
+  renderPhotos();
 });
 
 function showSendConfirmation() {
@@ -526,7 +550,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
 
   const fieldValue = id => document.getElementById(id)?.value.trim() || '';
   const showOrderSummary = () => {
-    const captionsDiffer = photos.some(item => item.caption.trim() !== fieldValue('f-caption'));
+    const captionsDiffer = photos.some(item => photoCaption(item) !== fieldValue('f-caption'));
     const copiesTotal = photos.reduce((sum, item) => sum + item.count, 0);
     const list = document.createElement('dl');
     list.className = 'order-summary-list';
@@ -562,7 +586,8 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
       image.src = item.url;
       image.alt = '';
       const description = document.createElement('p');
-      description.textContent = `${item.file.name} — ${item.count} szt.${item.caption ? ` — napis: ${item.caption}` : ''}`;
+      const caption = photoCaption(item);
+      description.textContent = `${item.file.name} — ${item.count} szt. — ${caption ? `napis: ${caption}` : 'bez napisu'}`;
       card.append(image, description);
       photoList.append(card);
     });
@@ -637,7 +662,11 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
       event.preventDefault(); confirmedSubmission = false; attachments.replaceChildren();
       status.textContent = 'Nie udało się dołączyć zdjęć. Spróbuj w aktualnej przeglądarce lub napisz na magnesowyswiat@gmail.com.'; return;
     }
-    document.getElementById('photo-summary').value = photos.map((item, index) => `${index + 1}. ${item.file.name}: ${item.count} szt.${item.caption ? `; napis: ${item.caption}` : ''}`).join('\n');
+    sharedCaption.disabled = photos.some(item => !item.captionEnabled);
+    document.getElementById('photo-summary').value = photos.map((item, index) => {
+      const caption = photoCaption(item);
+      return `${index + 1}. ${item.file.name}: ${item.count} szt.; ${caption ? `napis: ${caption}` : 'bez napisu'}`;
+    }).join('\n');
     form.setAttribute('aria-busy', 'true');
     status.textContent = '';
     form.querySelector('[type="submit"]').textContent = 'Wysyłanie…';
@@ -646,6 +675,7 @@ document.querySelectorAll('form[data-inquiry="order"]').forEach(form => {
   });
   window.addEventListener('pageshow', () => {
     confirmedSubmission = false;
+    sharedCaption.disabled = false;
     form.removeAttribute('aria-busy');
     form.querySelector('[type="submit"]').disabled = false;
     if (confirmSubmit) confirmSubmit.disabled = false;
