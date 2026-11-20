@@ -322,7 +322,9 @@ document.querySelectorAll('[data-quantity]').forEach(link => link.addEventListen
     bulkQuantity.focus(); bulkQuantity.reportValidity();
     return;
   }
-  document.getElementById('f-quantity').value = link.dataset.quantity;
+  const quantityField = document.getElementById('f-quantity');
+  quantityField.value = link.dataset.quantity;
+  quantityField.dispatchEvent(new Event('input', { bubbles: true }));
 }));
 const date = document.getElementById('f-date');
 if (date) {
@@ -380,6 +382,10 @@ const quantity = document.getElementById('f-quantity');
 const sharedCaption = document.getElementById('f-caption');
 const photoPicker = document.getElementById('photo-picker');
 const photoPickerLabel = document.getElementById('photo-picker-label');
+function defaultPhotoCount() {
+  const requested = quantity.valueAsNumber;
+  return photos.length === 1 && Number.isInteger(requested) && requested >= 1 && requested <= 10000 ? requested : 1;
+}
 function showPhotoProblem(title, message) {
   document.getElementById('photo-status').textContent = message;
   document.getElementById('info-title').textContent = title;
@@ -391,13 +397,17 @@ function renderPhotos() {
   previews.replaceChildren();
   if (photoPickerLabel) photoPickerLabel.textContent = photos.length ? `Wybrano zdjęć: ${photos.length}` : 'Nie wybrano zdjęć';
   photos.forEach((item, index) => {
+    if (!item.countCustomized) item.count = defaultPhotoCount();
     const card = document.createElement('div'); card.className = 'photo-preview';
     const image = document.createElement('img'); image.src = item.url; image.alt = `Lokalny podgląd: ${item.file.name}`;
     const name = document.createElement('p'); name.textContent = item.file.name;
     const label = document.createElement('label'); label.textContent = 'Liczba egzemplarzy';
     const count = document.createElement('input'); count.type = 'number'; count.min = '1'; count.max = '10000'; count.value = item.count; count.required = true;
     count.setAttribute('aria-label', `Liczba egzemplarzy zdjęcia ${index + 1}`);
-    count.addEventListener('input', () => { item.count = Number(count.value) || 0; });
+    count.addEventListener('input', () => {
+      item.count = Number(count.value) || 0;
+      item.countCustomized = true;
+    });
     label.append(count);
     const captionLabel = document.createElement('label'); captionLabel.textContent = 'Napis';
     const caption = document.createElement('input'); caption.type = 'text'; caption.maxLength = 200; caption.value = item.caption;
@@ -421,6 +431,11 @@ function renderPhotos() {
   }
 }
 if (input) {
+  quantity.addEventListener('input', () => {
+    if (photos.length !== 1 || photos[0].countCustomized) return;
+    photos[0].count = defaultPhotoCount();
+    previews.querySelector('.photo-preview input[type="number"]').value = photos[0].count;
+  });
   photoPicker?.addEventListener('click', () => input.click());
   input.addEventListener('change', () => {
     const selectedFiles = [...input.files];
@@ -437,7 +452,7 @@ if (input) {
       return;
     }
     for (const file of selectedFiles) {
-      photos.push({ file, url: URL.createObjectURL(file), count: 1, caption: sharedCaption?.value.trim() || '', captionCustomized: false });
+      photos.push({ file, url: URL.createObjectURL(file), count: 1, countCustomized: false, caption: sharedCaption?.value.trim() || '', captionCustomized: false });
     }
     input.value = '';
     document.getElementById('photo-status').textContent = `Wybrano zdjęć: ${photos.length}. Łączny rozmiar: ${(photos.reduce((sum, item) => sum + item.file.size, 0) / 1_000_000).toFixed(2)} MB z 10 MB.`;
