@@ -2,7 +2,7 @@
 
 Strona firmy tworzącej personalizowane magnesy fotograficzne na wydarzeniach i na zamówienie. HTML, CSS i JavaScript, bez frameworka aplikacji i bez etapu budowania.
 
-**Produkcja:** [magnesowyswiat.pl](https://magnesowyswiat.pl/). Hosting: GitHub Pages przez workflow `.github/workflows/pages.yml` uruchamiany po pushu do `main` lub ręcznie. Źródłem są pliki produkcyjne w katalogu głównym. Workflow wykonuje testy statyczne i publikuje wyłącznie HTML, CSS, JS, zdjęcia, CNAME, robots.txt i sitemap.xml, bez dokumentacji i testów. W ustawieniach Pages źródło publikacji to GitHub Actions. Domena pozostaje `magnesowyswiat.pl`; publikacja kodu odbywa się przez commit i push zgodnie z `AGENTS.md`.
+Stronę [magnesowyswiat.pl](https://magnesowyswiat.pl/) obsługuje GitHub Pages. Workflow `.github/workflows/pages.yml` uruchamia testy statyczne dla pull requestów do `main`, po pushu na `main` i przy uruchomieniu ręcznym. Po zaliczeniu testów push lub uruchomienie ręczne publikuje pliki produkcyjne, w tym dwa publiczne PDF-y. Reguły publikacji są w `AGENTS.md`.
 
 ## Jedna aktualna wersja
 
@@ -67,7 +67,7 @@ python tests/test_site.py
 .\.venv-tests\Scripts\python.exe tests/test_site.py --browser
 ```
 
-Zestaw zawiera **19 testów: 3 statyczne i 16 w Chrome**. Testy statyczne nie wymagają Selenium. W trybie bez `--browser` testy przeglądarkowe mają wynik `skipped` — to oczekiwane. Powodzenie kończy się `OK` i kodem wyjścia 0; `FAIL`/`ERROR` oznacza problem do sprawdzenia.
+Zestaw zawiera **7 testów statycznych i 22 w Chrome**. Testy statyczne działają bez Selenium. Przy uruchomieniu bez `--browser` scenariusze Chrome mają status `skipped`. Wynik `OK` ma kod wyjścia 0.
 
 | Obszar | Co faktycznie sprawdzamy |
 | --- | --- |
@@ -75,10 +75,10 @@ Zestaw zawiera **19 testów: 3 statyczne i 16 w Chrome**. Testy statyczne nie wy
 | Podstawy SEO i stare adresy | Canonical, title, meta description, indeksowalność, CNAME, robots, sitemap i przekierowania. |
 | Menu | Najechanie, kliknięcie nazwy, strzałki na telefonie, Escape/Enter, fokus i przejścia do sekcji. |
 | Formularz na żywo | Wybór pakietu, poprawne dane, data, temat wiadomości oraz zachowanie znaków specjalnych w rzeczywistym lokalnym POST. |
-| Formularz ze zdjęciami | Dodawanie/usuwanie podglądów, liczba kopii, adres i kod pocztowy, paragon/faktura, limit 10 MB, zawartość multipart i bajty dwóch syntetycznych zdjęć. |
+| Formularz ze zdjęciami | Dodawanie i usuwanie podglądów, liczba kopii, dane dostawy, limit 10 MB, zawartość multipart i bajty dwóch syntetycznych zdjęć. |
 | Kalendarz | Polskie nazwy, format dd/mm/rrrr, daty niepoprawne i przeszłe, lata przestępne oraz klawiatura. |
 | Wygląd i responsywność | Brak poziomego przewijania w sprawdzanych widokach, małe ikony, kadrowanie zdjęć i sekcje 320/390/1440 px. |
-| Nagłówki i przyciski | Na głównej: pogrubiony H1, dwa równe przyciski pod opisem, na komputerach bez przewijania. W obu ofertach: przyciski na pierwszym ekranie także na telefonach. Siedem rozmiarów od 320 × 640 do 1440 × 900 oraz poprawne linki kart ofert. |
+| Nagłówki i przyciski | Widoczność i położenie przycisków, docelowe adresy i osiem rozmiarów od 320 × 640 do 1440 × 900. |
 | Powrót po wysyłce | Symulowany powrót `?wyslano=1`, okno podziękowania, odliczanie i przycisk powrotu. |
 
 Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów trafiają do ignorowanego `tests/artifacts/`; można je usunąć i odtworzyć kolejnym uruchomieniem.
@@ -87,12 +87,12 @@ Pełna lista nazw i zakresów: [docs/testy.md](docs/testy.md). Zrzuty z testów 
 
 ## Formularze i prawdziwy test poczty
 
-Oba formularze obsługują kody z `js/discounts.js`; początkowo `test` daje 10% rabatu. Przycisk „Sprawdź kod” pokazuje okienko, kalkulator zamówień uwzględnia rabat, a kod i procent trafiają do zapytania. [Instrukcja zmiany kodów i rabatów](docs/kody-rabatowe.md).
+Oferty mają osobne konfiguracje kodów w `js/discounts-live.js` i `js/discounts-order.js`. Zamówienia obsługują także kod darmowej dostawy. Zastosowany kod trafia do zapytania. [Instrukcja zmiany kodów i rabatów](docs/kody-rabatowe.md).
 
 - Oba formularze wysyłają do `https://formsubmit.co/magnesowyswiat@gmail.com` zwykłym HTML POST; brak AJAX.
 - Zapytanie na żywo ma temat `[NA ŻYWO]`, a zamówienie ze zdjęć `[NA ZAMÓWIENIE]`. `_captcha=false` wyłącza obrazkowe zadania; pozostaje pole `_honey`.
 - Formularz zdjęciowy używa `multipart/form-data`: maksymalnie 20 plików JPEG/PNG/WebP, łącznie **10 000 000 bajtów (10 MB)**. Zdjęcia pozostają w pamięci karty do świadomego wysłania i nie trafiają do GitHuba ani localStorage.
-- Suma kopii zdjęć musi zgadzać się z liczbą magnesów. Do maila trafiają również wybrany dokument zakupu i dane dostawy.
+- Suma kopii zdjęć musi zgadzać się z liczbą magnesów. Do maila trafiają również dane dostawy.
 - Bez JavaScript działa formularz na żywo; przy zamówieniach zdjęciowych pozostaje bezpośredni kontakt e-mail.
 - Po powrocie z FormSubmit okno podziękowania odlicza 5 sekund i prowadzi na stronę główną. Nie jest dowodem odbioru wiadomości ani przyjęcia rezerwacji.
 
@@ -106,7 +106,6 @@ Suwak zamówień ze zdjęć obejmuje 10–200 sztuk co 1 magnes oraz końcową o
 
 Do uzupełnienia pozostają:
 
-- Finalna polityka prywatności, regulamin i prawdziwe dane usługodawcy. Obecne okna informacyjne nie są gotowymi dokumentami prawnymi.
 - Zatwierdzone ceny zamówień na podstawie realnych kosztów oraz warunki płatności i realizacji.
 - Własne fotografie produktów i stanowiska; pochodzenie obecnych materiałów ilustracyjnych opisano w dokumentacji grafik.
 - Potwierdzenie rzeczywistego doręczania obu formularzy po stronie skrzynki, okresowa kontrola aktywacji i filtrów FormSubmit.

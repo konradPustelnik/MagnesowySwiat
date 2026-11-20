@@ -3,17 +3,29 @@ name: Publish website
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: pages
+  group: pages-${{ github.event_name == 'pull_request' && github.ref || 'production' }}
   cancel-in-progress: false
 
 jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v6
+      - name: Check production pages, assets and forms
+        run: python3 tests/test_site.py StaticTests -v
+
   publish:
+    if: github.event_name != 'pull_request'
+    needs: check
     runs-on: ubuntu-latest
     timeout-minutes: 15
     permissions:
@@ -25,8 +37,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v6
-      - name: Check HTML, links and SEO
-        run: python3 tests/test_site.py StaticTests -v
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Prepare production files

@@ -70,9 +70,22 @@ class CaptureHandler(SimpleHTTPRequestHandler):
 class Parser(HTMLParser):
     def __init__(self):
         super().__init__(); self.ids=[]; self.links=[]; self.assets=[]; self.h1=0; self.images=[]; self.tags=[]
+        self.forms = []
+        self.current_form = None
+        self.footer_links = []
+        self.in_footer = False
     def handle_starttag(self, tag, attrs):
         attrs=dict(attrs)
         self.tags.append((tag, attrs))
+        if tag == 'footer':
+            self.in_footer = True
+        elif tag == 'a' and self.in_footer:
+            self.footer_links.append(attrs.get('href', ''))
+        if tag == 'form':
+            self.current_form = (attrs, [])
+            self.forms.append(self.current_form)
+        elif self.current_form is not None and tag in {'input', 'select', 'textarea', 'button'}:
+            self.current_form[1].append((tag, attrs))
         if 'id' in attrs: self.ids.append(attrs['id'])
         if tag=='a': self.links.append(attrs.get('href',''))
         if tag in ['img','script']: self.assets.append(attrs.get('src',''))
@@ -80,7 +93,95 @@ class Parser(HTMLParser):
         if tag=='h1': self.h1+=1
         if tag=='img': self.images.append(attrs)
 
+    def handle_endtag(self, tag):
+        if tag == 'form':
+            self.current_form = None
+        elif tag == 'footer':
+            self.in_footer = False
+
+
+def parse_page(name):
+    parser = Parser()
+    parser.feed((ROOT / name).read_text(encoding='utf-8'))
+    return parser
+
 class StaticTests(unittest.TestCase):
+    def test_only_referenced_images_are_packaged(self):
+        image_dir = ROOT / 'images'
+        referenced = set()
+        for name in PAGES:
+            for href in parse_page(name).assets:
+                url = urlsplit(href)
+                if not url.netloc and not url.scheme and url.path:
+                    asset = (ROOT / Path(name).parent / unquote(url.path)).resolve()
+                    if asset.is_relative_to(image_dir):
+                        referenced.add(asset)
+        for css in (ROOT / 'css').rglob('*.css'):
+            for href in re.findall(r"""url\(\s*['"]?([^'")]+?)['"]?\s*\)""", css.read_text(encoding='utf-8')):
+                asset = (css.parent / unquote(urlsplit(href).path)).resolve()
+                if asset.is_relative_to(image_dir):
+                    referenced.add(asset)
+        packaged = {path for path in image_dir.rglob('*') if path.is_file()}
+        self.assertTrue(referenced, 'Brak odwołań do grafik produkcyjnych')
+        self.assertEqual(sorted(str(path.relative_to(ROOT)) for path in referenced - packaged), [],
+                         'Brakuje grafik używanych przez stronę')
+        self.assertEqual(sorted(str(path.relative_to(ROOT)) for path in packaged - referenced), [],
+                         'Katalog images zawiera nieużywane grafiki')
+
+    def test_production_inquiry_forms(self):
+        offers = [
+            ('magnesy-na-zywo', 'live', 'rezerwacja', '[NA ŻYWO]', 'application/x-www-form-urlencoded'),
+            ('magnesy-na-zamowienie', 'order', 'zamowienie', '[NA ZAMÓWIENIE]', 'multipart/form-data'),
+        ]
+        self.assertEqual(parse_page('index.html').forms, [])
+        for slug, inquiry, anchor, subject, encoding in offers:
+            with self.subTest(offer=inquiry):
+                page = parse_page(f'{slug}/index.html')
+                self.assertEqual(len(page.forms), 1)
+                form, controls = page.forms[0]
+                self.assertEqual(form.get('data-inquiry'), inquiry)
+                self.assertEqual(form.get('action'), 'https://formsubmit.co/magnesowyswiat@gmail.com')
+                self.assertEqual(form.get('method', '').upper(), 'POST')
+                self.assertEqual(form.get('accept-charset', '').upper(), 'UTF-8')
+                self.assertEqual(form.get('enctype', 'application/x-www-form-urlencoded'), encoding)
+                for name, value in {
+                    '_next': f'{CANONICAL}{slug}/?wyslano=1#{anchor}',
+                    '_captcha': 'false',
+                }.items():
+                    self.assertEqual(
+                        [attrs.get('value') for tag, attrs in controls
+                         if tag == 'input' and attrs.get('type') == 'hidden' and attrs.get('name') == name],
+                        [value],
+                        name,
+                    )
+                self.assertIn(anchor, page.ids)
+                subjects = [attrs.get('value', '') for tag, attrs in controls
+                            if tag == 'input' and attrs.get('name') == '_subject']
+                self.assertEqual(len(subjects), 1)
+                self.assertTrue(subjects[0].startswith(subject))
+                honeypots = [attrs for tag, attrs in controls if tag == 'input' and attrs.get('name') == '_honey']
+                self.assertEqual(len(honeypots), 1)
+                self.assertEqual(honeypots[0].get('tabindex'), '-1')
+                uploads = [attrs for tag, attrs in controls if tag == 'input' and attrs.get('type') == 'file']
+                self.assertEqual(len(uploads), int(inquiry == 'order'))
+                if uploads:
+                    self.assertIn('multiple', uploads[0])
+
+    def test_footer_links_to_the_two_public_pdfs(self):
+        documents = ('polityka-prywatnosci.pdf', 'regulamin.pdf')
+        for document in documents:
+            with (ROOT / document).open('rb') as pdf:
+                self.assertEqual(pdf.read(5), b'%PDF-', document)
+        for name in PAGES:
+            with self.subTest(page=name):
+                links = parse_page(name).footer_links
+                for document in documents:
+                    matching = [href for href in links
+                                if not urlsplit(href).netloc and not urlsplit(href).scheme
+                                and (ROOT / Path(name).parent / unquote(urlsplit(href).path)).resolve()
+                                == ROOT / document]
+                    self.assertEqual(len(matching), 1, document)
+
     def test_canonical_indexability_and_sitemap(self):
         expected = [CANONICAL + ('' if page == 'index.html' else page.removesuffix('index.html')) for page in PAGES]
         titles = []
@@ -185,7 +286,9 @@ class BrowserTests(unittest.TestCase):
         from selenium import webdriver
         handler=partial(CaptureHandler,directory=str(ROOT))
         cls.server=ThreadingHTTPServer(('127.0.0.1',0),handler)
+        cls.addClassCleanup(cls.server.server_close)
         Thread(target=cls.server.serve_forever,daemon=True).start()
+        cls.addClassCleanup(cls.server.shutdown)
         cls.base=f'http://127.0.0.1:{cls.server.server_port}/'
         options=webdriver.ChromeOptions()
         options.add_argument('--headless=new'); options.add_argument('--disable-gpu')
@@ -193,14 +296,34 @@ class BrowserTests(unittest.TestCase):
         if FORM_TIMING or FORMSUBMIT_TIMING:
             options.set_capability('goog:loggingPrefs', {'performance': 'ALL', 'browser': 'ALL'})
         cls.driver=webdriver.Chrome(options=options)
+        cls.addClassCleanup(cls.driver.quit)
         cls.driver.set_page_load_timeout(90)
         cls.driver.execute_cdp_cmd('Network.enable', {})
         if not FORMSUBMIT_TIMING:
             cls.driver.execute_cdp_cmd('Network.setBlockedURLs', {'urls': ['*formsubmit.co*']})
         cls.driver.execute_cdp_cmd('Emulation.setEmulatedMedia', {'features':[{'name':'prefers-reduced-motion','value':'reduce'}]})
-    @classmethod
-    def tearDownClass(cls):
-        cls.driver.quit(); cls.server.shutdown(); cls.server.server_close()
+
+    def test_all_page_images_decode_including_lazy_images(self):
+        for name in PAGES:
+            with self.subTest(page=name):
+                self.driver.get(self.base + name.removesuffix('index.html'))
+                images = self.driver.execute_async_script("""
+                    const done = arguments[arguments.length - 1];
+                    Promise.all(Array.from(document.querySelectorAll('img[src], img[srcset]'), async original => {
+                        const url = original.currentSrc || original.src;
+                        const image = new Image();
+                        image.src = url;
+                        try {
+                            await image.decode();
+                            return {url, width: image.naturalWidth};
+                        } catch {
+                            return {url, width: 0};
+                        }
+                    })).then(done);
+                """)
+                self.assertTrue(images)
+                self.assertEqual([image['url'] for image in images if image['width'] == 0], [])
+
     def click_and_measure_form(self, button, offer):
         driver = self.driver
         if not (FORM_TIMING or FORMSUBMIT_TIMING):
