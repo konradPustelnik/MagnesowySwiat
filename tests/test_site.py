@@ -1085,16 +1085,18 @@ class BrowserTests(unittest.TestCase):
             self.assertEqual(len(d.find_elements(By.CSS_SELECTOR, '.photo-preview')), 3)
             self.assertEqual(d.find_element(By.CSS_SELECTOR, '.photo-preview input[type="number"]').get_attribute('value'), '8')
             self.assertEqual([field.get_attribute('value') for field in d.find_elements(By.CSS_SELECTOR,'.photo-caption')],['simea','simeaa','simea'])
-            from selenium.webdriver.support.ui import Select
-            third_choice = Select(d.find_elements(By.CSS_SELECTOR, '.photo-caption-choice')[2])
+            third_toggle = d.find_elements(By.CSS_SELECTOR, '.photo-caption-toggle')[2]
             third_caption = d.find_elements(By.CSS_SELECTOR, '.photo-caption')[2]
-            third_choice.select_by_value('no')
+            self.assertEqual(third_toggle.text, '×')
+            third_toggle.click()
+            self.assertEqual(third_toggle.text, 'Dodaj napis')
             self.assertFalse(third_caption.is_displayed())
             self.assertFalse(third_caption.is_enabled())
-            third_choice.select_by_value('yes')
+            third_toggle.click()
             self.assertTrue(third_caption.is_displayed())
             self.assertEqual(third_caption.get_attribute('value'), 'simea')
-            third_choice.select_by_value('no')
+            self.assertEqual(d.switch_to.active_element, third_caption)
+            third_toggle.click()
             for id,value in [('f-delivery-town','Testowa miejscowość'),('f-delivery-street','Testowa 12A/3')]:
                 d.find_element(By.ID,id).send_keys(value)
             code=d.find_element(By.ID,'f-post-office')

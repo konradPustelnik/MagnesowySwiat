@@ -415,33 +415,39 @@ function renderPhotos() {
     const captionLabel = document.createElement('label'); captionLabel.textContent = 'Napis';
     const caption = document.createElement('input'); caption.type = 'text'; caption.maxLength = 200; caption.value = item.caption;
     caption.className = 'photo-caption';
+    caption.id = `photo-caption-${index + 1}`;
+    captionLabel.htmlFor = caption.id;
     caption.setAttribute('aria-label', `Treść napisu dla zdjęcia ${index + 1}`);
-    const captionChoice = document.createElement('select');
-    captionChoice.className = 'photo-caption-choice';
-    captionChoice.setAttribute('aria-label', `Napis dla zdjęcia ${index + 1}`);
-    captionChoice.add(new Option('Bez napisu', 'no'));
-    captionChoice.add(new Option('Z napisem', 'yes'));
+    const captionToggle = document.createElement('button');
+    captionToggle.type = 'button';
+    captionToggle.className = 'photo-caption-toggle';
+    captionToggle.setAttribute('aria-controls', caption.id);
+    const captionHeader = document.createElement('div');
+    captionHeader.className = 'photo-caption-header';
+    captionHeader.append(captionLabel, captionToggle);
     const updateCaptionField = () => {
       caption.hidden = !item.captionEnabled;
       caption.disabled = !item.captionEnabled;
       caption.required = item.captionEnabled;
-      captionChoice.value = item.captionEnabled ? 'yes' : 'no';
+      captionLabel.hidden = !item.captionEnabled;
+      captionToggle.textContent = item.captionEnabled ? '×' : 'Dodaj napis';
+      captionToggle.setAttribute('aria-label', `${item.captionEnabled ? 'Usuń napis' : 'Dodaj napis'} dla zdjęcia ${index + 1}`);
+      captionToggle.setAttribute('aria-expanded', String(item.captionEnabled));
     };
-    captionChoice.addEventListener('change', () => {
-      item.captionEnabled = captionChoice.value === 'yes';
+    captionToggle.addEventListener('click', () => {
+      item.captionEnabled = !item.captionEnabled;
       item.captionChoiceCustomized = true;
       updateCaptionField();
       if (item.captionEnabled) caption.focus();
     });
     updateCaptionField();
     caption.addEventListener('input', () => { item.caption = caption.value; item.captionCustomized = true; });
-    captionLabel.append(captionChoice);
     const remove = document.createElement('button'); remove.type = 'button'; remove.className = 'remove-photo'; remove.textContent = 'Usuń zdjęcie';
     remove.addEventListener('click', () => {
       URL.revokeObjectURL(item.url); photos = photos.filter(photo => photo !== item); renderPhotos();
       input.focus();
     });
-    card.append(image, name, label, captionLabel, caption, remove); previews.append(card);
+    card.append(image, name, label, captionHeader, caption, remove); previews.append(card);
   });
   if (photos.length > 0) {
     const add = document.createElement('button');
