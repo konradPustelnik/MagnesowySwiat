@@ -308,7 +308,6 @@ legend { font-family: var(--serif); font-size: 28px; padding: 0 0 20px; }
 .upload-picker button { flex-shrink: 0; min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); background: var(--paper); color: var(--ink); }
 .upload-picker button:hover { background: var(--cream); }
 .upload-zone > p { margin: 0; font-size: 11px; line-height: 1.4; }
-@media (min-width: 681px) { .upload-zone > #photo-help { white-space: nowrap; } }
 .photo-previews { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 20px 0; }
 .photo-previews:empty,
 #photo-status:empty { display: none; }
